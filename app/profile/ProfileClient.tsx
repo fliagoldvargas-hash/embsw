@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { EMBER_MINT } from "../lib/config";
+import { EMBER_MINT, SOL_MINT } from "../lib/config";
 import { EMBER_TOKEN } from "../lib/token";
 import { SiteShell } from "../components/SiteShell";
 import { useEmberWallet } from "../providers";
@@ -229,6 +229,14 @@ export function ProfileClient() {
 }
 
 function getKnownToken(mint: string): KnownToken {
+  if (mint === SOL_MINT) {
+    return {
+      symbol: "SOL",
+      name: "Solana",
+      image: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
+    };
+  }
+
   if (mint === EMBER_MINT) {
     return {
       symbol: EMBER_TOKEN.symbol,

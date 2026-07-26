@@ -1,6 +1,7 @@
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Connection, PublicKey, clusterApiUrl, type ParsedAccountData } from "@solana/web3.js";
 import { NextRequest, NextResponse } from "next/server";
+import { SOL_MINT } from "../../../lib/config";
 
 const fallbackRpcEndpoints = [
   process.env.NEXT_PUBLIC_SOLANA_RPC_URL,
@@ -29,30 +30,40 @@ export async function GET(request: NextRequest) {
   for (const endpoint of dedupe(fallbackRpcEndpoints)) {
     try {
       const connection = new Connection(endpoint, "confirmed");
-      const [lamports, tokenAccounts] = await Promise.all([
+      const [lamports, tokenAccounts, token2022Accounts] = await Promise.all([
         connection.getBalance(owner, "confirmed"),
         connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID }, "confirmed"),
+        connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_2022_PROGRAM_ID }, "confirmed"),
       ]);
 
-      const holdings = tokenAccounts.value
-        .map((account) => {
+      const tokenHoldings = [...tokenAccounts.value, ...token2022Accounts.value]
+        .reduce<Record<string, { mint: string; amount: number; decimals: number }>>((holdings, account) => {
           const parsed = account.account.data as ParsedAccountData;
           const info = parsed.parsed.info;
           const tokenAmount = info.tokenAmount;
-          const amount = Number(tokenAmount.uiAmount || 0);
+          const amount = Number(tokenAmount.uiAmountString || tokenAmount.uiAmount || 0);
 
-          if (!amount) return null;
+          if (!Number.isFinite(amount) || amount <= 0) return holdings;
 
-          return {
-            mint: String(info.mint),
-            amount,
-            decimals: Number(tokenAmount.decimals || 0),
+          const mint = String(info.mint);
+          const existing = holdings[mint];
+          holdings[mint] = {
+            mint,
+            amount: (existing?.amount || 0) + amount,
+            decimals: Number(tokenAmount.decimals || existing?.decimals || 0),
           };
-        })
-        .filter(Boolean);
+
+          return holdings;
+        }, {});
+
+      const solBalance = lamports / 1_000_000_000;
+      const holdings = [
+        ...(solBalance > 0 ? [{ mint: SOL_MINT, amount: solBalance, decimals: 9 }] : []),
+        ...Object.values(tokenHoldings),
+      ];
 
       return NextResponse.json({
-        solBalance: lamports / 1_000_000_000,
+        solBalance,
         holdings,
       });
     } catch (error) {
