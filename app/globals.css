@@ -132,19 +132,19 @@ a {
 }
 
 .nav-icon-link {
-  width: 42px;
+  width: 26px;
   height: 42px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  opacity: 0.72;
-  transition: border-color 180ms ease, opacity 180ms ease, transform 180ms ease;
+  opacity: 0.95;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.nav-icon-link img {
+  filter: invert(1);
 }
 
 .nav-icon-link:hover {
-  border-color: rgba(183, 255, 54, 0.42);
   opacity: 1;
   transform: translateY(-1px);
 }
