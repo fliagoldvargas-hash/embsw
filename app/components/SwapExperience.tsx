@@ -487,7 +487,7 @@ function TokenSelector({
                 disabled={disabled}
                 onClick={() => onSelect(token)}
               >
-                <TokenIcon token={token} size={34} />
+                <TokenIcon token={token} size={40} />
                 <span>
                   <b>{token.symbol}</b>
                   <small>{token.name}</small>
