@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { EMBER_MINT, SOL_MINT } from "../lib/config";
+import { EMBER_MINT } from "../lib/config";
 import { EMBER_TOKEN } from "../lib/token";
 import { SiteShell } from "../components/SiteShell";
 import { useEmberWallet } from "../providers";
@@ -71,8 +71,11 @@ export function ProfileClient() {
       }
 
       const rawHoldings = Array.isArray(data.holdings) ? data.holdings as ProfileHoldingResponse[] : [];
+      const emberHoldings = EMBER_MINT
+        ? rawHoldings.filter((holding) => holding.mint === EMBER_MINT)
+        : [];
       const nextHoldings = await Promise.all(
-        rawHoldings.map(async (holding) => {
+        emberHoldings.map(async (holding) => {
           const metadata = await loadTokenMetadata(holding.mint).catch(() => getKnownToken(holding.mint));
           return {
             mint: holding.mint,
@@ -101,6 +104,8 @@ export function ProfileClient() {
       setLoading(false);
     }
   }, [wallet.publicKey]);
+
+  const emberHolding = holdings.find((holding) => holding.mint === EMBER_MINT);
 
   const loadXp = useCallback(async () => {
     if (!wallet.publicKey) return;
@@ -193,27 +198,28 @@ export function ProfileClient() {
             <section className="holdings-head">
               <div>
                 <p className="eyebrow">YOUR ASSETS</p>
-                <h2>Holdings</h2>
+                <h2>$EMBER holdings</h2>
               </div>
-              <span>Public balances from Solana</span>
+              <span>Public $EMBER balance from Solana</span>
             </section>
 
             <section className="holdings-panel panel">
               {loading && <p className="muted-center">Loading public balances...</p>}
-              {!loading && holdings.length === 0 && <p className="muted-center">No SPL token balances found in this wallet.</p>}
-              {!loading && holdings.map((holding) => (
-                <article className="holding-row" key={holding.mint}>
+              {!loading && !EMBER_MINT && <p className="muted-center">$EMBER mint is not configured yet.</p>}
+              {!loading && EMBER_MINT && !emberHolding && <p className="muted-center">No $EMBER balance found in this wallet.</p>}
+              {!loading && emberHolding && (
+                <article className="holding-row">
                   <div className="token-mark">
-                    {holding.image ? <img src={holding.image} alt={`${holding.symbol} logo`} width={34} height={34} /> : <span>{holding.symbol.slice(0, 2)}</span>}
+                    {emberHolding.image ? <img src={emberHolding.image} alt="$EMBER logo" width={34} height={34} /> : <span>EM</span>}
                   </div>
                   <div>
-                    <strong>{holding.symbol}</strong>
-                    <span>{holding.name}</span>
+                    <strong>$EMBER</strong>
+                    <span>{emberHolding.name}</span>
                   </div>
-                  <code>{shortAddress(holding.mint)}</code>
-                  <b>{formatTokenAmount(holding.amount)}</b>
+                  <code>{shortAddress(emberHolding.mint)}</code>
+                  <b>{formatTokenAmount(emberHolding.amount)}</b>
                 </article>
-              ))}
+              )}
             </section>
 
             {error && <p className="profile-error">{error}</p>}
@@ -229,14 +235,6 @@ export function ProfileClient() {
 }
 
 function getKnownToken(mint: string): KnownToken {
-  if (mint === SOL_MINT) {
-    return {
-      symbol: "SOL",
-      name: "Solana",
-      image: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
-    };
-  }
-
   if (mint === EMBER_MINT) {
     return {
       symbol: EMBER_TOKEN.symbol,
