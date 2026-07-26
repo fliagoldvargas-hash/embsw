@@ -252,11 +252,13 @@ export function SwapExperience() {
         </section>
 
         <section className="official-token">
+          <div className="token-emblem">
+            <Image src={EMBER_TOKEN.image} alt="Ember Swap logo" width={74} height={74} />
+          </div>
           <div className="official-identity">
-            <Image src="/assets/ember-swap-logo.png" alt="Ember Swap logo" width={44} height={44} />
             <div>
-              <p className="eyebrow">+ PRE-LAUNCH TOKEN</p>
-              <h2 className="logo-name">{EMBER_TOKEN.name.split(" ")[0]} <span>Swap</span></h2>
+              <p className="eyebrow">+ {isPrelaunch ? "PRE-LAUNCH TOKEN" : "LIVE TOKEN"}</p>
+              <h2 className="logo-name">{EMBER_TOKEN.name}</h2>
               <span>{isPrelaunch ? "EMBER launches on pump.fun soon. Mint will be published after launch." : "EMBER is live. Data updates from Solana liquidity markets."}</span>
             </div>
           </div>
@@ -266,13 +268,19 @@ export function SwapExperience() {
             <span>24H VOLUME <b>{formatCompactUsd(liveData?.stats?.volume24h) || "-"}</b></span>
             <span>FEE <b>{formatBps(SWAP_FEE_BPS)}</b></span>
           </div>
+          <div className="ca-status">
+            <span>CA STATUS</span>
+            <code>{isPrelaunch ? "Mint / CA pending pump.fun launch" : contract}</code>
+          </div>
           <div className="token-actions">
             <button onClick={() => document.querySelector<HTMLInputElement>(".amount-input")?.focus()}>TRADE EMBER</button>
-            <button className="copy-ca" onClick={copyContract}>{copied ? "COPIED" : "COPY CONTRACT"}</button>
-            <Link href={EMBER_TOKEN.pumpFunUrl || "/"} target={EMBER_TOKEN.pumpFunUrl ? "_blank" : undefined}>Pump.fun -&gt;</Link>
-            <Link href={EMBER_MINT ? `https://solscan.io/token/${EMBER_MINT}` : "/"} target={EMBER_MINT ? "_blank" : undefined}>Solscan -&gt;</Link>
+            <button className="copy-ca" onClick={copyContract} disabled={!EMBER_MINT}>{copied ? "COPIED" : "COPY CONTRACT"}</button>
+            {EMBER_TOKEN.pumpFunUrl ? (
+              <Link href={EMBER_TOKEN.pumpFunUrl} target="_blank">Pump.fun -&gt;</Link>
+            ) : (
+              <span>Pump.fun pending</span>
+            )}
           </div>
-          <code>{isPrelaunch ? "Mint/CA pending pump.fun launch. Paste it in app/lib/token.ts." : contract}</code>
         </section>
 
         <section className="swap-shell">

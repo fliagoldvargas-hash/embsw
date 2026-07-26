@@ -6,7 +6,7 @@ export const EMBER_MINT = EMBER_TOKEN.mint || process.env.NEXT_PUBLIC_EMBER_TOKE
 
 export const EMBER_DECIMALS = EMBER_TOKEN.decimals || Number(process.env.NEXT_PUBLIC_EMBER_TOKEN_DECIMALS || 6);
 
-export const SWAP_FEE_BPS = Number(process.env.NEXT_PUBLIC_SWAP_FEE_BPS || 0);
+export const SWAP_FEE_BPS = 0;
 
 export const DEFAULT_SLIPPAGE_BPS = Number(process.env.NEXT_PUBLIC_DEFAULT_SLIPPAGE_BPS || 50);
 
