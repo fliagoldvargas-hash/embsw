@@ -1,7 +1,5 @@
 "use client";
 
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EMBER_MINT } from "../lib/config";
@@ -28,6 +26,12 @@ type KnownToken = {
   symbol: string;
   name: string;
   image?: string;
+};
+
+type ProfileHoldingResponse = {
+  mint: string;
+  amount: number;
+  decimals: number;
 };
 
 const SWAP_HISTORY_KEY = "ember.swap.history";
@@ -58,46 +62,44 @@ export function ProfileClient() {
     setError("");
 
     try {
-      const [lamports, tokenAccounts] = await Promise.all([
-        wallet.connection.getBalance(wallet.publicKey, "confirmed"),
-        wallet.connection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_PROGRAM_ID }, "confirmed"),
-      ]);
+      const response = await fetch(`/api/solana/profile?address=${wallet.publicKey.toBase58()}`);
+      const data = await readJsonResponse(response);
 
-      const nextHoldings = tokenAccounts.value
-        .map((account) => {
-          const parsed = account.account.data.parsed.info;
-          const tokenAmount = parsed.tokenAmount;
-          const amount = Number(tokenAmount.uiAmount || 0);
-          const mint = String(parsed.mint);
+      if (!response.ok) {
+        throw new Error(getApiErrorMessage(data, "Could not load public Solana balances right now."));
+      }
 
-          if (!amount) return null;
-
-          const known = getKnownToken(mint);
+      const rawHoldings = Array.isArray(data.holdings) ? data.holdings as ProfileHoldingResponse[] : [];
+      const nextHoldings = await Promise.all(
+        rawHoldings.map(async (holding) => {
+          const metadata = await loadTokenMetadata(holding.mint).catch(() => getKnownToken(holding.mint));
           return {
-            mint,
-            symbol: known.symbol,
-            name: known.name,
-            amount,
-            decimals: Number(tokenAmount.decimals || 0),
-            image: known.image,
+            mint: holding.mint,
+            symbol: metadata.symbol,
+            name: metadata.name,
+            amount: holding.amount,
+            decimals: holding.decimals,
+            image: metadata.image,
           };
         })
-        .filter((holding): holding is Holding => Boolean(holding))
+      );
+
+      const sortedHoldings = nextHoldings
         .sort((a, b) => {
           if (a.mint === EMBER_MINT) return -1;
           if (b.mint === EMBER_MINT) return 1;
           return b.amount - a.amount;
         });
 
-      setSolBalance(lamports / 1_000_000_000);
-      setHoldings(nextHoldings);
+      setSolBalance(Number(data.solBalance ?? 0));
+      setHoldings(sortedHoldings);
     } catch (profileError) {
-      setError(profileError instanceof Error ? profileError.message : "Could not load holdings from the Solana network.");
+      setError(profileError instanceof Error ? profileError.message : "Could not load public balances right now. Try refreshing.");
       setHoldings([]);
     } finally {
       setLoading(false);
     }
-  }, [wallet.connection, wallet.publicKey]);
+  }, [wallet.publicKey]);
 
   useEffect(() => {
     setSwaps(readStoredSwaps());
@@ -175,7 +177,7 @@ export function ProfileClient() {
               {!loading && holdings.map((holding) => (
                 <article className="holding-row" key={holding.mint}>
                   <div className="token-mark">
-                    {holding.image ? <Image src={holding.image} alt={`${holding.symbol} logo`} width={34} height={34} /> : <span>{holding.symbol.slice(0, 2)}</span>}
+                    {holding.image ? <img src={holding.image} alt={`${holding.symbol} logo`} width={34} height={34} /> : <span>{holding.symbol.slice(0, 2)}</span>}
                   </div>
                   <div>
                     <strong>{holding.symbol}</strong>
@@ -222,6 +224,39 @@ function getKnownToken(mint: string): KnownToken {
     symbol: shortAddress(mint),
     name: "SPL Token",
   };
+}
+
+async function loadTokenMetadata(mint: string): Promise<KnownToken> {
+  const response = await fetch(`/api/jupiter/token?query=${encodeURIComponent(mint)}`);
+  const data = await readJsonResponse(response);
+
+  if (!response.ok) {
+    throw new Error(getApiErrorMessage(data, "Token metadata unavailable."));
+  }
+
+  return {
+    symbol: String(data.symbol || shortAddress(mint)),
+    name: String(data.name || "SPL Token"),
+    image: typeof data.image === "string" ? data.image : undefined,
+  };
+}
+
+async function readJsonResponse(response: Response) {
+  const raw = await response.text();
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { raw };
+  }
+}
+
+function getApiErrorMessage(data: any, fallback: string) {
+  if (!data) return fallback;
+  if (typeof data.error === "string") return data.error;
+  if (typeof data.details === "string" && !/jsonrpc|access forbidden|403/i.test(data.details)) return data.details;
+  return fallback;
 }
 
 function calculateXp(swaps: StoredSwap[]) {

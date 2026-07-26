@@ -1319,6 +1319,12 @@ footer a {
   overflow: hidden;
 }
 
+.token-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .token-mark span {
   color: var(--green);
   font-family: "DM Mono", monospace;
