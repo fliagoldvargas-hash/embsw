@@ -48,7 +48,7 @@ export function SwapExperience() {
   const [amount, setAmount] = useState("");
   const [solBalance, setSolBalance] = useState<number | null>(null);
   const [quote, setQuote] = useState<JupiterQuote | null>(null);
-  const [quoteStatus, setQuoteStatus] = useState<"idle" | "loading" | "signing" | "sending" | "confirmed" | "error">("idle");
+  const [quoteStatus, setQuoteStatus] = useState<"idle" | "loading" | "signing" | "sending" | "sent" | "confirmed" | "error">("idle");
   const [quoteError, setQuoteError] = useState("");
   const [signature, setSignature] = useState("");
   const [liveData, setLiveData] = useState<TokenLiveData | null>(null);
@@ -250,6 +250,7 @@ export function SwapExperience() {
         outAmount: quote.outAmount,
       };
 
+      setQuoteStatus("sent");
       recordConfirmedSwapWithRetry(swapRecord);
       await waitForConfirmedTransaction(wallet.connection, txid);
       recordConfirmedSwapWithRetry(swapRecord);
@@ -353,8 +354,10 @@ export function SwapExperience() {
         ? "SIGN IN WALLET..."
         : quoteStatus === "sending"
           ? "SENDING..."
-          : quoteStatus === "confirmed"
-            ? "SWAP CONFIRMED"
+          : quoteStatus === "sent"
+            ? "TRANSACTION SENT"
+            : quoteStatus === "confirmed"
+              ? "SWAP CONFIRMED"
       : quote
         ? "SWAP"
         : "GET QUOTE";
@@ -451,10 +454,10 @@ export function SwapExperience() {
           {quoteError && <p className="swap-error">{quoteError}</p>}
           {signature && (
             <a className="tx-link" href={`https://solscan.io/tx/${signature}`} target="_blank">
-              View confirmed transaction
+              View transaction
             </a>
           )}
-          <button className="swap-button" onClick={quote ? executeSwap : getQuote} disabled={quoteStatus === "loading" || quoteStatus === "signing" || quoteStatus === "sending"}>
+          <button className="swap-button" onClick={quote ? executeSwap : getQuote} disabled={quoteStatus === "loading" || quoteStatus === "signing" || quoteStatus === "sending" || quoteStatus === "sent"}>
             {actionLabel} -&gt;
           </button>
           <p className="powered">Powered by Jupiter routing - Mainnet tokens - DYOR</p>
