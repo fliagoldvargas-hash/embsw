@@ -1806,11 +1806,6 @@ footer a {
   padding: 20px;
 }
 
-.transparency-stat.highlight {
-  border-color: rgba(183, 255, 54, 0.32);
-  background: linear-gradient(135deg, rgba(183, 255, 54, 0.08), rgba(23, 23, 27, 0.88) 58%);
-}
-
 .transparency-stat strong {
   display: block;
   margin: 18px 0 10px;
@@ -1818,10 +1813,6 @@ footer a {
   font-size: 30px;
   line-height: 1;
   letter-spacing: -1px;
-}
-
-.transparency-stat.highlight strong {
-  color: var(--green);
 }
 
 .transparency-stat p,

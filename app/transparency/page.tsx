@@ -34,7 +34,7 @@ export default async function TransparencyPage() {
             <h1>Every SOL is visible.</h1>
             <p>
               Creator rewards flow into the public Ember treasury. During each season, the site estimates
-              the Gold rewards pool from incoming SOL. Rewards are distributed on the 15th and the last day of every month.
+              the Gold rewards pool from incoming SOL. Each season runs for 15 days from the $EMBER launch.
             </p>
             <div className="transparency-wallet-row">
               <span>Treasury wallet</span>
@@ -50,7 +50,7 @@ export default async function TransparencyPage() {
             <strong>{formatSol(treasury.balanceSol)}</strong>
             <p>Total SOL currently held by the public treasury wallet.</p>
           </article>
-          <article className="transparency-stat highlight">
+          <article className="transparency-stat">
             <span>Current season rewards</span>
             <strong>{formatSol(treasury.seasonInflowSol)}</strong>
             <p>Estimated incoming SOL since {formatSeasonDate(season.start)} UTC.</p>
@@ -72,8 +72,8 @@ export default async function TransparencyPage() {
             <p className="eyebrow">{season.label.toUpperCase()}</p>
             <h2>Season closes {formatSeasonDate(season.end)} UTC</h2>
             <p>
-              Rewards are distributed on the 15th and the last day of each month. Gold holders share the finalized
-              Gold pool by their seasonal XP share after anti-spam review.
+              Seasons close every 15 days after the $EMBER CA and pump.fun link go live. Gold holders share
+              the finalized Gold pool by their seasonal XP share after anti-spam review.
             </p>
           </div>
           <SeasonCountdown endsAt={season.end.toISOString()} />
