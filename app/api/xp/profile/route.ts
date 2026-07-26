@@ -20,7 +20,8 @@ export async function GET(request: NextRequest) {
   try {
     const summary = await getWalletXpSummary(wallet);
     return NextResponse.json(summary);
-  } catch {
+  } catch (error) {
+    console.warn("Could not load XP profile", error);
     return NextResponse.json({
       wallet,
       totalXp: 0,
