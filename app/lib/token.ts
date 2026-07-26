@@ -1,5 +1,5 @@
-const EMBER_TOKEN_MINT = "";
-const EMBER_PUMPFUN_URL = "";
+const EMBER_TOKEN_MINT = "6oGuFDbEeaSzTcvrmmd2MqfNYwHKXFoN7regcR22pump";
+const EMBER_PUMPFUN_URL = "https://pump.fun/coin/6oGuFDbEeaSzTcvrmmd2MqfNYwHKXFoN7regcR22pump";
 const EMBER_X_URL = "";
 const EMBER_TELEGRAM_URL = "";
 
