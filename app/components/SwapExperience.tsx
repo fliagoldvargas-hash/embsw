@@ -511,7 +511,7 @@ function TokenSelector({
 
 function TokenIcon({ token, size }: { token: SwapToken; size: number }) {
   if (token.image) {
-    return <Image src={token.image} alt={`${token.symbol} logo`} width={size} height={size} />;
+    return <img className="token-icon" src={token.image} alt={`${token.symbol} logo`} width={size} height={size} />;
   }
 
   return (

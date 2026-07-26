@@ -16,7 +16,7 @@ export const SOL_TOKEN: SwapToken = {
   name: "Solana",
   mint: "So11111111111111111111111111111111111111112",
   decimals: 9,
-  image: "/assets/solana.png",
+  image: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png",
   tags: ["native"],
 };
 
@@ -38,6 +38,7 @@ export const DEFAULT_SWAP_TOKENS: SwapToken[] = [
     name: "USD Coin",
     mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
     decimals: 6,
+    image: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png",
     tags: ["stable"],
   },
   {
@@ -45,6 +46,7 @@ export const DEFAULT_SWAP_TOKENS: SwapToken[] = [
     name: "Jupiter",
     mint: "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
     decimals: 6,
+    image: "https://static.jup.ag/jup/icon.png",
     tags: ["verified"],
   },
   {
@@ -52,6 +54,7 @@ export const DEFAULT_SWAP_TOKENS: SwapToken[] = [
     name: "Fartcoin",
     mint: "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
     decimals: 6,
+    image: "https://ipfs.io/ipfs/QmQr3Fz4h1etNsF7oLGMRHiCzhB5y9a7GjyodnF7zLHK1g",
     tags: ["pump.fun"],
   },
   {
@@ -59,6 +62,7 @@ export const DEFAULT_SWAP_TOKENS: SwapToken[] = [
     name: "Peanut the Squirrel",
     mint: "2qEHjDLDLbuBgRYvsxhc5D6uDWAivNFZGan56P1tpump",
     decimals: 6,
+    image: "https://ipfs.io/ipfs/QmNdTtJauw39u4DzGyTaZ35rRx4VgAxqb91wE89zjyHWd2",
     tags: ["pump.fun"],
   },
   {
@@ -66,6 +70,7 @@ export const DEFAULT_SWAP_TOKENS: SwapToken[] = [
     name: "Comedian",
     mint: "9PR7nCP9DpcUotnDPVLUBUZKu5WAYkwrCUx9wDnSpump",
     decimals: 6,
+    image: "https://ipfs.io/ipfs/QmfKEGFPjMhtMdc6Nud7yvbPS8tiXfbFu2jGMvSUTejF9V",
     tags: ["pump.fun"],
   },
   {
@@ -73,6 +78,7 @@ export const DEFAULT_SWAP_TOKENS: SwapToken[] = [
     name: "The Black Bull",
     mint: "9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump",
     decimals: 6,
+    image: "https://www.blackbullsol.com/images/icon-ansem.png",
     tags: ["pump.fun"],
   },
   EMBER_SWAP_TOKEN,

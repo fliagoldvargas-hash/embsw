@@ -23,6 +23,8 @@ export async function GET(request: NextRequest) {
     outputMint,
     amount,
     slippageBps,
+    restrictIntermediateTokens: "true",
+    instructionVersion: "V2",
   });
 
   if (SWAP_FEE_BPS > 0) {

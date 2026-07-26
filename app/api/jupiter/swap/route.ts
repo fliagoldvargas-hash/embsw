@@ -29,8 +29,15 @@ export async function POST(request: NextRequest) {
   const swapBody: Record<string, unknown> = {
     quoteResponse: body.quoteResponse,
     userPublicKey: body.userPublicKey,
+    wrapAndUnwrapSol: true,
     dynamicComputeUnitLimit: true,
-    prioritizationFeeLamports: "auto",
+    dynamicSlippage: true,
+    prioritizationFeeLamports: {
+      priorityLevelWithMaxLamports: {
+        priorityLevel: "veryHigh",
+        maxLamports: 1000000,
+      },
+    },
   };
 
   if (feeAccount) {
