@@ -19,6 +19,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         <div className="live-badge"><i /> MAINNET LIVE</div>
         <div className="nav-actions">
           <Link className={pathname === "/docs" ? "nav-link active" : "nav-link"} href="/docs">Docs</Link>
+          <a className="nav-icon-link" href="https://x.com/EmberSwap_" target="_blank" rel="noreferrer" aria-label="Ember Swap on X">
+            <Image src="/assets/x-logo.png" alt="" width={15} height={15} />
+          </a>
           <Link className={pathname === "/transparency" ? "nav-link active" : "nav-link"} href="/transparency">Transparency</Link>
           <Link className={pathname === "/leaderboard" ? "nav-link active" : "nav-link"} href="/leaderboard">Leaderboard</Link>
           <Link className={pathname === "/profile" ? "profile-button active" : "profile-button"} href="/profile">Profile</Link>
