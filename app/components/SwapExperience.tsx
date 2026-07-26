@@ -240,17 +240,19 @@ export function SwapExperience() {
         ? await wallet.sendTransaction(transaction)
         : await signAndBroadcastTransaction(transaction, wallet);
 
-      await waitForConfirmedTransaction(wallet.connection, txid);
-
       setSignature(txid);
-      recordConfirmedSwap({
+      const swapRecord = {
         signature: txid,
         wallet: wallet.publicKey.toBase58(),
         inputMint: payToken.mint,
         outputMint: receiveToken.mint,
         inAmount: quote.inAmount,
         outAmount: quote.outAmount,
-      });
+      };
+
+      recordConfirmedSwapWithRetry(swapRecord);
+      await waitForConfirmedTransaction(wallet.connection, txid);
+      recordConfirmedSwapWithRetry(swapRecord);
       setQuoteStatus("confirmed");
     } catch (error) {
       setQuoteStatus("error");
@@ -707,28 +709,48 @@ async function signAndBroadcastTransaction(transaction: VersionedTransaction, wa
     maxRetries: 3,
     skipPreflight: false,
   });
-  await waitForConfirmedTransaction(wallet.connection, txid);
   return txid;
 }
 
-async function waitForConfirmedTransaction(connection: ReturnType<typeof useEmberWallet>["connection"], signature: string) {
-  const confirmation = await connection.confirmTransaction(signature, "confirmed");
-  if (confirmation.value.err) {
-    throw new Error(`Transaction failed on-chain: ${JSON.stringify(confirmation.value.err)}`);
+async function waitForConfirmedTransaction(
+  connection: ReturnType<typeof useEmberWallet>["connection"],
+  signature: string
+) {
+  const confirmedByStatus = await waitForSignatureStatus(connection, signature, 45_000);
+  if (confirmedByStatus) return;
+}
+
+async function waitForSignatureStatus(
+  connection: ReturnType<typeof useEmberWallet>["connection"],
+  signature: string,
+  timeoutMs: number
+) {
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < timeoutMs) {
+    const verified = await readSignatureStatus(connection, signature);
+    if (verified === "confirmed") return true;
+    await new Promise((resolve) => window.setTimeout(resolve, 1_500));
   }
 
+  return false;
+}
+
+async function readSignatureStatus(connection: ReturnType<typeof useEmberWallet>["connection"], signature: string) {
   const status = await connection.getSignatureStatuses([signature], {
     searchTransactionHistory: true,
-  });
-  const signatureStatus = status.value[0];
+  }).catch(() => null);
+  const signatureStatus = status?.value[0];
 
-  if (!signatureStatus) {
-    throw new Error("Transaction was sent but could not be verified yet. Check your wallet before retrying.");
-  }
+  if (!signatureStatus) return "pending";
 
   if (signatureStatus.err) {
     throw new Error(`Transaction failed on-chain: ${JSON.stringify(signatureStatus.err)}`);
   }
+
+  return signatureStatus.confirmationStatus === "confirmed" || signatureStatus.confirmationStatus === "finalized"
+    ? "confirmed"
+    : "pending";
 }
 
 async function readJsonResponse(response: Response) {
@@ -807,7 +829,7 @@ function formatSwapError(error: unknown) {
   return message || "Swap failed.";
 }
 
-function recordConfirmedSwap(input: {
+function recordConfirmedSwapWithRetry(input: {
   signature: string;
   wallet: string;
   inputMint: string;
@@ -815,11 +837,41 @@ function recordConfirmedSwap(input: {
   inAmount: string;
   outAmount: string;
 }) {
-  fetch("/api/xp/swaps", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(input),
-  }).catch(() => {
+  void retrySwapRecord(input);
+}
+
+async function retrySwapRecord(input: {
+  signature: string;
+  wallet: string;
+  inputMint: string;
+  outputMint: string;
+  inAmount: string;
+  outAmount: string;
+}) {
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const saved = await recordConfirmedSwap(input);
+    if (saved) return;
+    await new Promise((resolve) => window.setTimeout(resolve, 2_000 + attempt * 1_000));
+  }
+}
+
+async function recordConfirmedSwap(input: {
+  signature: string;
+  wallet: string;
+  inputMint: string;
+  outputMint: string;
+  inAmount: string;
+  outAmount: string;
+}) {
+  try {
+    const response = await fetch("/api/xp/swaps", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    return response.ok;
+  } catch {
     // XP persistence must not block a confirmed swap.
-  });
+    return false;
+  }
 }
