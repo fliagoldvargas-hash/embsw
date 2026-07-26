@@ -60,7 +60,8 @@ export async function POST(request: NextRequest) {
       holder,
       xpAwarded,
     });
-  } catch {
+  } catch (error) {
+    console.warn("Could not save XP swap", error);
     return NextResponse.json({ error: "Could not save XP right now." }, { status: 502 });
   }
 }

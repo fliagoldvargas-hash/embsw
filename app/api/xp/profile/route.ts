@@ -21,6 +21,14 @@ export async function GET(request: NextRequest) {
     const summary = await getWalletXpSummary(wallet);
     return NextResponse.json(summary);
   } catch {
-    return NextResponse.json({ error: "Could not load XP right now." }, { status: 502 });
+    return NextResponse.json({
+      wallet,
+      totalXp: 0,
+      totalSwaps: 0,
+      todaySwaps: 0,
+      activeDays: 0,
+      lastSwapAt: null,
+      warning: "XP storage is not available right now.",
+    });
   }
 }
