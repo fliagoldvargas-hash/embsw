@@ -543,47 +543,23 @@ footer,
 }
 
 .flip {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
-  margin: -12px auto;
+  margin: -10px auto;
   position: relative;
   z-index: 2;
-  overflow: hidden;
-  border: 1px solid rgba(183, 255, 54, 0.38);
+  border: 5px solid #090a0c;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(183, 255, 54, 0.24), transparent 54%),
-    linear-gradient(145deg, #16191a, #090a0c);
-  color: var(--green);
+  background: var(--green);
+  color: #090a0c;
   font-weight: 900;
-  box-shadow:
-    0 0 0 7px rgba(8, 8, 10, 0.98),
-    0 0 24px rgba(183, 255, 54, 0.22),
-    inset 0 0 18px rgba(183, 255, 54, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
   transition:
-    border-color 180ms ease,
+    background 180ms ease,
     box-shadow 180ms ease,
-    transform 220ms ease;
-}
-
-.flip::before {
-  content: "";
-  position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(183, 255, 54, 0.32);
-  border-radius: inherit;
-  opacity: 0.82;
-}
-
-.flip::after {
-  content: "";
-  position: absolute;
-  inset: -45%;
-  background: conic-gradient(from 90deg, transparent 0 72%, rgba(183, 255, 54, 0.26), transparent 88% 100%);
-  opacity: 0;
-  transition: opacity 180ms ease;
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .flip span,
@@ -593,10 +569,9 @@ footer,
 }
 
 .flip span {
-  width: 18px;
-  height: 24px;
+  width: 16px;
+  height: 22px;
   position: relative;
-  z-index: 1;
   transition: transform 220ms ease;
 }
 
@@ -604,8 +579,8 @@ footer,
 .flip span::after {
   content: "";
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border: solid currentColor;
 }
 
@@ -624,17 +599,11 @@ footer,
 }
 
 .flip:hover {
-  border-color: rgba(183, 255, 54, 0.72);
+  background: #c8ff4d;
   box-shadow:
-    0 0 0 7px rgba(8, 8, 10, 0.98),
-    0 0 34px rgba(183, 255, 54, 0.38),
-    inset 0 0 22px rgba(183, 255, 54, 0.16);
-  transform: translateY(-1px) scale(1.04);
-}
-
-.flip:hover::after {
-  opacity: 1;
-  animation: flip-sheen 900ms linear infinite;
+    0 8px 24px rgba(0, 0, 0, 0.32),
+    0 0 18px rgba(183, 255, 54, 0.24);
+  transform: rotate(180deg);
 }
 
 .flip:hover span {
@@ -642,11 +611,7 @@ footer,
 }
 
 .flip:active {
-  transform: translateY(1px) scale(0.96);
-}
-
-.flip:active span {
-  animation: flip-pop 260ms ease;
+  transform: rotate(180deg) scale(0.94);
 }
 
 .swap-route-line,
@@ -2019,18 +1984,6 @@ footer a {
 @keyframes docs-spin {
   to {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes flip-sheen {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes flip-pop {
-  50% {
-    transform: rotate(180deg) scale(0.82);
   }
 }
 
