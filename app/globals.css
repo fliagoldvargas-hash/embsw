@@ -543,20 +543,47 @@ footer,
 }
 
 .flip {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
-  margin: -8px auto;
+  margin: -12px auto;
   position: relative;
   z-index: 2;
-  border: 5px solid #090a0c;
+  overflow: hidden;
+  border: 1px solid rgba(183, 255, 54, 0.38);
   border-radius: 50%;
-  background: var(--green);
-  color: #0a0a0b;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(183, 255, 54, 0.24), transparent 54%),
+    linear-gradient(145deg, #16191a, #090a0c);
+  color: var(--green);
   font-weight: 900;
-  box-shadow: 0 0 26px rgba(166, 255, 26, 0.2);
-  transition: transform 180ms ease;
+  box-shadow:
+    0 0 0 7px rgba(8, 8, 10, 0.98),
+    0 0 24px rgba(183, 255, 54, 0.22),
+    inset 0 0 18px rgba(183, 255, 54, 0.08);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 220ms ease;
+}
+
+.flip::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(183, 255, 54, 0.32);
+  border-radius: inherit;
+  opacity: 0.82;
+}
+
+.flip::after {
+  content: "";
+  position: absolute;
+  inset: -45%;
+  background: conic-gradient(from 90deg, transparent 0 72%, rgba(183, 255, 54, 0.26), transparent 88% 100%);
+  opacity: 0;
+  transition: opacity 180ms ease;
 }
 
 .flip span,
@@ -566,34 +593,60 @@ footer,
 }
 
 .flip span {
-  width: 14px;
-  height: 18px;
+  width: 18px;
+  height: 24px;
   position: relative;
+  z-index: 1;
+  transition: transform 220ms ease;
 }
 
 .flip span::before,
 .flip span::after {
   content: "";
   position: absolute;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border: solid #0a0a0b;
-  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  border: solid currentColor;
 }
 
 .flip span::before {
   top: 0;
+  left: 1px;
   border-width: 2px 0 0 2px;
+  transform: rotate(45deg);
 }
 
 .flip span::after {
   bottom: 0;
+  right: 1px;
   border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 .flip:hover {
+  border-color: rgba(183, 255, 54, 0.72);
+  box-shadow:
+    0 0 0 7px rgba(8, 8, 10, 0.98),
+    0 0 34px rgba(183, 255, 54, 0.38),
+    inset 0 0 22px rgba(183, 255, 54, 0.16);
+  transform: translateY(-1px) scale(1.04);
+}
+
+.flip:hover::after {
+  opacity: 1;
+  animation: flip-sheen 900ms linear infinite;
+}
+
+.flip:hover span {
   transform: rotate(180deg);
+}
+
+.flip:active {
+  transform: translateY(1px) scale(0.96);
+}
+
+.flip:active span {
+  animation: flip-pop 260ms ease;
 }
 
 .swap-route-line,
@@ -1966,6 +2019,18 @@ footer a {
 @keyframes docs-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes flip-sheen {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes flip-pop {
+  50% {
+    transform: rotate(180deg) scale(0.82);
   }
 }
 
