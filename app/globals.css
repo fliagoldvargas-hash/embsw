@@ -1717,6 +1717,7 @@ footer a {
 .transparency-stat,
 .transparency-season,
 .transparency-split article,
+.transparency-token-plan,
 .transparency-notes {
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -1866,6 +1867,66 @@ footer a {
 .transparency-split h3 {
   margin: 0 0 10px;
   font-size: 24px;
+}
+
+.transparency-token-plan {
+  padding: 24px;
+  margin-bottom: 14px;
+}
+
+.transparency-section-head {
+  max-width: 760px;
+}
+
+.transparency-section-head h2 {
+  margin: 10px 0 10px;
+  font-size: clamp(30px, 3.2vw, 48px);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.transparency-section-head p:last-child {
+  margin: 0;
+  color: #a0a0aa;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.transparency-token-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.transparency-token-grid article {
+  min-height: 150px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(8, 8, 10, 0.44);
+}
+
+.transparency-token-grid span {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--green);
+  font-family: "DM Mono", monospace;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.transparency-token-grid strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.transparency-token-grid p {
+  margin: 0;
+  color: #a0a0aa;
+  font-size: 14px;
+  line-height: 1.55;
 }
 
 .transparency-notes {
@@ -2261,6 +2322,7 @@ footer a {
   .docs-tier-grid,
   .docs-security-grid,
   .transparency-grid,
+  .transparency-token-grid,
   .transparency-note-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2384,6 +2446,7 @@ footer a {
   .docs-reward-band,
   .transparency-grid,
   .transparency-split,
+  .transparency-token-grid,
   .transparency-note-grid {
     grid-template-columns: 1fr;
   }

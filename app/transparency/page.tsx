@@ -92,6 +92,22 @@ export default async function TransparencyPage() {
           </article>
         </section>
 
+        <section className="transparency-token-plan panel">
+          <div className="transparency-section-head">
+            <p className="eyebrow">PROJECT TOKEN POSITION</p>
+            <h2>3% of $EMBER is reserved for long-term alignment.</h2>
+            <p>
+              The project plans to buy and hold 3% of the token supply, split into clear buckets so the
+              community can understand how those tokens support Ember Swap over time.
+            </p>
+          </div>
+          <div className="transparency-token-grid">
+            <article><span>1%</span><strong>Treasury</strong><p>Held as a strategic reserve for long-term project stability.</p></article>
+            <article><span>1%</span><strong>Marketing</strong><p>Used for launch campaigns, creators, partnerships, and growth pushes.</p></article>
+            <article><span>1%</span><strong>Community</strong><p>Reserved for community initiatives, events, quests, and contributor rewards.</p></article>
+          </div>
+        </section>
+
         <section className="transparency-notes panel">
           <p className="eyebrow">HOW IT IS CALCULATED</p>
           <div className="transparency-note-grid">
