@@ -543,21 +543,24 @@ footer,
 }
 
 .flip {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
   margin: -10px auto;
   position: relative;
   z-index: 2;
-  border: 5px solid #090a0c;
+  border: 1px solid rgba(183, 255, 54, 0.86);
   border-radius: 50%;
-  background: var(--green);
-  color: #090a0c;
+  background: #111315;
+  color: var(--green);
   font-weight: 900;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  box-shadow:
+    0 0 0 5px #090a0c,
+    0 8px 22px rgba(0, 0, 0, 0.34),
+    inset 0 0 14px rgba(183, 255, 54, 0.08);
   transition:
-    background 180ms ease,
+    border-color 180ms ease,
     box-shadow 180ms ease,
     transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -569,44 +572,44 @@ footer,
 }
 
 .flip span {
-  width: 16px;
-  height: 22px;
+  width: 22px;
+  height: 24px;
   position: relative;
-  transition: transform 220ms ease;
+  background:
+    linear-gradient(currentColor, currentColor) 6px 4px / 2px 16px no-repeat,
+    linear-gradient(currentColor, currentColor) 14px 4px / 2px 16px no-repeat;
 }
 
 .flip span::before,
 .flip span::after {
   content: "";
   position: absolute;
-  width: 11px;
-  height: 11px;
+  width: 8px;
+  height: 8px;
   border: solid currentColor;
 }
 
 .flip span::before {
-  top: 0;
-  left: 1px;
+  top: 2px;
+  left: 3px;
   border-width: 2px 0 0 2px;
   transform: rotate(45deg);
 }
 
 .flip span::after {
-  bottom: 0;
-  right: 1px;
+  right: 3px;
+  bottom: 2px;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 
 .flip:hover {
-  background: #c8ff4d;
+  border-color: var(--green);
   box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.32),
-    0 0 18px rgba(183, 255, 54, 0.24);
-  transform: rotate(180deg);
-}
-
-.flip:hover span {
+    0 0 0 5px #090a0c,
+    0 8px 22px rgba(0, 0, 0, 0.36),
+    0 0 16px rgba(183, 255, 54, 0.28),
+    inset 0 0 14px rgba(183, 255, 54, 0.12);
   transform: rotate(180deg);
 }
 
