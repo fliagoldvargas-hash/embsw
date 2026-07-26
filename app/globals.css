@@ -517,6 +517,7 @@ footer,
   min-height: 46px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 8px 12px;
   border-radius: 999px;
@@ -525,6 +526,13 @@ footer,
   color: var(--text);
   font-weight: 900;
   font-size: 13px;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.token-button:hover {
+  border-color: rgba(166, 255, 26, 0.45);
+  background: rgba(166, 255, 26, 0.1);
+  transform: translateY(-1px);
 }
 
 .flip {
@@ -650,6 +658,140 @@ footer b {
   color: #d8ca91;
   font-size: 11px;
   line-height: 1.4;
+}
+
+.token-selector-modal {
+  width: min(520px, calc(100vw - 28px));
+  max-height: min(760px, calc(100vh - 36px));
+  overflow: hidden;
+  position: relative;
+  padding: 26px;
+  border: 1px solid rgba(166, 255, 26, 0.24);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(166, 255, 26, 0.09), transparent 38%),
+    #101014;
+  box-shadow: 0 40px 140px rgba(0, 0, 0, 0.7);
+}
+
+.token-selector-modal .close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+}
+
+.token-selector-modal h2 {
+  margin: 8px 0 18px;
+  font-size: 30px;
+  letter-spacing: -1px;
+}
+
+.token-list {
+  display: grid;
+  gap: 8px;
+  max-height: 430px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.token-option {
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: var(--text);
+  background: rgba(24, 24, 29, 0.78);
+  text-align: left;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.token-option:hover:not(:disabled),
+.token-option.active {
+  border-color: rgba(166, 255, 26, 0.45);
+  background: rgba(166, 255, 26, 0.08);
+  transform: translateY(-1px);
+}
+
+.token-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.token-option span {
+  display: grid;
+  gap: 3px;
+}
+
+.token-option b {
+  font-size: 14px;
+}
+
+.token-option small,
+.token-option em {
+  color: #8f8f99;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.token-option em {
+  justify-self: end;
+  color: var(--green);
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  text-align: right;
+}
+
+.token-initial {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(166, 255, 26, 0.24);
+  border-radius: 50%;
+  color: #0a0a0b;
+  background: var(--green);
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.custom-token-form {
+  display: grid;
+  grid-template-columns: 96px 1fr 72px;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.custom-token-form input,
+.custom-token-form button {
+  min-height: 44px;
+  border-radius: 10px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+}
+
+.custom-token-form input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  outline: 0;
+  padding: 0 12px;
+  color: var(--text);
+  background: rgba(6, 7, 8, 0.8);
+}
+
+.custom-token-form input:focus {
+  border-color: rgba(166, 255, 26, 0.5);
+}
+
+.custom-token-form button {
+  border: 1px solid rgba(166, 255, 26, 0.24);
+  color: var(--green);
+  background: rgba(166, 255, 26, 0.08);
+  font-weight: 900;
 }
 
 .tx-link {
@@ -1272,6 +1414,24 @@ footer a {
   .token-button {
     align-self: stretch;
     justify-content: center;
+  }
+
+  .token-selector-modal {
+    padding: 24px 14px 14px;
+  }
+
+  .token-option {
+    grid-template-columns: 34px 1fr;
+  }
+
+  .token-option em {
+    grid-column: 2;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .custom-token-form {
+    grid-template-columns: 1fr;
   }
 
   footer {

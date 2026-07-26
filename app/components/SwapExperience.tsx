@@ -4,14 +4,15 @@ import { LAMPORTS_PER_SOL, PublicKey, VersionedTransaction } from "@solana/web3.
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { DEFAULT_SLIPPAGE_BPS, EMBER_DECIMALS, EMBER_MINT, SOL_MINT, SWAP_FEE_BPS } from "../lib/config";
+import { DEFAULT_SLIPPAGE_BPS, EMBER_MINT, SWAP_FEE_BPS } from "../lib/config";
+import { DEFAULT_SWAP_TOKENS, makeCustomSwapToken, type SwapToken } from "../lib/swap-tokens";
 import { EMBER_IS_LIVE, EMBER_TOKEN } from "../lib/token";
 import { useEmberWallet } from "../providers";
 
 const contract = EMBER_MINT || "Paste mint in app/lib/token.ts";
 const SWAP_HISTORY_KEY = "ember.swap.history";
 
-type TokenSymbol = "SOL" | "EMBER";
+type TokenSide = "pay" | "receive";
 
 type JupiterQuote = {
   inAmount: string;
@@ -34,8 +35,12 @@ type TokenLiveData = {
 export function SwapExperience() {
   const wallet = useEmberWallet();
   const [guideOpen, setGuideOpen] = useState(true);
+  const [tokenSelectorSide, setTokenSelectorSide] = useState<TokenSide | null>(null);
+  const [customMint, setCustomMint] = useState("");
+  const [customSymbol, setCustomSymbol] = useState("");
   const [copied, setCopied] = useState(false);
-  const [flipped, setFlipped] = useState(false);
+  const [payToken, setPayToken] = useState<SwapToken>(DEFAULT_SWAP_TOKENS[0]);
+  const [receiveToken, setReceiveToken] = useState<SwapToken>(EMBER_MINT ? DEFAULT_SWAP_TOKENS[DEFAULT_SWAP_TOKENS.length - 1] : DEFAULT_SWAP_TOKENS[1]);
   const [amount, setAmount] = useState("");
   const [solBalance, setSolBalance] = useState<number | null>(null);
   const [quote, setQuote] = useState<JupiterQuote | null>(null);
@@ -44,17 +49,11 @@ export function SwapExperience() {
   const [signature, setSignature] = useState("");
   const [liveData, setLiveData] = useState<TokenLiveData | null>(null);
 
-  const pay: TokenSymbol = flipped ? "EMBER" : "SOL";
-  const receive: TokenSymbol = flipped ? "SOL" : "EMBER";
-  const canQuote = Boolean(EMBER_MINT && amountNumber(amount) > 0);
+  const availableTokens = useMemo(() => DEFAULT_SWAP_TOKENS, []);
+  const canQuote = Boolean(payToken.mint && receiveToken.mint && payToken.mint !== receiveToken.mint && amountNumber(amount) > 0);
   const isPrelaunch = !EMBER_IS_LIVE;
-
-  const inputMint = pay === "SOL" ? SOL_MINT : EMBER_MINT;
-  const outputMint = receive === "SOL" ? SOL_MINT : EMBER_MINT;
-  const inputDecimals = pay === "SOL" ? 9 : EMBER_DECIMALS;
-  const outputDecimals = receive === "SOL" ? 9 : EMBER_DECIMALS;
-  const inputAmount = useMemo(() => toBaseUnits(amount, inputDecimals), [amount, inputDecimals]);
-  const receiveValue = quote ? formatBaseUnits(quote.outAmount, outputDecimals) : "";
+  const inputAmount = useMemo(() => toBaseUnits(amount, payToken.decimals), [amount, payToken.decimals]);
+  const receiveValue = quote ? formatBaseUnits(quote.outAmount, receiveToken.decimals) : "";
 
   useEffect(() => {
     let cancelled = false;
@@ -114,31 +113,31 @@ export function SwapExperience() {
   }
 
   async function getQuote() {
-      setQuote(null);
-      setQuoteError("");
+    resetQuoteState();
 
     if (!wallet.connected) {
       await wallet.connect();
       return;
     }
 
-    if (!EMBER_MINT) {
+    if (!payToken.mint || !receiveToken.mint) {
       setQuoteStatus("error");
-      setQuoteError("Paste the EMBER mint in app/lib/token.ts before requesting real quotes.");
+      setQuoteError("This token is not live yet. Paste its mint before requesting real quotes.");
       return;
     }
 
     try {
-      new PublicKey(EMBER_MINT);
+      new PublicKey(payToken.mint);
+      new PublicKey(receiveToken.mint);
     } catch {
       setQuoteStatus("error");
-      setQuoteError("Configured EMBER mint is not a valid Solana public key.");
+      setQuoteError("One of the selected token mints is not a valid Solana public key.");
       return;
     }
 
     if (!canQuote || !inputAmount) {
       setQuoteStatus("error");
-      setQuoteError("Enter an amount first.");
+      setQuoteError(payToken.mint === receiveToken.mint ? "Choose two different tokens." : "Enter an amount first.");
       return;
     }
 
@@ -146,8 +145,8 @@ export function SwapExperience() {
 
     try {
       const params = new URLSearchParams({
-        inputMint,
-        outputMint,
+        inputMint: payToken.mint,
+        outputMint: receiveToken.mint,
         amount: inputAmount,
         slippageBps: String(DEFAULT_SLIPPAGE_BPS),
       });
@@ -217,11 +216,51 @@ export function SwapExperience() {
     }
   }
 
-  function flipTokens() {
-    setFlipped((value) => !value);
+  function resetQuoteState() {
     setQuote(null);
     setQuoteError("");
     setSignature("");
+  }
+
+  function flipTokens() {
+    setPayToken(receiveToken);
+    setReceiveToken(payToken);
+    resetQuoteState();
+  }
+
+  function selectToken(token: SwapToken) {
+    if (token.disabled) return;
+
+    if (tokenSelectorSide === "pay") {
+      setPayToken(token);
+      if (token.mint === receiveToken.mint) {
+        setReceiveToken(payToken);
+      }
+    }
+
+    if (tokenSelectorSide === "receive") {
+      setReceiveToken(token);
+      if (token.mint === payToken.mint) {
+        setPayToken(receiveToken);
+      }
+    }
+
+    setTokenSelectorSide(null);
+    resetQuoteState();
+  }
+
+  function addCustomToken() {
+    try {
+      new PublicKey(customMint.trim());
+    } catch {
+      setQuoteError("Custom token mint is not a valid Solana public key.");
+      return;
+    }
+
+    const token = makeCustomSwapToken(customMint, customSymbol || "CUSTOM");
+    selectToken(token);
+    setCustomMint("");
+    setCustomSymbol("");
   }
 
   const actionLabel = !wallet.connected
@@ -296,19 +335,24 @@ export function SwapExperience() {
           </header>
           <SwapBox
             label="YOU PAY"
-            meta={pay === "SOL" ? `Balance ${solBalance === null ? "-" : solBalance.toFixed(4)}` : "Balance -"}
-            token={pay}
+            meta={payToken.symbol === "SOL" ? `Balance ${solBalance === null ? "-" : solBalance.toFixed(4)}` : payToken.note || "Jupiter routed"}
+            token={payToken}
             value={amount}
             onValueChange={(value) => {
               setAmount(value);
-              setQuote(null);
-              setQuoteError("");
-              setSignature("");
+              resetQuoteState();
             }}
+            onSelectToken={() => setTokenSelectorSide("pay")}
             editable
           />
           <button className="flip" aria-label="Flip tokens" onClick={flipTokens}>⇅</button>
-          <SwapBox label="YOU RECEIVE" meta={quote ? "Best route" : "Awaiting quote"} token={receive} value={receiveValue} />
+          <SwapBox
+            label="YOU RECEIVE"
+            meta={receiveToken.note || (quote ? "Best route" : "Awaiting quote")}
+            token={receiveToken}
+            value={receiveValue}
+            onSelectToken={() => setTokenSelectorSide("receive")}
+          />
           <div className="swap-route-line">
             <span>Best available route</span>
             <b>{quote ? `${quote.routePlan?.length || 1} hop${quote.routePlan?.length === 1 ? "" : "s"}` : "Ready"}</b>
@@ -320,7 +364,7 @@ export function SwapExperience() {
           </dl>
           <div className="reward-line">Season Zero rewards <b>+10 XP</b> after confirmation</div>
           {isPrelaunch && (
-            <p className="swap-error">EMBER is not live yet. Swaps unlock as soon as the pump.fun mint is pasted in app/lib/token.ts.</p>
+            <p className="swap-error">EMBER is not live yet. Swaps for other listed tokens are already available.</p>
           )}
           {quoteError && <p className="swap-error">{quoteError}</p>}
           {signature && (
@@ -339,6 +383,21 @@ export function SwapExperience() {
         <span><a href="/" target="_blank">Ember Swap</a> - Built on <b>Solana</b></span>
       </footer>
       {guideOpen && <GuideModal onClose={() => setGuideOpen(false)} />}
+      {tokenSelectorSide && (
+        <TokenSelector
+          side={tokenSelectorSide}
+          tokens={availableTokens}
+          selectedMint={tokenSelectorSide === "pay" ? payToken.mint : receiveToken.mint}
+          oppositeMint={tokenSelectorSide === "pay" ? receiveToken.mint : payToken.mint}
+          customMint={customMint}
+          customSymbol={customSymbol}
+          onCustomMintChange={setCustomMint}
+          onCustomSymbolChange={setCustomSymbol}
+          onAddCustomToken={addCustomToken}
+          onSelect={selectToken}
+          onClose={() => setTokenSelectorSide(null)}
+        />
+      )}
     </>
   );
 }
@@ -350,16 +409,16 @@ function SwapBox({
   value,
   editable = false,
   onValueChange,
+  onSelectToken,
 }: {
   label: string;
   meta: string;
-  token: TokenSymbol;
+  token: SwapToken;
   value: string;
   editable?: boolean;
   onValueChange?: (value: string) => void;
+  onSelectToken: () => void;
 }) {
-  const image = token === "SOL" ? "/assets/solana.png" : "/assets/ember-swap-logo.png";
-
   return (
     <div className="swap-box">
       <div>
@@ -378,12 +437,87 @@ function SwapBox({
         ) : (
           <strong>{value || "0.00"}</strong>
         )}
-        <button className="token-button">
-          <Image src={image} alt={`${token} logo`} width={25} height={25} />
-          {token}<span>v</span>
+        <button className="token-button" onClick={onSelectToken}>
+          <TokenIcon token={token} size={25} />
+          {token.symbol}<span>v</span>
         </button>
       </div>
     </div>
+  );
+}
+
+function TokenSelector({
+  side,
+  tokens,
+  selectedMint,
+  oppositeMint,
+  customMint,
+  customSymbol,
+  onCustomMintChange,
+  onCustomSymbolChange,
+  onAddCustomToken,
+  onSelect,
+  onClose,
+}: {
+  side: TokenSide;
+  tokens: SwapToken[];
+  selectedMint: string;
+  oppositeMint: string;
+  customMint: string;
+  customSymbol: string;
+  onCustomMintChange: (value: string) => void;
+  onCustomSymbolChange: (value: string) => void;
+  onAddCustomToken: () => void;
+  onSelect: (token: SwapToken) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="token-selector-title">
+      <section className="token-selector-modal">
+        <button className="close" onClick={onClose} aria-label="Close">x</button>
+        <p className="eyebrow">+ SELECT {side === "pay" ? "PAY" : "RECEIVE"} TOKEN</p>
+        <h2 id="token-selector-title">Choose token</h2>
+        <div className="token-list">
+          {tokens.map((token) => {
+            const isSelected = token.mint === selectedMint;
+            const isOpposite = Boolean(token.mint && token.mint === oppositeMint);
+            const disabled = token.disabled || isSelected;
+            return (
+              <button
+                className={isSelected ? "token-option active" : "token-option"}
+                key={`${token.symbol}-${token.mint || token.name}`}
+                disabled={disabled}
+                onClick={() => onSelect(token)}
+              >
+                <TokenIcon token={token} size={34} />
+                <span>
+                  <b>{token.symbol}</b>
+                  <small>{token.name}</small>
+                </span>
+                <em>{token.note || (isOpposite ? "Current pair" : token.tags?.join(" / "))}</em>
+              </button>
+            );
+          })}
+        </div>
+        <div className="custom-token-form">
+          <input value={customSymbol} onChange={(event) => onCustomSymbolChange(event.target.value)} placeholder="SYMBOL" />
+          <input value={customMint} onChange={(event) => onCustomMintChange(event.target.value)} placeholder="Paste mint / CA" />
+          <button onClick={onAddCustomToken}>ADD</button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function TokenIcon({ token, size }: { token: SwapToken; size: number }) {
+  if (token.image) {
+    return <Image src={token.image} alt={`${token.symbol} logo`} width={size} height={size} />;
+  }
+
+  return (
+    <span className="token-initial" style={{ width: size, height: size }}>
+      {token.symbol.slice(0, 2)}
+    </span>
   );
 }
 

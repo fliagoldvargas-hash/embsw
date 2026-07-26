@@ -23,10 +23,16 @@ After this change:
 
 - the token card shows the real CA/mint
 - the copy button copies the real CA
-- the pump.fun and Solscan buttons point to the real token
-- the swap form unlocks Jupiter quotes/swaps
+- the pump.fun button points to the real token
+- the swap form unlocks EMBER Jupiter quotes/swaps
 - price, market cap, volume, liquidity and Dex link are fetched from DexScreener
 - pre-launch warnings disappear automatically
+
+The listed swap tokens live in:
+
+`app/lib/swap-tokens.ts`
+
+Use that file to add or remove default tokens, update memecoin mints, or change token decimals. Users can also paste a custom mint directly from the token selector in the app.
 
 Then commit and push to `main`; Vercel deploys automatically.
 
