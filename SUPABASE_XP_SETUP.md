@@ -42,6 +42,7 @@ create index if not exists xp_swaps_wallet_day_idx
 create or replace function public.set_xp_award()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 declare
   previous_daily_swaps integer;
@@ -67,6 +68,7 @@ $$;
 create or replace function public.refresh_xp_wallet()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 begin
   insert into public.xp_wallets (wallet, total_xp, total_swaps, active_days, last_swap_at)
