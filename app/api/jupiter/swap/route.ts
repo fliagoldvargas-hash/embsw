@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { JUPITER_API_BASE } from "../../../lib/config";
+import { JUPITER_API_BASE, SWAP_FEE_BPS } from "../../../lib/config";
 
 type SwapRequestBody = {
   quoteResponse?: unknown;
@@ -7,7 +7,7 @@ type SwapRequestBody = {
 };
 
 export async function POST(request: NextRequest) {
-  const feeAccount = process.env.EMBER_FEE_ACCOUNT;
+  const feeAccount = SWAP_FEE_BPS > 0 ? process.env.EMBER_FEE_ACCOUNT : "";
 
   const body = (await request.json().catch(() => null)) as SwapRequestBody | null;
 
@@ -31,11 +31,12 @@ export async function POST(request: NextRequest) {
     userPublicKey: body.userPublicKey,
     wrapAndUnwrapSol: true,
     dynamicComputeUnitLimit: true,
-    dynamicSlippage: true,
+    dynamicSlippage: false,
+    skipUserAccountsRpcCalls: false,
     prioritizationFeeLamports: {
       priorityLevelWithMaxLamports: {
-        priorityLevel: "veryHigh",
-        maxLamports: 1000000,
+        priorityLevel: "high",
+        maxLamports: 500000,
       },
     },
   };

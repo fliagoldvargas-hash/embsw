@@ -208,7 +208,7 @@ export function SwapExperience() {
       setQuoteStatus("confirmed");
     } catch (error) {
       setQuoteStatus("error");
-      setQuoteError(error instanceof Error ? error.message : "Swap failed.");
+      setQuoteError(formatSwapError(error));
     }
   }
 
@@ -629,6 +629,28 @@ function getApiErrorMessage(data: any, fallback: string) {
   if (typeof data.error === "string") return data.error;
   if (typeof data.raw === "string") return data.raw.slice(0, 220);
   return fallback;
+}
+
+function formatSwapError(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error || "");
+
+  if (/insufficient|0x1|custom program error: 1/i.test(message)) {
+    return "Insufficient SOL for this swap. Keep extra SOL for network fees and token-account rent, then try a smaller amount.";
+  }
+
+  if (/blockhash|expired/i.test(message)) {
+    return "The quote expired before signing. Get a fresh quote and approve it right away.";
+  }
+
+  if (/user rejected|rejected|denied|cancel/i.test(message)) {
+    return "Transaction cancelled in wallet.";
+  }
+
+  if (/prepare|preparing/i.test(message)) {
+    return "Wallet could not prepare this transaction. Try refreshing, reconnecting the wallet, and swapping a smaller SOL amount.";
+  }
+
+  return message || "Swap failed.";
 }
 
 function rememberConfirmedSwap(signature: string, walletAddress: string) {

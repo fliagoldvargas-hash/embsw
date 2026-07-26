@@ -4,7 +4,6 @@ import { PrivyProvider, useLogin, usePrivy } from "@privy-io/react-auth";
 import {
   type ConnectedStandardSolanaWallet,
   toSolanaWalletConnectors,
-  useCreateWallet,
   useSignAndSendTransaction,
   useSignTransaction,
   useWallets,
@@ -78,7 +77,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
         },
         embeddedWallets: {
           solana: {
-            createOnLogin: "all-users",
+            createOnLogin: "off",
           },
         },
       }}
@@ -93,7 +92,6 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
   const { ready, authenticated, logout } = usePrivy();
   const { login } = useLogin();
   const { ready: walletsReady, wallets } = useWallets();
-  const { createWallet } = useCreateWallet();
   const { signTransaction: privySignTransaction } = useSignTransaction();
   const { signAndSendTransaction } = useSignAndSendTransaction();
   const [connecting, setConnecting] = useState(false);
@@ -101,7 +99,7 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
   const selectedWallet = useMemo(() => {
     const solanaWallets = wallets as ConnectedStandardSolanaWallet[];
     return (
-      solanaWallets.find((wallet) => wallet.standardWallet?.name === "Privy") ||
+      solanaWallets.find((wallet) => wallet.address && wallet.standardWallet?.name !== "Privy") ||
       solanaWallets.find((wallet) => Boolean(wallet.address)) ||
       null
     );
@@ -121,16 +119,11 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
     try {
       if (!authenticated) {
         await Promise.resolve(login({ loginMethods: ["wallet"], walletChainType: "solana-only" }));
-        return;
-      }
-
-      if (walletsReady && !selectedWallet) {
-        await createWallet({ createAdditional: false });
       }
     } finally {
       setConnecting(false);
     }
-  }, [authenticated, createWallet, login, selectedWallet, walletsReady]);
+  }, [authenticated, login]);
 
   const disconnect = useCallback(async () => {
     await logout();
