@@ -143,7 +143,7 @@ export default function DocsPage() {
             <p className="eyebrow">REWARDS ECONOMY</p>
             <h2>Holder ranks</h2>
             <p>
-              Seasons run for 15 days. Seasonal XP decides leaderboard position and eligibility,
+              Seasons close on the 15th and the last day of each month. Seasonal XP decides leaderboard position and eligibility,
               while historical XP can later support badges, reputation, or long-term recognition.
             </p>
           </div>

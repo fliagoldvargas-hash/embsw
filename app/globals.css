@@ -1710,15 +1710,10 @@ footer a {
 }
 
 .transparency-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
-  gap: 18px;
-  align-items: stretch;
   margin-bottom: 18px;
 }
 
 .transparency-hero > div:first-child,
-.transparency-wallet-card,
 .transparency-stat,
 .transparency-season,
 .transparency-split article,
@@ -1732,6 +1727,7 @@ footer a {
   min-height: 300px;
   display: grid;
   align-content: center;
+  gap: 22px;
   padding: 34px;
   background:
     radial-gradient(circle at 18% 12%, rgba(183, 255, 54, 0.12), transparent 34%),
@@ -1754,17 +1750,20 @@ footer a {
   line-height: 1.65;
 }
 
-.transparency-wallet-card {
+.transparency-wallet-row {
   display: grid;
-  align-content: end;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 14px;
-  padding: 26px;
-  background:
-    linear-gradient(145deg, rgba(183, 255, 54, 0.09), rgba(23, 23, 27, 0.88) 46%),
-    rgba(23, 23, 27, 0.88);
+  align-items: center;
+  max-width: 920px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba(183, 255, 54, 0.18);
+  border-radius: 10px;
+  background: rgba(8, 8, 10, 0.52);
 }
 
-.transparency-wallet-card span,
+.transparency-wallet-row span,
 .transparency-stat span,
 .transparency-split span,
 .transparency-note-grid strong {
@@ -1774,7 +1773,7 @@ footer a {
   letter-spacing: 0.7px;
 }
 
-.transparency-wallet-card code {
+.transparency-wallet-row code {
   color: var(--text);
   font-family: "DM Mono", monospace;
   font-size: 13px;
@@ -1782,7 +1781,7 @@ footer a {
   overflow-wrap: anywhere;
 }
 
-.transparency-wallet-card a {
+.transparency-wallet-row a {
   width: fit-content;
   color: var(--green);
   font-family: "DM Mono", monospace;
@@ -2411,6 +2410,11 @@ footer a {
   .transparency-hero > div:first-child {
     min-height: 260px;
     padding: 24px;
+  }
+
+  .transparency-wallet-row {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 
   .transparency-hero h1 {

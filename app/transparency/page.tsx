@@ -34,13 +34,13 @@ export default async function TransparencyPage() {
             <h1>Every SOL is visible.</h1>
             <p>
               Creator rewards flow into the public Ember treasury. During each season, the site estimates
-              the Gold rewards pool from incoming SOL and finalizes distribution every ~15 days.
+              the Gold rewards pool from incoming SOL. Rewards are distributed on the 15th and the last day of every month.
             </p>
-          </div>
-          <div className="transparency-wallet-card">
-            <span>TREASURY WALLET</span>
-            <code>{TREASURY_WALLET}</code>
-            <a href={`https://solscan.io/account/${TREASURY_WALLET}`} target="_blank">View on Solscan -&gt;</a>
+            <div className="transparency-wallet-row">
+              <span>Treasury wallet</span>
+              <code>{TREASURY_WALLET}</code>
+              <a href={`https://solscan.io/account/${TREASURY_WALLET}`} target="_blank">Solscan -&gt;</a>
+            </div>
           </div>
         </section>
 
@@ -72,8 +72,8 @@ export default async function TransparencyPage() {
             <p className="eyebrow">{season.label.toUpperCase()}</p>
             <h2>Season closes {formatSeasonDate(season.end)} UTC</h2>
             <p>
-              Seasons run about every 15 days. Gold holders share the finalized Gold pool by their seasonal XP share
-              after anti-spam review.
+              Rewards are distributed on the 15th and the last day of each month. Gold holders share the finalized
+              Gold pool by their seasonal XP share after anti-spam review.
             </p>
           </div>
           <SeasonCountdown endsAt={season.end.toISOString()} />

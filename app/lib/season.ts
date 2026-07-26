@@ -1,21 +1,24 @@
-export const SEASON_LENGTH_DAYS = 15;
-export const CURRENT_SEASON_END_ISO = "2026-08-15T00:00:00.000Z";
 export const TREASURY_WALLET = "FZuJFAK4a7EqCrPZ6ZWnvLUvngoYyV7vN4mxWBcLYiFt";
 
-const seasonLengthMs = SEASON_LENGTH_DAYS * 24 * 60 * 60 * 1000;
-
 export function getCurrentSeason(now = new Date()) {
-  const firstEnd = new Date(CURRENT_SEASON_END_ISO).getTime();
-  const nowMs = now.getTime();
-  const cyclesAfterFirst = Math.max(0, Math.ceil((nowMs - firstEnd) / seasonLengthMs));
-  const endMs = firstEnd + cyclesAfterFirst * seasonLengthMs;
-  const startMs = endMs - seasonLengthMs;
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth();
+  const day = now.getUTCDate();
+  const monthEndDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+  const isFirstHalf = day <= 15;
+
+  const start = isFirstHalf
+    ? new Date(Date.UTC(year, month, 1))
+    : new Date(Date.UTC(year, month, 16));
+  const end = isFirstHalf
+    ? new Date(Date.UTC(year, month, 15, 23, 59, 59, 999))
+    : new Date(Date.UTC(year, month, monthEndDay, 23, 59, 59, 999));
 
   return {
-    label: cyclesAfterFirst === 0 ? "Season Zero" : `Season ${cyclesAfterFirst}`,
-    start: new Date(startMs),
-    end: new Date(endMs),
-    lengthDays: SEASON_LENGTH_DAYS,
+    label: "Season Zero",
+    start,
+    end,
+    payoutLabel: isFirstHalf ? "15th" : "last day",
   };
 }
 
