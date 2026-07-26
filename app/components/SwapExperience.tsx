@@ -4,11 +4,11 @@ import { LAMPORTS_PER_SOL, PublicKey, VersionedTransaction } from "@solana/web3.
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { DEFAULT_SLIPPAGE_BPS, EMBER_MINT, SOL_MINT, SWAP_FEE_BPS } from "../lib/config";
+import { DEFAULT_SLIPPAGE_BPS, EMBER_DECIMALS, EMBER_MINT, SOL_MINT, SWAP_FEE_BPS } from "../lib/config";
+import { EMBER_IS_LIVE, EMBER_TOKEN } from "../lib/token";
 import { useEmberWallet } from "../providers";
 
-const contract = EMBER_MINT || "Configure NEXT_PUBLIC_EMBER_TOKEN_MINT";
-const EMBER_DECIMALS = Number(process.env.NEXT_PUBLIC_EMBER_TOKEN_DECIMALS || 6);
+const contract = EMBER_MINT || "Paste mint in app/lib/token.ts";
 
 type TokenSymbol = "SOL" | "EMBER";
 
@@ -17,6 +17,17 @@ type JupiterQuote = {
   outAmount: string;
   priceImpactPct?: string;
   routePlan?: unknown[];
+};
+
+type TokenLiveData = {
+  live: boolean;
+  stats: null | {
+    dexUrl?: string | null;
+    priceUsd?: string | null;
+    volume24h?: number | null;
+    liquidityUsd?: number | null;
+    marketCap?: number | null;
+  };
 };
 
 export function SwapExperience() {
@@ -30,11 +41,12 @@ export function SwapExperience() {
   const [quoteStatus, setQuoteStatus] = useState<"idle" | "loading" | "signing" | "sending" | "confirmed" | "error">("idle");
   const [quoteError, setQuoteError] = useState("");
   const [signature, setSignature] = useState("");
+  const [liveData, setLiveData] = useState<TokenLiveData | null>(null);
 
   const pay: TokenSymbol = flipped ? "EMBER" : "SOL";
   const receive: TokenSymbol = flipped ? "SOL" : "EMBER";
   const canQuote = Boolean(EMBER_MINT && amountNumber(amount) > 0);
-  const isPrelaunch = !EMBER_MINT;
+  const isPrelaunch = !EMBER_IS_LIVE;
 
   const inputMint = pay === "SOL" ? SOL_MINT : EMBER_MINT;
   const outputMint = receive === "SOL" ? SOL_MINT : EMBER_MINT;
@@ -67,6 +79,29 @@ export function SwapExperience() {
     };
   }, [wallet.connection, wallet.publicKey]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadLiveData() {
+      const response = await fetch("/api/token/live");
+      const data = await response.json();
+      if (!cancelled) {
+        setLiveData(data);
+      }
+    }
+
+    loadLiveData().catch(() => {
+      if (!cancelled) setLiveData(null);
+    });
+
+    const interval = window.setInterval(loadLiveData, 30000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, []);
+
   async function copyContract() {
     try {
       await navigator.clipboard.writeText(contract);
@@ -88,7 +123,7 @@ export function SwapExperience() {
 
     if (!EMBER_MINT) {
       setQuoteStatus("error");
-      setQuoteError("Set NEXT_PUBLIC_EMBER_TOKEN_MINT before requesting real quotes.");
+      setQuoteError("Paste the EMBER mint in app/lib/token.ts before requesting real quotes.");
       return;
     }
 
@@ -211,7 +246,7 @@ export function SwapExperience() {
             <span>Swap fast.</span>
             <span>Stay unhinged.</span>
           </h1>
-          <p>Best-route Solana swaps powered by Jupiter. Ember trading opens after launch.</p>
+          <p>Best-route Solana swaps powered by Jupiter. Ember trading opens after the pump.fun launch.</p>
         </section>
 
         <section className="official-token">
@@ -219,21 +254,23 @@ export function SwapExperience() {
             <Image src="/assets/ember-swap-logo.png" alt="Ember Swap logo" width={44} height={44} />
             <div>
               <p className="eyebrow">+ PRE-LAUNCH TOKEN</p>
-              <h2 className="logo-name">Ember <span>Swap</span></h2>
-              <span>EMBER launches on pump.fun soon. Mint will be published after launch.</span>
+              <h2 className="logo-name">{EMBER_TOKEN.name.split(" ")[0]} <span>Swap</span></h2>
+              <span>{isPrelaunch ? "EMBER launches on pump.fun soon. Mint will be published after launch." : "EMBER is live. Data updates from Solana liquidity markets."}</span>
             </div>
           </div>
           <div className="token-stats">
-            <span>PRICE <b>{isPrelaunch ? "Pre-launch" : "Live quote"}</b></span>
+            <span>PRICE <b>{formatUsd(liveData?.stats?.priceUsd) || (isPrelaunch ? "Pre-launch" : "Loading")}</b></span>
+            <span>MARKET CAP <b>{formatCompactUsd(liveData?.stats?.marketCap) || "-"}</b></span>
+            <span>24H VOLUME <b>{formatCompactUsd(liveData?.stats?.volume24h) || "-"}</b></span>
             <span>FEE <b>{formatBps(SWAP_FEE_BPS)}</b></span>
-            <span>SLIPPAGE <b>{formatBps(DEFAULT_SLIPPAGE_BPS)}</b></span>
           </div>
           <div className="token-actions">
             <button onClick={() => document.querySelector<HTMLInputElement>(".amount-input")?.focus()}>TRADE EMBER</button>
             <button className="copy-ca" onClick={copyContract}>{copied ? "COPIED" : "COPY CONTRACT"}</button>
+            <Link href={EMBER_TOKEN.pumpFunUrl || "/"} target={EMBER_TOKEN.pumpFunUrl ? "_blank" : undefined}>Pump.fun -&gt;</Link>
             <Link href={EMBER_MINT ? `https://solscan.io/token/${EMBER_MINT}` : "/"} target={EMBER_MINT ? "_blank" : undefined}>Solscan -&gt;</Link>
           </div>
-          <code>{isPrelaunch ? "Mint/CA pending pump.fun launch" : contract}</code>
+          <code>{isPrelaunch ? "Mint/CA pending pump.fun launch. Paste it in app/lib/token.ts." : contract}</code>
         </section>
 
         <section className="swap-shell">
@@ -264,7 +301,7 @@ export function SwapExperience() {
             <div><dt>Price impact</dt><dd>{quote?.priceImpactPct ? `${Number(quote.priceImpactPct).toFixed(3)}%` : "-"}</dd></div>
           </dl>
           {isPrelaunch && (
-            <p className="swap-error">EMBER is not live yet. Swaps unlock as soon as the pump.fun mint is configured.</p>
+            <p className="swap-error">EMBER is not live yet. Swaps unlock as soon as the pump.fun mint is pasted in app/lib/token.ts.</p>
           )}
           {quoteError && <p className="swap-error">{quoteError}</p>}
           {signature && (
@@ -380,6 +417,24 @@ function formatBaseUnits(value: string, decimals: number) {
 
 function formatBps(bps: number) {
   return `${(bps / 100).toFixed(2)}%`;
+}
+
+function formatUsd(value?: string | null) {
+  if (!value) return "";
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "";
+  if (number < 0.01) return `$${number.toFixed(8)}`;
+  return `$${number.toFixed(4)}`;
+}
+
+function formatCompactUsd(value?: number | null) {
+  if (!value || !Number.isFinite(value)) return "";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: 2,
+  }).format(value);
 }
 
 function base64ToBytes(value: string) {
