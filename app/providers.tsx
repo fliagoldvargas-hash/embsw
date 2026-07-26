@@ -68,7 +68,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
           showWalletLoginFirst: true,
           walletChainType: "solana-only",
         },
-        loginMethods: ["wallet", "email"],
+        loginMethods: ["wallet"],
         externalWallets: {
           solana: {
             connectors: toSolanaWalletConnectors({ shouldAutoConnect: true }),
@@ -117,7 +117,7 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
     setConnecting(true);
     try {
       if (!authenticated) {
-        await Promise.resolve(login());
+        await Promise.resolve(login({ loginMethods: ["wallet"], walletChainType: "solana-only" }));
         return;
       }
 
