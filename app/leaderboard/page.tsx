@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { SeasonCountdown } from "../components/SeasonCountdown";
 import { SiteShell } from "../components/SiteShell";
+import { formatSeasonDate, getCurrentSeason } from "../lib/season";
 import { getXpLeaderboard } from "../lib/xp";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +11,7 @@ export default async function LeaderboardPage() {
   const totalSwaps = leaders.reduce((sum, wallet) => sum + wallet.totalSwaps, 0);
   const repeatWallets = leaders.filter((wallet) => wallet.activeDays > 1).length;
   const maxSwaps = Math.max(...leaders.map((wallet) => wallet.totalSwaps), 1);
+  const season = getCurrentSeason();
 
   const stats = [
     ["VERIFIED SWAPS", String(totalSwaps), leaders.length > 0 ? "Confirmed Ember Swap trades" : "No verified swaps yet"],
@@ -24,9 +27,12 @@ export default async function LeaderboardPage() {
           <div>
             <p className="eyebrow">LIVE ON-CHAIN ACTIVITY</p>
             <h1>Season Zero</h1>
-            <p>Season Zero tracks confirmed Ember Swap transactions and wallet XP.</p>
+            <p>Season Zero tracks confirmed Ember Swap transactions and wallet XP. Current season closes {formatSeasonDate(season.end)} UTC.</p>
           </div>
-          <Link className="ghost-link" href="/">Back to swap</Link>
+          <div className="page-hero-actions">
+            <SeasonCountdown endsAt={season.end.toISOString()} />
+            <Link className="ghost-link" href="/">Back to swap</Link>
+          </div>
         </section>
 
         <section className="stats-grid">
