@@ -137,7 +137,10 @@ export function ProfileClient() {
                 <p className="mono-label">CONNECTED WALLET</p>
                 <strong>{walletAddress}</strong>
               </div>
-              <button onClick={loadProfile} disabled={loading}>{loading ? "Refreshing" : "Refresh balances"}</button>
+              <button className="refresh-balances-button" onClick={loadProfile} disabled={loading}>
+                <span className="refresh-glyph" aria-hidden="true" />
+                <span>{loading ? "Refreshing" : "Refresh balances"}</span>
+              </button>
             </section>
 
             <section className="profile-stats">

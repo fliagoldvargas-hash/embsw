@@ -1215,7 +1215,6 @@ footer a {
   overflow-wrap: anywhere;
 }
 
-.connected-wallet button,
 .xp-strip a {
   border: 1px solid var(--line);
   background: #202026;
@@ -1223,9 +1222,87 @@ footer a {
   font-size: 12px;
 }
 
-.connected-wallet button:disabled {
+.refresh-balances-button {
+  position: relative;
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 17px;
+  border: 1px solid rgba(166, 255, 26, 0.32);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(166, 255, 26, 0.13), rgba(5, 68, 10, 0.14)),
+    #1b1b20;
+  color: #f2ffe3;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 10px 28px rgba(15, 45, 10, 0.22);
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  white-space: nowrap;
+}
+
+.refresh-balances-button:hover {
+  border-color: rgba(166, 255, 26, 0.68);
+  background:
+    linear-gradient(180deg, rgba(166, 255, 26, 0.2), rgba(5, 68, 10, 0.18)),
+    #202026;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 13px 34px rgba(35, 105, 18, 0.28);
+  transform: translateY(-1px);
+}
+
+.refresh-balances-button:active {
+  transform: translateY(0);
+}
+
+.refresh-balances-button:focus-visible {
+  outline: 2px solid rgba(166, 255, 26, 0.7);
+  outline-offset: 3px;
+}
+
+.refresh-balances-button:disabled {
   opacity: 0.55;
   cursor: wait;
+  transform: none;
+}
+
+.refresh-glyph {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(166, 255, 26, 0.34);
+  border-right-color: var(--green);
+  border-radius: 999px;
+}
+
+.refresh-glyph::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid var(--green);
+  border-right: 2px solid var(--green);
+  transform: rotate(18deg);
+}
+
+.refresh-balances-button:disabled .refresh-glyph {
+  animation: refresh-spin 820ms linear infinite;
+}
+
+@keyframes refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .profile-stats {
@@ -1443,6 +1520,10 @@ footer a {
     grid-template-columns: 1fr;
     display: grid;
     align-items: start;
+  }
+
+  .refresh-balances-button {
+    width: 100%;
   }
 
   .holding-row {
