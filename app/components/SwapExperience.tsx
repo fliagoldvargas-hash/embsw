@@ -285,10 +285,15 @@ export function SwapExperience() {
 
         <section className="swap-shell">
           <header className="swap-head">
-            <h2>Swap</h2>
-            <button className="settings" aria-label="Settings">...</button>
+            <div>
+              <p className="eyebrow">+ JUPITER ROUTING</p>
+              <h2>Swap</h2>
+            </div>
+            <div className="route-badges">
+              <span>MAINNET</span>
+              <span>{formatBps(DEFAULT_SLIPPAGE_BPS)} SLIP</span>
+            </div>
           </header>
-          <button className="search-pill">SEARCH</button>
           <SwapBox
             label="YOU PAY"
             meta={pay === "SOL" ? `Balance ${solBalance === null ? "-" : solBalance.toFixed(4)}` : "Balance -"}
@@ -304,12 +309,16 @@ export function SwapExperience() {
           />
           <button className="flip" aria-label="Flip tokens" onClick={flipTokens}>⇅</button>
           <SwapBox label="YOU RECEIVE" meta={quote ? "Best route" : "Awaiting quote"} token={receive} value={receiveValue} />
-          <div className="reward-line">Season Zero rewards <b>+10 XP</b> after confirmation</div>
+          <div className="swap-route-line">
+            <span>Best available route</span>
+            <b>{quote ? `${quote.routePlan?.length || 1} hop${quote.routePlan?.length === 1 ? "" : "s"}` : "Ready"}</b>
+          </div>
           <dl className="fee-list">
             <div><dt>Ember fee <button className="info-dot">?</button></dt><dd>{formatBps(SWAP_FEE_BPS)}</dd></div>
             <div><dt>Slippage protection</dt><dd>{formatBps(DEFAULT_SLIPPAGE_BPS)}</dd></div>
             <div><dt>Price impact</dt><dd>{quote?.priceImpactPct ? `${Number(quote.priceImpactPct).toFixed(3)}%` : "-"}</dd></div>
           </dl>
+          <div className="reward-line">Season Zero rewards <b>+10 XP</b> after confirmation</div>
           {isPrelaunch && (
             <p className="swap-error">EMBER is not live yet. Swaps unlock as soon as the pump.fun mint is pasted in app/lib/token.ts.</p>
           )}
