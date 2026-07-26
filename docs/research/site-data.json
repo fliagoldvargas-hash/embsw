@@ -1,0 +1,983 @@
+{
+  "url": "https://www.wagmiswap.trade/",
+  "title": "WAGMI Swap",
+  "description": "A minimal Solana memecoin swap powered by Jupiter.",
+  "htmlClass": "",
+  "bodyClass": "",
+  "bodyText": "WAGMI SWAP MAINNET LIVE Leaderboard Profile Select Wallet How it works ✦ MEMECOIN LIQUIDITY, UNLEASHED Swap fast. Stay unhinged. Best-route Solana swaps powered by Raptor. You approve every transaction. ✓ VERIFIED OFFICIAL TOKEN WAGMI Swap WAGMI Live on the Pump.fun bonding curve PRICE $0.00000618 MARKET CAP $6,185 24H VOLUME $26,357 TRADE WAGMI COPY CONTRACT Pump.fun ↗ 4rwFTvBQzyYEHWUyTxW4xL7i6Wzumxo3YZgrbED6pump Swap ⚙ ⌕ SEARCH YOU PAY Balance — SOL ⌄ ↓ YOU RECEIVE Best route 118,568.013355 WAGMI ⌄ Season Zero rewards +10 XP after confirmation WAGMI fee ? 0.25% Slippage protection 0.50% Price impact 1.905% CONNECT WALLET↗ Powered by Raptor routing · Mainnet tokens · DYOR Trade responsibly. Memecoins are highly volatile. Open source · Built on Solana ⚡ 60-SECOND GUIDE Know before you swap × 1 You stay in control WAGMI never sees your recovery phrase. Your wallet previews and signs every transaction. 2 Two different costs The 0.25% WAGMI fee supports the app. Solana may also reserve about 0.002 SOL when your wallet needs a new token account. 3 Account rent is recoverable After selling or transferring every token out, close the empty token account using a trusted wallet’s account-management feature. The reserved SOL returns to your wallet. Never close an account that still contains tokens. Never enter your recovery phrase into an account-cleanup website. GOT IT — START SMALL",
+  "links": [
+    {
+      "text": "WAGMISWAP",
+      "href": "https://www.wagmiswap.trade/",
+      "internal": true,
+      "target": null
+    },
+    {
+      "text": "Leaderboard",
+      "href": "https://www.wagmiswap.trade/leaderboard",
+      "internal": true,
+      "target": null
+    },
+    {
+      "text": "Profile",
+      "href": "https://www.wagmiswap.trade/profile",
+      "internal": true,
+      "target": null
+    },
+    {
+      "text": "Pump.fun ↗",
+      "href": "https://pump.fun/coin/4rwFTvBQzyYEHWUyTxW4xL7i6Wzumxo3YZgrbED6pump",
+      "internal": false,
+      "target": "_blank"
+    },
+    {
+      "text": "Open source",
+      "href": "https://github.com/samsagewize/wagmi-swap",
+      "internal": false,
+      "target": "_blank"
+    }
+  ],
+  "buttons": [
+    {
+      "tag": "a",
+      "text": "WAGMISWAP",
+      "href": "https://www.wagmiswap.trade/",
+      "target": null,
+      "ariaLabel": null,
+      "classes": "brand",
+      "rect": {
+        "x": 72,
+        "y": 16,
+        "width": 597,
+        "height": 43
+      },
+      "styles": {
+        "fontSize": "18px",
+        "fontWeight": "800",
+        "fontFamily": "Manrope, sans-serif",
+        "letterSpacing": "-0.72px",
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "margin": "0px",
+        "display": "flex",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "border": "0px none rgb(255, 255, 255)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "a",
+      "text": "Leaderboard",
+      "href": "https://www.wagmiswap.trade/leaderboard",
+      "target": null,
+      "ariaLabel": null,
+      "classes": "learn-button nav-link",
+      "rect": {
+        "x": 1070,
+        "y": 17,
+        "width": 90,
+        "height": 42
+      },
+      "styles": {
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(133, 133, 142)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px 12px",
+        "margin": "0px",
+        "display": "flex",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "border": "0px none rgb(133, 133, 142)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "a",
+      "text": "Profile",
+      "href": "https://www.wagmiswap.trade/profile",
+      "target": null,
+      "ariaLabel": null,
+      "classes": "profile-button",
+      "rect": {
+        "x": 1168,
+        "y": 17,
+        "width": 68,
+        "height": 42
+      },
+      "styles": {
+        "fontSize": "12px",
+        "fontWeight": "700",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(212, 212, 216)",
+        "backgroundColor": "rgb(23, 23, 27)",
+        "padding": "0px 14px",
+        "margin": "0px",
+        "display": "flex",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "8px",
+        "border": "1px solid rgb(52, 52, 58)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "Select Wallet",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "wallet-button",
+      "rect": {
+        "x": 1244,
+        "y": 17,
+        "width": 124,
+        "height": 42
+      },
+      "styles": {
+        "fontSize": "13px",
+        "fontWeight": "800",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(17, 17, 17)",
+        "backgroundColor": "rgb(244, 244, 245)",
+        "padding": "0px 18px",
+        "margin": "0px",
+        "display": "inline-block",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "8px",
+        "border": "0px none rgb(17, 17, 17)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "How it works",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "floating-guide",
+      "rect": {
+        "x": 1335,
+        "y": 946,
+        "width": 87,
+        "height": 36
+      },
+      "styles": {
+        "fontSize": "10px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(161, 161, 170)",
+        "backgroundColor": "rgba(23, 23, 27, 0.92)",
+        "padding": "10px 13px",
+        "margin": "0px",
+        "display": "block",
+        "position": "fixed",
+        "top": "946px",
+        "zIndex": "9",
+        "borderRadius": "999px",
+        "border": "1px solid rgb(52, 52, 58)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "TRADE WAGMI",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "",
+      "rect": {
+        "x": 1013,
+        "y": 439,
+        "width": 90,
+        "height": 34
+      },
+      "styles": {
+        "fontSize": "8px",
+        "fontWeight": "900",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(16, 16, 18)",
+        "backgroundColor": "rgb(183, 255, 54)",
+        "padding": "0px 10px",
+        "margin": "0px",
+        "display": "grid",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "7px",
+        "border": "1px solid rgb(59, 72, 48)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "COPY CONTRACT",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "copy-ca",
+      "rect": {
+        "x": 1109,
+        "y": 439,
+        "width": 90,
+        "height": 34
+      },
+      "styles": {
+        "fontSize": "8px",
+        "fontWeight": "900",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(183, 255, 54)",
+        "backgroundColor": "rgb(28, 33, 24)",
+        "padding": "0px 10px",
+        "margin": "0px",
+        "display": "grid",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "7px",
+        "border": "1px solid rgb(59, 72, 48)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "a",
+      "text": "Pump.fun ↗",
+      "href": "https://pump.fun/coin/4rwFTvBQzyYEHWUyTxW4xL7i6Wzumxo3YZgrbED6pump",
+      "target": "_blank",
+      "ariaLabel": null,
+      "classes": "",
+      "rect": {
+        "x": 1013,
+        "y": 479,
+        "width": 186,
+        "height": 34
+      },
+      "styles": {
+        "fontSize": "8px",
+        "fontWeight": "900",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(161, 161, 170)",
+        "backgroundColor": "rgb(27, 27, 32)",
+        "padding": "0px 10px",
+        "margin": "0px",
+        "display": "grid",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "7px",
+        "border": "1px solid rgb(52, 52, 58)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "⚙",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "settings",
+      "rect": {
+        "x": 916,
+        "y": 634,
+        "width": 27,
+        "height": 27
+      },
+      "styles": {
+        "fontSize": "18px",
+        "fontWeight": "800",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(113, 113, 122)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "1px 6px",
+        "margin": "0px",
+        "display": "block",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "border": "0px none rgb(113, 113, 122)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "SEARCH",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "",
+      "rect": {
+        "x": 882,
+        "y": 687,
+        "width": 51,
+        "height": 26
+      },
+      "styles": {
+        "fontSize": "8px",
+        "fontWeight": "400",
+        "fontFamily": "\"DM Mono\", monospace",
+        "letterSpacing": "0.56px",
+        "color": "rgb(183, 255, 54)",
+        "backgroundColor": "rgb(38, 38, 44)",
+        "padding": "8px 9px",
+        "margin": "0px",
+        "display": "block",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "7px",
+        "border": "0px none rgb(183, 255, 54)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "SOL⌄",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "token-button",
+      "rect": {
+        "x": 829,
+        "y": 776,
+        "width": 97,
+        "height": 43
+      },
+      "styles": {
+        "fontSize": "13px",
+        "fontWeight": "800",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(244, 244, 245)",
+        "backgroundColor": "rgb(36, 36, 41)",
+        "padding": "8px 10px",
+        "margin": "0px",
+        "display": "flex",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "10px",
+        "border": "1px solid rgb(57, 57, 64)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "↓",
+      "href": null,
+      "target": null,
+      "ariaLabel": "Flip tokens",
+      "classes": "flip",
+      "rect": {
+        "x": 703,
+        "y": 831,
+        "width": 34,
+        "height": 34
+      },
+      "styles": {
+        "fontSize": "16px",
+        "fontWeight": "900",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(10, 10, 11)",
+        "backgroundColor": "rgb(183, 255, 54)",
+        "padding": "1px 6px",
+        "margin": "-7px 206px",
+        "display": "grid",
+        "position": "relative",
+        "top": "0px",
+        "zIndex": "2",
+        "borderRadius": "9px",
+        "border": "4px solid rgb(24, 24, 28)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "WAGMI⌄",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "token-button",
+      "rect": {
+        "x": 809,
+        "y": 901,
+        "width": 117,
+        "height": 43
+      },
+      "styles": {
+        "fontSize": "13px",
+        "fontWeight": "800",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(244, 244, 245)",
+        "backgroundColor": "rgb(36, 36, 41)",
+        "padding": "8px 10px",
+        "margin": "0px",
+        "display": "flex",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "10px",
+        "border": "1px solid rgb(57, 57, 64)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "?",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "info-dot",
+      "rect": {
+        "x": 560,
+        "y": 1004,
+        "width": 16,
+        "height": 16
+      },
+      "styles": {
+        "fontSize": "9px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(139, 139, 147)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "margin": "0px 0px 0px 3px",
+        "display": "inline-grid",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "50%",
+        "border": "1px solid rgb(74, 74, 82)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "CONNECT WALLET↗",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "swap-button",
+      "rect": {
+        "x": 497,
+        "y": 1085,
+        "width": 446,
+        "height": 56
+      },
+      "styles": {
+        "fontSize": "13px",
+        "fontWeight": "900",
+        "fontFamily": "Manrope, sans-serif",
+        "letterSpacing": "0.52px",
+        "color": "rgb(12, 12, 14)",
+        "backgroundColor": "rgb(183, 255, 54)",
+        "padding": "1px 6px",
+        "margin": "0px",
+        "display": "inline-block",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "10px",
+        "border": "0px none rgb(12, 12, 14)",
+        "boxShadow": "rgba(0, 0, 0, 0.16) 0px -3px 0px 0px inset, rgba(183, 255, 54, 0.12) 0px 8px 30px 0px",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "a",
+      "text": "Open source",
+      "href": "https://github.com/samsagewize/wagmi-swap",
+      "target": "_blank",
+      "ariaLabel": null,
+      "classes": "",
+      "rect": {
+        "x": 1187,
+        "y": 1280,
+        "width": 62,
+        "height": 10
+      },
+      "styles": {
+        "fontSize": "8px",
+        "fontWeight": "400",
+        "fontFamily": "\"DM Mono\", monospace",
+        "letterSpacing": "0.64px",
+        "color": "rgb(119, 119, 128)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "0px",
+        "margin": "0px",
+        "display": "inline",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "border": "0px none rgb(119, 119, 128)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "×",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "close",
+      "rect": {
+        "x": 903,
+        "y": 236,
+        "width": 27,
+        "height": 43
+      },
+      "styles": {
+        "fontSize": "30px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(113, 113, 122)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "1px 6px",
+        "margin": "0px",
+        "display": "block",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "border": "0px none rgb(113, 113, 122)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "tag": "button",
+      "text": "GOT IT — START SMALL",
+      "href": null,
+      "target": null,
+      "ariaLabel": null,
+      "classes": "swap-button",
+      "rect": {
+        "x": 510,
+        "y": 708,
+        "width": 420,
+        "height": 56
+      },
+      "styles": {
+        "fontSize": "13px",
+        "fontWeight": "900",
+        "fontFamily": "Manrope, sans-serif",
+        "letterSpacing": "0.52px",
+        "color": "rgb(12, 12, 14)",
+        "backgroundColor": "rgb(183, 255, 54)",
+        "padding": "1px 6px",
+        "margin": "0px",
+        "display": "inline-block",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "10px",
+        "border": "0px none rgb(12, 12, 14)",
+        "boxShadow": "rgba(0, 0, 0, 0.16) 0px -3px 0px 0px inset, rgba(183, 255, 54, 0.12) 0px 8px 30px 0px",
+        "transition": "all",
+        "opacity": "1"
+      }
+    }
+  ],
+  "images": [
+    {
+      "src": "https://www.wagmiswap.trade/wagmi-mascot.webp",
+      "alt": "WAGMI mascot",
+      "width": 768,
+      "height": 768,
+      "rect": {
+        "x": 72,
+        "y": 16,
+        "width": 43,
+        "height": 43
+      },
+      "classes": "nav-mascot",
+      "parentClasses": "brand"
+    },
+    {
+      "src": "https://www.wagmiswap.trade/wagmi-token.webp",
+      "alt": "WAGMI logo",
+      "width": 768,
+      "height": 768,
+      "rect": {
+        "x": 241,
+        "y": 454,
+        "width": 44,
+        "height": 44
+      },
+      "classes": "coin-image large",
+      "parentClasses": "official-identity"
+    },
+    {
+      "src": "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+      "alt": "SOL logo",
+      "width": 250,
+      "height": 250,
+      "rect": {
+        "x": 840,
+        "y": 785,
+        "width": 25,
+        "height": 25
+      },
+      "classes": "coin-image",
+      "parentClasses": "token-button"
+    },
+    {
+      "src": "https://www.wagmiswap.trade/wagmi-token.webp",
+      "alt": "WAGMI logo",
+      "width": 768,
+      "height": 768,
+      "rect": {
+        "x": 820,
+        "y": 910,
+        "width": 25,
+        "height": 25
+      },
+      "classes": "coin-image",
+      "parentClasses": "token-button"
+    }
+  ],
+  "backgroundImages": [
+    {
+      "url": "linear-gradient(125deg, rgba(183, 255, 54, 0.12), rgb(18, 18, 22) 48%, rgba(139, 92, 246, 0.08))",
+      "selector": "section.official-token"
+    },
+    {
+      "url": "linear-gradient(145deg, rgba(26, 26, 30, 0.97), rgba(13, 13, 16, 0.98))",
+      "selector": "section.swap-shell"
+    }
+  ],
+  "colors": [
+    "rgb(244, 244, 245)",
+    "rgb(8, 8, 10)",
+    "rgba(0, 0, 0, 0)",
+    "rgba(8, 8, 10, 0.78)",
+    "rgb(244, 244, 245) rgb(244, 244, 245) rgb(36, 36, 40)",
+    "rgb(255, 255, 255)",
+    "rgb(61, 73, 48)",
+    "rgb(183, 255, 54)",
+    "rgb(161, 161, 170)",
+    "rgb(133, 133, 142)",
+    "rgb(212, 212, 216)",
+    "rgb(23, 23, 27)",
+    "rgb(52, 52, 58)",
+    "rgb(17, 17, 17)",
+    "rgba(23, 23, 27, 0.92)",
+    "rgb(139, 139, 147)",
+    "rgb(81, 101, 46)",
+    "rgb(40, 40, 45)",
+    "rgb(128, 128, 137)",
+    "rgb(111, 111, 120)",
+    "rgb(96, 96, 105)",
+    "rgb(16, 16, 18)",
+    "rgb(59, 72, 48)",
+    "rgb(28, 33, 24)",
+    "rgb(27, 27, 32)",
+    "rgb(111, 118, 101)",
+    "rgb(47, 52, 40) rgb(111, 118, 101) rgb(111, 118, 101)",
+    "rgb(113, 113, 122)",
+    "rgb(16, 16, 20)",
+    "rgb(48, 48, 54)",
+    "rgb(119, 119, 128)",
+    "rgb(38, 38, 44)",
+    "rgb(18, 18, 22)",
+    "rgb(103, 103, 113)",
+    "rgb(36, 36, 41)",
+    "rgb(57, 57, 64)",
+    "rgb(129, 129, 139)",
+    "rgb(10, 10, 11)",
+    "rgb(24, 24, 28)",
+    "rgb(16, 17, 19)",
+    "rgb(180, 180, 186)",
+    "rgb(74, 74, 82)",
+    "rgb(12, 12, 14)",
+    "rgb(82, 82, 91)",
+    "rgb(79, 79, 87)",
+    "rgb(31, 31, 35) rgb(79, 79, 87) rgb(79, 79, 87)",
+    "rgb(139, 92, 246)",
+    "rgba(0, 0, 0, 0.74)",
+    "rgb(59, 59, 66)",
+    "rgb(25, 25, 30)",
+    "rgb(47, 47, 53)",
+    "rgb(216, 202, 145)",
+    "rgb(34, 31, 21)",
+    "rgb(216, 202, 145) rgb(216, 202, 145) rgb(216, 202, 145) rgb(251, 191, 36)"
+  ],
+  "fonts": [
+    "Manrope, sans-serif",
+    "\"DM Mono\", monospace"
+  ],
+  "favicons": [
+    {
+      "rel": "icon",
+      "href": "https://www.wagmiswap.trade/wagmi.svg",
+      "sizes": ""
+    },
+    {
+      "rel": "manifest",
+      "href": "https://www.wagmiswap.trade/manifest.webmanifest",
+      "sizes": ""
+    }
+  ],
+  "svgs": [],
+  "elements": [
+    {
+      "index": 0,
+      "tag": "nav",
+      "id": "",
+      "classes": "",
+      "role": null,
+      "ariaLabel": null,
+      "text": "WAGMI SWAP MAINNET LIVE Leaderboard Profile Select Wallet",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 76
+      },
+      "styles": {
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(244, 244, 245)",
+        "backgroundColor": "rgba(8, 8, 10, 0.78)",
+        "padding": "0px 72px",
+        "margin": "0px",
+        "display": "grid",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "index": 1,
+      "tag": "button",
+      "id": "",
+      "classes": "floating-guide",
+      "role": null,
+      "ariaLabel": null,
+      "text": "How it works",
+      "rect": {
+        "x": 1335,
+        "y": 946,
+        "width": 87,
+        "height": 36
+      },
+      "styles": {
+        "fontSize": "10px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(161, 161, 170)",
+        "backgroundColor": "rgba(23, 23, 27, 0.92)",
+        "padding": "10px 13px",
+        "margin": "0px",
+        "display": "block",
+        "position": "fixed",
+        "top": "946px",
+        "zIndex": "9",
+        "borderRadius": "999px",
+        "border": "1px solid rgb(52, 52, 58)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "index": 2,
+      "tag": "section",
+      "id": "",
+      "classes": "hero",
+      "role": null,
+      "ariaLabel": null,
+      "text": "✦ MEMECOIN LIQUIDITY, UNLEASHED Swap fast. Stay unhinged. Best-route Solana swaps powered by Raptor. You approve every transaction.",
+      "rect": {
+        "x": 0,
+        "y": 76,
+        "width": 1440,
+        "height": 326
+      },
+      "styles": {
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(244, 244, 245)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "64px 20px 30px",
+        "margin": "0px",
+        "display": "block",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "border": "0px none rgb(244, 244, 245)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "index": 3,
+      "tag": "section",
+      "id": "",
+      "classes": "official-token",
+      "role": null,
+      "ariaLabel": null,
+      "text": "✓ VERIFIED OFFICIAL TOKEN WAGMI Swap WAGMI Live on the Pump.fun bonding curve PRICE $0.00000618 MARKET CAP $6,185 24H VOLUME $26,357 TRADE WAGMI COPY CONTRACT Pump.fun ↗ 4rwFTvBQzyYEHWUyTxW4xL7i6Wzumxo3YZgrbED6pump",
+      "rect": {
+        "x": 220,
+        "y": 420,
+        "width": 1000,
+        "height": 153
+      },
+      "styles": {
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(244, 244, 245)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "backgroundImage": "linear-gradient(125deg, rgba(183, 255, 54, 0.12), rgb(18, 18, 22) 48%, rgba(139, 92, 246, 0.08))",
+        "padding": "18px 20px",
+        "margin": "18px 220px 38px",
+        "display": "grid",
+        "position": "relative",
+        "top": "0px",
+        "zIndex": "auto",
+        "borderRadius": "15px",
+        "border": "1px solid rgb(81, 101, 46)",
+        "boxShadow": "rgba(0, 0, 0, 0.3) 0px 18px 60px 0px",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "index": 4,
+      "tag": "section",
+      "id": "",
+      "classes": "swap-shell",
+      "role": null,
+      "ariaLabel": null,
+      "text": "Swap ⚙ ⌕ SEARCH YOU PAY Balance — SOL ⌄ ↓ YOU RECEIVE Best route 118,568.013355 WAGMI ⌄ Season Zero rewards +10 XP after confirmation WAGMI fee ? 0.25% Slippage protection 0.50% Price impact 1.905% CONNECT WALLET↗ Powered by Raptor routing · Mainnet tokens · DYOR",
+      "rect": {
+        "x": 474,
+        "y": 611,
+        "width": 492,
+        "height": 577
+      },
+      "styles": {
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(244, 244, 245)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "backgroundImage": "linear-gradient(145deg, rgba(26, 26, 30, 0.97), rgba(13, 13, 16, 0.98))",
+        "padding": "22px",
+        "margin": "28px 474px 72px",
+        "display": "block",
+        "position": "relative",
+        "top": "0px",
+        "zIndex": "auto",
+        "borderRadius": "18px",
+        "border": "1px solid rgb(52, 52, 58)",
+        "boxShadow": "rgba(0, 0, 0, 0.55) 0px 35px 100px 0px, rgba(255, 255, 255, 0.016) 0px 0px 0px 7px",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "index": 5,
+      "tag": "footer",
+      "id": "",
+      "classes": "",
+      "role": null,
+      "ariaLabel": null,
+      "text": "Trade responsibly. Memecoins are highly volatile. Open source · Built on Solana ⚡",
+      "rect": {
+        "x": 0,
+        "y": 1260,
+        "width": 1440,
+        "height": 48
+      },
+      "styles": {
+        "fontSize": "8px",
+        "fontWeight": "400",
+        "fontFamily": "\"DM Mono\", monospace",
+        "letterSpacing": "0.64px",
+        "color": "rgb(79, 79, 87)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "padding": "18px 72px",
+        "margin": "0px",
+        "display": "flex",
+        "position": "static",
+        "top": "auto",
+        "zIndex": "auto",
+        "borderRadius": "0px",
+        "transition": "all",
+        "opacity": "1"
+      }
+    },
+    {
+      "index": 6,
+      "tag": "div",
+      "id": "",
+      "classes": "modal-backdrop",
+      "role": null,
+      "ariaLabel": null,
+      "text": "60-SECOND GUIDE Know before you swap × 1 You stay in control WAGMI never sees your recovery phrase. Your wallet previews and signs every transaction. 2 Two different costs The 0.25% WAGMI fee supports the app. Solana may also reserve about 0.002 SOL when your wallet needs a new token account. 3 Account rent is recoverable After selling or transferring every token out, close the empty token account using a trusted wallet’s account-management feature. The reserved SOL returns to your wallet. Never close an account that still contains tokens. Never enter your recovery phrase into an account-cleanup website. GOT IT — START SMALL",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1000
+      },
+      "styles": {
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontFamily": "Manrope, sans-serif",
+        "color": "rgb(244, 244, 245)",
+        "backgroundColor": "rgba(0, 0, 0, 0.74)",
+        "padding": "16px",
+        "margin": "0px",
+        "display": "grid",
+        "position": "fixed",
+        "top": "0px",
+        "zIndex": "20",
+        "borderRadius": "0px",
+        "border": "0px none rgb(244, 244, 245)",
+        "transition": "all",
+        "opacity": "1"
+      }
+    }
+  ],
+  "scripts": [
+    "https://www.wagmiswap.trade/assets/index-Bi8h6JRz.js"
+  ],
+  "stylesheets": [
+    "https://www.wagmiswap.trade/assets/index-CQlm9l4u.css"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "route": "/leaderboard",
+  "url": "https://www.wagmiswap.trade/leaderboard",
+  "title": "WAGMI Swap",
+  "text": "WAGMI SWAP MAINNET LIVE Leaderboard Profile Select Wallet LIVE ON-CHAIN ACTIVITY Season Zero Verified WAGMI swaps, wallet retention, and XP rankings. ← Back to swap VERIFIED SWAPS 4 Recent on-chain sample UNIQUE WALLETS 2 Distinct active traders REPEAT WALLETS 0 0.0% active on 2+ days FARMING FLAGS 0 Rapid or high-frequency activity TOP TRADERS XP leaderboard Wallets are shortened for privacy. RANK WALLET SWAPS XP #1 8wTB…BYNA 3 30 #2 B59j…KaTg 1 10 DAILY ACTIVITY Swap volume 07-25 3 07-24 1 Analytics cover the latest 100 fee-wallet transactions. Counts represent verified swaps, not USD notional volume. The first five confirmed fee-paying swaps each UTC day earn 10 XP. Additional genuine swaps earn 1 XP. Rapid or unusually repetitive activity is marked for review.",
+  "links": [
+    {
+      "text": "WAGMISWAP",
+      "href": "https://www.wagmiswap.trade/",
+      "target": null
+    },
+    {
+      "text": "Leaderboard",
+      "href": "https://www.wagmiswap.trade/leaderboard",
+      "target": null
+    },
+    {
+      "text": "Profile",
+      "href": "https://www.wagmiswap.trade/profile",
+      "target": null
+    },
+    {
+      "text": "← Back to swap",
+      "href": "https://www.wagmiswap.trade/",
+      "target": null
+    }
+  ]
+}

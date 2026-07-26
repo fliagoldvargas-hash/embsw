@@ -1,0 +1,28 @@
+{
+  "route": "/profile",
+  "url": "https://www.wagmiswap.trade/profile",
+  "title": "WAGMI Swap",
+  "text": "WAGMI SWAP MAINNET LIVE Leaderboard Profile Select Wallet YOUR WALLET Profile & holdings Your assets stay in your wallet. WAGMI only reads public on-chain balances. ← Back to swap ◉ Connect your wallet Select a Solana wallet to see its holdings here. Select Wallet",
+  "links": [
+    {
+      "text": "WAGMISWAP",
+      "href": "https://www.wagmiswap.trade/",
+      "target": null
+    },
+    {
+      "text": "Leaderboard",
+      "href": "https://www.wagmiswap.trade/leaderboard",
+      "target": null
+    },
+    {
+      "text": "Profile",
+      "href": "https://www.wagmiswap.trade/profile",
+      "target": null
+    },
+    {
+      "text": "← Back to swap",
+      "href": "https://www.wagmiswap.trade/",
+      "target": null
+    }
+  ]
+}

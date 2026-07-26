@@ -1,0 +1,33 @@
+{
+  "route": "/",
+  "url": "https://www.wagmiswap.trade/",
+  "title": "WAGMI Swap",
+  "text": "WAGMI SWAP MAINNET LIVE Leaderboard Profile Select Wallet How it works ✦ MEMECOIN LIQUIDITY, UNLEASHED Swap fast. Stay unhinged. Best-route Solana swaps powered by Raptor. You approve every transaction. ✓ VERIFIED OFFICIAL TOKEN WAGMI Swap WAGMI Live on the Pump.fun bonding curve PRICE $0.00000618 MARKET CAP $6,185 24H VOLUME $26,357 TRADE WAGMI COPY CONTRACT Pump.fun ↗ 4rwFTvBQzyYEHWUyTxW4xL7i6Wzumxo3YZgrbED6pump Swap ⚙ ⌕ SEARCH YOU PAY Balance — SOL ⌄ ↓ YOU RECEIVE Best route 118,568.013355 WAGMI ⌄ Season Zero rewards +10 XP after confirmation WAGMI fee ? 0.25% Slippage protection 0.50% Price impact 1.905% CONNECT WALLET↗ Powered by Raptor routing · Mainnet tokens · DYOR Trade responsibly. Memecoins are highly volatile. Open source · Built on Solana ⚡ 60-SECOND GUIDE Know before you swap × 1 You stay in control WAGMI never sees your recovery phrase. Your wallet previews and signs every transaction. 2 Two different costs The 0.25% WAGMI fee supports the app. Solana may also reserve about 0.002 SOL when your wallet needs a new token account. 3 Account rent is recoverable After selling or transferring every token out, close the empty token account using a trusted wallet’s account-management feature. The reserved SOL returns to your wallet. Never close an account that still contains tokens. Never enter your recovery phrase into an account-cleanup website. GOT IT — START SMALL",
+  "links": [
+    {
+      "text": "WAGMISWAP",
+      "href": "https://www.wagmiswap.trade/",
+      "target": null
+    },
+    {
+      "text": "Leaderboard",
+      "href": "https://www.wagmiswap.trade/leaderboard",
+      "target": null
+    },
+    {
+      "text": "Profile",
+      "href": "https://www.wagmiswap.trade/profile",
+      "target": null
+    },
+    {
+      "text": "Pump.fun ↗",
+      "href": "https://pump.fun/coin/4rwFTvBQzyYEHWUyTxW4xL7i6Wzumxo3YZgrbED6pump",
+      "target": "_blank"
+    },
+    {
+      "text": "Open source",
+      "href": "https://github.com/samsagewize/wagmi-swap",
+      "target": "_blank"
+    }
+  ]
+}
