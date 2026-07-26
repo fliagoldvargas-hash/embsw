@@ -11,6 +11,7 @@ import { useEmberWallet } from "../providers";
 
 const contract = EMBER_MINT || "Paste mint in app/lib/token.ts";
 const SWAP_HISTORY_KEY = "ember.swap.history";
+const GUIDE_SEEN_KEY = "ember.swap.guideSeen";
 
 type TokenSide = "pay" | "receive";
 
@@ -34,7 +35,7 @@ type TokenLiveData = {
 
 export function SwapExperience() {
   const wallet = useEmberWallet();
-  const [guideOpen, setGuideOpen] = useState(true);
+  const [guideOpen, setGuideOpen] = useState(false);
   const [tokenSelectorSide, setTokenSelectorSide] = useState<TokenSide | null>(null);
   const [customMint, setCustomMint] = useState("");
   const [customSymbol, setCustomSymbol] = useState("");
@@ -54,6 +55,13 @@ export function SwapExperience() {
   const isPrelaunch = !EMBER_IS_LIVE;
   const inputAmount = useMemo(() => toBaseUnits(amount, payToken.decimals), [amount, payToken.decimals]);
   const receiveValue = quote ? formatBaseUnits(quote.outAmount, receiveToken.decimals) : "";
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem(GUIDE_SEEN_KEY)) return;
+
+    setGuideOpen(true);
+    window.sessionStorage.setItem(GUIDE_SEEN_KEY, "1");
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
