@@ -9,6 +9,7 @@ import { EMBER_IS_LIVE, EMBER_TOKEN } from "../lib/token";
 import { useEmberWallet } from "../providers";
 
 const contract = EMBER_MINT || "Paste mint in app/lib/token.ts";
+const SWAP_HISTORY_KEY = "ember.swap.history";
 
 type TokenSymbol = "SOL" | "EMBER";
 
@@ -208,6 +209,7 @@ export function SwapExperience() {
       await wallet.connection.confirmTransaction(txid, "confirmed");
 
       setSignature(txid);
+      rememberConfirmedSwap(txid, wallet.publicKey.toBase58());
       setQuoteStatus("confirmed");
     } catch (error) {
       setQuoteStatus("error");
@@ -444,4 +446,19 @@ function base64ToBytes(value: string) {
     bytes[index] = binary.charCodeAt(index);
   }
   return bytes;
+}
+
+function rememberConfirmedSwap(signature: string, walletAddress: string) {
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(SWAP_HISTORY_KEY) || "[]") as Array<{
+      signature: string;
+      wallet: string;
+      timestamp: number;
+    }>;
+    const deduped = stored.filter((swap) => swap.signature !== signature).slice(-99);
+    deduped.push({ signature, wallet: walletAddress, timestamp: Date.now() });
+    window.localStorage.setItem(SWAP_HISTORY_KEY, JSON.stringify(deduped));
+  } catch {
+    // Profile rewards are cosmetic; failing to persist must not block a confirmed swap.
+  }
 }
