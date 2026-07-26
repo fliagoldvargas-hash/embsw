@@ -36,12 +36,26 @@ export async function GET(request: NextRequest) {
     headers["x-api-key"] = process.env.JUPITER_API_KEY;
   }
 
-  const response = await fetch(`${JUPITER_API_BASE}/quote?${params.toString()}`, {
-    headers,
-    next: { revalidate: 0 },
-  });
+  let response: Response;
 
-  const data = await response.json().catch(() => null);
+  try {
+    response = await fetch(`${JUPITER_API_BASE}/quote?${params.toString()}`, {
+      headers,
+      next: { revalidate: 0 },
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: "Could not reach Jupiter quote API.",
+        details: error instanceof Error ? error.message : "Network request failed.",
+        apiBase: JUPITER_API_BASE,
+      },
+      { status: 502 }
+    );
+  }
+
+  const raw = await response.text();
+  const data = parseJson(raw);
 
   if (!response.ok) {
     return NextResponse.json(
@@ -51,4 +65,14 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json(data);
+}
+
+function parseJson(value: string) {
+  if (!value) return null;
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return { raw: value.slice(0, 500) };
+  }
 }

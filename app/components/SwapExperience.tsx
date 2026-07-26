@@ -151,10 +151,10 @@ export function SwapExperience() {
         slippageBps: String(DEFAULT_SLIPPAGE_BPS),
       });
       const response = await fetch(`/api/jupiter/quote?${params.toString()}`);
-      const data = await response.json();
+      const data = await readJsonResponse(response);
 
       if (!response.ok) {
-        throw new Error(data?.details?.error || data?.error || "Quote failed.");
+        throw new Error(getApiErrorMessage(data, "Quote failed."));
       }
 
       setQuote(data);
@@ -191,10 +191,10 @@ export function SwapExperience() {
           userPublicKey: wallet.publicKey.toBase58(),
         }),
       });
-      const buildData = await buildResponse.json();
+      const buildData = await readJsonResponse(buildResponse);
 
       if (!buildResponse.ok || !buildData?.swapTransaction) {
-        throw new Error(buildData?.details?.error || buildData?.error || "Swap transaction build failed.");
+        throw new Error(getApiErrorMessage(buildData, "Swap transaction build failed."));
       }
 
       const transaction = VersionedTransaction.deserialize(base64ToBytes(buildData.swapTransaction));
@@ -345,7 +345,7 @@ export function SwapExperience() {
             onSelectToken={() => setTokenSelectorSide("pay")}
             editable
           />
-          <button className="flip" aria-label="Flip tokens" onClick={flipTokens}>⇅</button>
+          <button className="flip" aria-label="Flip tokens" onClick={flipTokens}>&varr;</button>
           <SwapBox
             label="YOU RECEIVE"
             meta={receiveToken.note || (quote ? "Best route" : "Awaiting quote")}
@@ -597,6 +597,26 @@ function base64ToBytes(value: string) {
     bytes[index] = binary.charCodeAt(index);
   }
   return bytes;
+}
+
+async function readJsonResponse(response: Response) {
+  const raw = await response.text();
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { raw };
+  }
+}
+
+function getApiErrorMessage(data: any, fallback: string) {
+  if (!data) return fallback;
+  if (typeof data.details === "string") return data.details;
+  if (typeof data.details?.error === "string") return data.details.error;
+  if (typeof data.error === "string") return data.error;
+  if (typeof data.raw === "string") return data.raw.slice(0, 220);
+  return fallback;
 }
 
 function rememberConfirmedSwap(signature: string, walletAddress: string) {
