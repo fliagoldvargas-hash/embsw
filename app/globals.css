@@ -387,7 +387,7 @@ footer,
   background: rgba(27, 27, 32, 0.86);
 }
 
-.token-actions .copy-ca:disabled {
+.token-actions button:disabled {
   cursor: not-allowed;
   opacity: 0.48;
 }
@@ -654,19 +654,6 @@ footer b {
 
 .fee-list div:first-child {
   border-top: 0;
-}
-
-.info-dot {
-  width: 16px;
-  height: 16px;
-  display: inline-grid;
-  place-items: center;
-  margin-left: 3px;
-  border-radius: 50%;
-  border: 1px solid #4a4a52;
-  background: transparent;
-  color: #8b8b93;
-  font-size: 9px;
 }
 
 .swap-button {

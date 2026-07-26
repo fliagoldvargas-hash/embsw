@@ -56,7 +56,7 @@ export default function DocsPage() {
               <img src="/assets/ember-swap-logo.png" alt="Ember Swap logo" />
             </div>
             <div className="orbit-pill orbit-pill-a">Jupiter routing</div>
-            <div className="orbit-pill orbit-pill-b">Supabase XP</div>
+            <div className="orbit-pill orbit-pill-b">XP</div>
             <div className="orbit-pill orbit-pill-c">Solana verified</div>
           </div>
         </section>

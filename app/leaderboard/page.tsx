@@ -11,10 +11,10 @@ export default async function LeaderboardPage() {
   const maxSwaps = Math.max(...leaders.map((wallet) => wallet.totalSwaps), 1);
 
   const stats = [
-    ["VERIFIED SWAPS", String(totalSwaps), leaders.length > 0 ? "Confirmed Ember Swap trades" : "Starts after launch"],
-    ["UNIQUE WALLETS", String(leaders.length), leaders.length > 0 ? "Distinct active traders" : "Connects after live swaps"],
-    ["REPEAT WALLETS", String(repeatWallets), leaders.length > 0 ? "Active on 2+ days" : "Measured after trading starts"],
-    ["FARMING FLAGS", "0", "Manual review pending"],
+    ["VERIFIED SWAPS", String(totalSwaps), leaders.length > 0 ? "Confirmed Ember Swap trades" : "No verified swaps yet"],
+    ["UNIQUE WALLETS", String(leaders.length), leaders.length > 0 ? "Distinct active traders" : "No ranked wallets yet"],
+    ["REPEAT WALLETS", String(repeatWallets), leaders.length > 0 ? "Active on 2+ days" : "No repeat activity yet"],
+    ["FARMING FLAGS", "AUTO", "Spam activity is excluded"],
   ];
 
   return (
@@ -44,14 +44,14 @@ export default async function LeaderboardPage() {
             <p className="eyebrow">TOP TRADERS</p>
             <div className="panel-heading">
               <h2>XP leaderboard</h2>
-              <span>{leaders.length > 0 ? "Wallets are shortened for privacy." : "No wallets ranked before launch."}</span>
+              <span>{leaders.length > 0 ? "Wallets are shortened for privacy." : "No wallets ranked yet."}</span>
             </div>
             <div className="table-row table-head">
               <span>RANK</span><span>WALLET</span><span>SWAPS</span><span>XP</span>
             </div>
             {leaders.length === 0 ? (
               <div className="table-row">
-                <span>-</span><span>Waiting for launch</span><span>0</span><b>0</b>
+                <span>-</span><span>No verified swaps yet</span><span>0</span><b>0</b>
               </div>
             ) : leaders.map((wallet, index) => (
               <div className="table-row" key={wallet.wallet}>
@@ -65,7 +65,7 @@ export default async function LeaderboardPage() {
             <h2>Top wallet volume</h2>
             {leaders.length === 0 ? (
               <>
-                <div className="bar-row"><span>LIVE</span><i style={{ "--w": "0%" } as React.CSSProperties} /><b>0</b></div>
+                <div className="bar-row"><span>SEASON</span><i style={{ "--w": "0%" } as React.CSSProperties} /><b>0</b></div>
                 <div className="bar-row"><span>TODAY</span><i style={{ "--w": "0%" } as React.CSSProperties} /><b>0</b></div>
               </>
             ) : leaders.slice(0, 5).map((wallet) => (
@@ -79,7 +79,7 @@ export default async function LeaderboardPage() {
           </article>
         </section>
 
-        <aside className="warning-strip">Season Zero XP is holder-gated. Confirmed swaps are saved, but XP is awarded only from the wallet's live $EMBER tier.</aside>
+        <aside className="warning-strip">Season Zero XP is holder-gated. Confirmed swaps are saved only after on-chain success, and suspicious activity is automatically detected and excluded from XP.</aside>
       </main>
     </SiteShell>
   );

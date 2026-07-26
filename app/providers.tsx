@@ -157,7 +157,7 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
         wallet: selectedWallet,
         chain: "solana:mainnet",
         options: {
-          skipSimulation: true,
+          skipSimulation: false,
         },
       });
 
