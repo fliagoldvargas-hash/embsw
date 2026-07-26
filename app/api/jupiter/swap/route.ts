@@ -9,13 +9,6 @@ type SwapRequestBody = {
 export async function POST(request: NextRequest) {
   const feeAccount = process.env.EMBER_FEE_ACCOUNT;
 
-  if (!feeAccount) {
-    return NextResponse.json(
-      { error: "EMBER_FEE_ACCOUNT is required before swaps can be executed." },
-      { status: 400 }
-    );
-  }
-
   const body = (await request.json().catch(() => null)) as SwapRequestBody | null;
 
   if (!body?.quoteResponse || !body.userPublicKey) {
@@ -33,16 +26,21 @@ export async function POST(request: NextRequest) {
     headers["x-api-key"] = process.env.JUPITER_API_KEY;
   }
 
+  const swapBody: Record<string, unknown> = {
+    quoteResponse: body.quoteResponse,
+    userPublicKey: body.userPublicKey,
+    dynamicComputeUnitLimit: true,
+    prioritizationFeeLamports: "auto",
+  };
+
+  if (feeAccount) {
+    swapBody.feeAccount = feeAccount;
+  }
+
   const response = await fetch(`${JUPITER_API_BASE}/swap`, {
     method: "POST",
     headers,
-    body: JSON.stringify({
-      quoteResponse: body.quoteResponse,
-      userPublicKey: body.userPublicKey,
-      feeAccount,
-      dynamicComputeUnitLimit: true,
-      prioritizationFeeLamports: "auto",
-    }),
+    body: JSON.stringify(swapBody),
   });
 
   const data = await response.json().catch(() => null);

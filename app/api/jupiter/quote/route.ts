@@ -23,8 +23,11 @@ export async function GET(request: NextRequest) {
     outputMint,
     amount,
     slippageBps,
-    platformFeeBps: String(SWAP_FEE_BPS),
   });
+
+  if (SWAP_FEE_BPS > 0) {
+    params.set("platformFeeBps", String(SWAP_FEE_BPS));
+  }
 
   const headers: HeadersInit = { accept: "application/json" };
   if (process.env.JUPITER_API_KEY) {

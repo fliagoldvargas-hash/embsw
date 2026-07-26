@@ -34,6 +34,7 @@ export function SwapExperience() {
   const pay: TokenSymbol = flipped ? "EMBER" : "SOL";
   const receive: TokenSymbol = flipped ? "SOL" : "EMBER";
   const canQuote = Boolean(EMBER_MINT && amountNumber(amount) > 0);
+  const isPrelaunch = !EMBER_MINT;
 
   const inputMint = pay === "SOL" ? SOL_MINT : EMBER_MINT;
   const outputMint = receive === "SOL" ? SOL_MINT : EMBER_MINT;
@@ -210,20 +211,20 @@ export function SwapExperience() {
             <span>Swap fast.</span>
             <span>Stay unhinged.</span>
           </h1>
-          <p>Best-route Solana swaps powered by Jupiter. You approve every transaction.</p>
+          <p>Best-route Solana swaps powered by Jupiter. Ember trading opens after launch.</p>
         </section>
 
         <section className="official-token">
           <div className="official-identity">
             <Image src="/assets/ember-swap-logo.png" alt="Ember Swap logo" width={44} height={44} />
             <div>
-              <p className="eyebrow">+ VERIFIED OFFICIAL TOKEN</p>
+              <p className="eyebrow">+ PRE-LAUNCH TOKEN</p>
               <h2 className="logo-name">Ember <span>Swap</span></h2>
-              <span>EMBER token routing via Solana liquidity venues</span>
+              <span>EMBER launches on pump.fun soon. Mint will be published after launch.</span>
             </div>
           </div>
           <div className="token-stats">
-            <span>PRICE <b>Live quote</b></span>
+            <span>PRICE <b>{isPrelaunch ? "Pre-launch" : "Live quote"}</b></span>
             <span>FEE <b>{formatBps(SWAP_FEE_BPS)}</b></span>
             <span>SLIPPAGE <b>{formatBps(DEFAULT_SLIPPAGE_BPS)}</b></span>
           </div>
@@ -232,7 +233,7 @@ export function SwapExperience() {
             <button className="copy-ca" onClick={copyContract}>{copied ? "COPIED" : "COPY CONTRACT"}</button>
             <Link href={EMBER_MINT ? `https://solscan.io/token/${EMBER_MINT}` : "/"} target={EMBER_MINT ? "_blank" : undefined}>Solscan -&gt;</Link>
           </div>
-          <code>{contract}</code>
+          <code>{isPrelaunch ? "Mint/CA pending pump.fun launch" : contract}</code>
         </section>
 
         <section className="swap-shell">
@@ -262,6 +263,9 @@ export function SwapExperience() {
             <div><dt>Slippage protection</dt><dd>{formatBps(DEFAULT_SLIPPAGE_BPS)}</dd></div>
             <div><dt>Price impact</dt><dd>{quote?.priceImpactPct ? `${Number(quote.priceImpactPct).toFixed(3)}%` : "-"}</dd></div>
           </dl>
+          {isPrelaunch && (
+            <p className="swap-error">EMBER is not live yet. Swaps unlock as soon as the pump.fun mint is configured.</p>
+          )}
           {quoteError && <p className="swap-error">{quoteError}</p>}
           {signature && (
             <a className="tx-link" href={`https://solscan.io/tx/${signature}`} target="_blank">
@@ -336,7 +340,7 @@ function GuideModal({ onClose }: { onClose: () => void }) {
         <h2 id="guide-title">Know before you swap</h2>
         {[
           ["You stay in control", "Ember Swap never sees your recovery phrase. Your wallet previews and signs every transaction."],
-          ["Two different costs", "The 0.25% Ember fee supports the app. Solana may also reserve about 0.002 SOL when your wallet needs a new token account."],
+          ["Network costs only", "Ember Swap currently charges no platform fee. Solana may reserve about 0.002 SOL when your wallet needs a new token account."],
           ["Account rent is recoverable", "After selling or transferring every token out, close the empty token account using a trusted wallet's account-management feature. The reserved SOL returns to your wallet."],
         ].map(([title, body], index) => (
           <article className="guide-step" key={title}>

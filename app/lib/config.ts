@@ -2,7 +2,7 @@ export const SOL_MINT = "So11111111111111111111111111111111111111112";
 
 export const EMBER_MINT = process.env.NEXT_PUBLIC_EMBER_TOKEN_MINT || "";
 
-export const SWAP_FEE_BPS = Number(process.env.NEXT_PUBLIC_SWAP_FEE_BPS || 25);
+export const SWAP_FEE_BPS = Number(process.env.NEXT_PUBLIC_SWAP_FEE_BPS || 0);
 
 export const DEFAULT_SLIPPAGE_BPS = Number(process.env.NEXT_PUBLIC_DEFAULT_SLIPPAGE_BPS || 50);
 
