@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { EMBER_MINT } from "../lib/config";
 import { EMBER_TOKEN } from "../lib/token";
 import { SiteShell } from "../components/SiteShell";
@@ -16,10 +16,11 @@ type Holding = {
   image: string | undefined;
 };
 
-type StoredSwap = {
-  signature: string;
-  wallet: string;
-  timestamp: number;
+type XpSummary = {
+  totalXp: number;
+  totalSwaps: number;
+  todaySwaps: number;
+  activeDays: number;
 };
 
 type KnownToken = {
@@ -34,26 +35,26 @@ type ProfileHoldingResponse = {
   decimals: number;
 };
 
-const SWAP_HISTORY_KEY = "ember.swap.history";
-
 export function ProfileClient() {
   const wallet = useEmberWallet();
   const [solBalance, setSolBalance] = useState<number | null>(null);
   const [holdings, setHoldings] = useState<Holding[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [swaps, setSwaps] = useState<StoredSwap[]>([]);
+  const [xpSummary, setXpSummary] = useState<XpSummary>({
+    totalXp: 0,
+    totalSwaps: 0,
+    todaySwaps: 0,
+    activeDays: 0,
+  });
 
   const walletAddress = wallet.publicKey?.toBase58() || "";
-  const walletSwaps = useMemo(() => swaps.filter((swap) => swap.wallet === walletAddress), [swaps, walletAddress]);
-  const todaySwaps = useMemo(() => walletSwaps.filter((swap) => isToday(swap.timestamp)).length, [walletSwaps]);
-  const activeDays = useMemo(() => new Set(walletSwaps.map((swap) => new Date(swap.timestamp).toISOString().slice(0, 10))).size, [walletSwaps]);
-  const xp = calculateXp(walletSwaps);
 
   const loadProfile = useCallback(async () => {
     if (!wallet.publicKey) {
       setSolBalance(null);
       setHoldings([]);
+      setXpSummary({ totalXp: 0, totalSwaps: 0, todaySwaps: 0, activeDays: 0 });
       setError("");
       return;
     }
@@ -101,13 +102,36 @@ export function ProfileClient() {
     }
   }, [wallet.publicKey]);
 
-  useEffect(() => {
-    setSwaps(readStoredSwaps());
-  }, []);
+  const loadXp = useCallback(async () => {
+    if (!wallet.publicKey) return;
+
+    try {
+      const response = await fetch(`/api/xp/profile?wallet=${wallet.publicKey.toBase58()}`);
+      const data = await readJsonResponse(response);
+
+      if (!response.ok) {
+        throw new Error(getApiErrorMessage(data, "Could not load XP right now."));
+      }
+
+      setXpSummary({
+        totalXp: Number(data.totalXp || 0),
+        totalSwaps: Number(data.totalSwaps || 0),
+        todaySwaps: Number(data.todaySwaps || 0),
+        activeDays: Number(data.activeDays || 0),
+      });
+    } catch {
+      setXpSummary({ totalXp: 0, totalSwaps: 0, todaySwaps: 0, activeDays: 0 });
+    }
+  }, [wallet.publicKey]);
+
+  const refreshProfile = useCallback(() => {
+    loadProfile();
+    loadXp();
+  }, [loadProfile, loadXp]);
 
   useEffect(() => {
-    loadProfile();
-  }, [loadProfile]);
+    refreshProfile();
+  }, [refreshProfile]);
 
   return (
     <SiteShell>
@@ -137,7 +161,7 @@ export function ProfileClient() {
                 <p className="mono-label">CONNECTED WALLET</p>
                 <strong>{walletAddress}</strong>
               </div>
-              <button className="refresh-balances-button" onClick={loadProfile} disabled={loading}>
+              <button className="refresh-balances-button" onClick={refreshProfile} disabled={loading}>
                 <span className="refresh-glyph" aria-hidden="true" />
                 <span>{loading ? "Refreshing" : "Refresh balances"}</span>
               </button>
@@ -146,13 +170,13 @@ export function ProfileClient() {
             <section className="profile-stats">
               <article className="stat-card highlight">
                 <p>SEASON ZERO POINTS</p>
-                <strong>{xp}</strong>
+                <strong>{xpSummary.totalXp}</strong>
                 <span>EMBER XP</span>
               </article>
               <article className="stat-card">
                 <p>VERIFIED SWAPS</p>
-                <strong>{walletSwaps.length}</strong>
-                <span>{todaySwaps} today - {activeDays} active days</span>
+                <strong>{xpSummary.totalSwaps}</strong>
+                <span>{xpSummary.todaySwaps} today - {xpSummary.activeDays} active days</span>
               </article>
               <article className="stat-card">
                 <p>SOL BALANCE</p>
@@ -204,16 +228,6 @@ export function ProfileClient() {
   );
 }
 
-function readStoredSwaps() {
-  if (typeof window === "undefined") return [];
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(SWAP_HISTORY_KEY) || "[]") as StoredSwap[];
-    return Array.isArray(parsed) ? parsed.filter((swap) => swap.signature && swap.wallet && swap.timestamp) : [];
-  } catch {
-    return [];
-  }
-}
-
 function getKnownToken(mint: string): KnownToken {
   if (mint === EMBER_MINT) {
     return {
@@ -260,25 +274,6 @@ function getApiErrorMessage(data: any, fallback: string) {
   if (typeof data.error === "string") return data.error;
   if (typeof data.details === "string" && !/jsonrpc|access forbidden|403/i.test(data.details)) return data.details;
   return fallback;
-}
-
-function calculateXp(swaps: StoredSwap[]) {
-  const byDay = new Map<string, number>();
-  for (const swap of swaps) {
-    const day = new Date(swap.timestamp).toISOString().slice(0, 10);
-    byDay.set(day, (byDay.get(day) || 0) + 1);
-  }
-
-  let xp = 0;
-  byDay.forEach((count) => {
-    xp += Math.min(count, 5) * 10;
-    xp += Math.max(count - 5, 0);
-  });
-  return xp;
-}
-
-function isToday(timestamp: number) {
-  return new Date(timestamp).toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10);
 }
 
 function shortAddress(value: string) {

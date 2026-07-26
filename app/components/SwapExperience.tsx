@@ -10,7 +10,6 @@ import { EMBER_IS_LIVE, EMBER_TOKEN } from "../lib/token";
 import { useEmberWallet } from "../providers";
 
 const contract = EMBER_MINT || "Paste mint in app/lib/token.ts";
-const SWAP_HISTORY_KEY = "ember.swap.history";
 const GUIDE_SEEN_KEY = "ember.swap.guideSeen";
 
 type TokenSide = "pay" | "receive";
@@ -240,7 +239,14 @@ export function SwapExperience() {
         : await signAndBroadcastTransaction(transaction, wallet);
 
       setSignature(txid);
-      rememberConfirmedSwap(txid, wallet.publicKey.toBase58());
+      recordConfirmedSwap({
+        signature: txid,
+        wallet: wallet.publicKey.toBase58(),
+        inputMint: payToken.mint,
+        outputMint: receiveToken.mint,
+        inAmount: quote.inAmount,
+        outAmount: quote.outAmount,
+      });
       setQuoteStatus("confirmed");
     } catch (error) {
       setQuoteStatus("error");
@@ -756,17 +762,19 @@ function formatSwapError(error: unknown) {
   return message || "Swap failed.";
 }
 
-function rememberConfirmedSwap(signature: string, walletAddress: string) {
-  try {
-    const stored = JSON.parse(window.localStorage.getItem(SWAP_HISTORY_KEY) || "[]") as Array<{
-      signature: string;
-      wallet: string;
-      timestamp: number;
-    }>;
-    const deduped = stored.filter((swap) => swap.signature !== signature).slice(-99);
-    deduped.push({ signature, wallet: walletAddress, timestamp: Date.now() });
-    window.localStorage.setItem(SWAP_HISTORY_KEY, JSON.stringify(deduped));
-  } catch {
-    // Profile rewards are cosmetic; failing to persist must not block a confirmed swap.
-  }
+function recordConfirmedSwap(input: {
+  signature: string;
+  wallet: string;
+  inputMint: string;
+  outputMint: string;
+  inAmount: string;
+  outAmount: string;
+}) {
+  fetch("/api/xp/swaps", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(input),
+  }).catch(() => {
+    // XP persistence must not block a confirmed swap.
+  });
 }
