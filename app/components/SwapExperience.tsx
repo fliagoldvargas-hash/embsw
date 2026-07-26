@@ -174,9 +174,9 @@ export function SwapExperience() {
       return;
     }
 
-    if (!wallet.signTransaction) {
+    if (!wallet.signTransaction && !wallet.sendTransaction) {
       setQuoteStatus("error");
-      setQuoteError("Your wallet does not expose transaction signing in this browser.");
+      setQuoteError("Your wallet does not expose transaction signing or sending in this browser.");
       return;
     }
 
@@ -197,15 +197,11 @@ export function SwapExperience() {
         throw new Error(getApiErrorMessage(buildData, "Swap transaction build failed."));
       }
 
-      const transaction = VersionedTransaction.deserialize(base64ToBytes(buildData.swapTransaction));
-      const signed = await wallet.signTransaction(transaction);
-
       setQuoteStatus("sending");
-      const txid = await wallet.connection.sendRawTransaction(signed.serialize(), {
-        maxRetries: 3,
-        skipPreflight: false,
-      });
-      await wallet.connection.confirmTransaction(txid, "confirmed");
+      const transaction = VersionedTransaction.deserialize(base64ToBytes(buildData.swapTransaction));
+      const txid = wallet.sendTransaction
+        ? await wallet.sendTransaction(transaction)
+        : await signAndBroadcastTransaction(transaction, wallet);
 
       setSignature(txid);
       rememberConfirmedSwap(txid, wallet.publicKey.toBase58());
@@ -345,7 +341,9 @@ export function SwapExperience() {
             onSelectToken={() => setTokenSelectorSide("pay")}
             editable
           />
-          <button className="flip" aria-label="Flip tokens" onClick={flipTokens}>&varr;</button>
+          <button className="flip" aria-label="Flip tokens" onClick={flipTokens}>
+            <span aria-hidden="true" />
+          </button>
           <SwapBox
             label="YOU RECEIVE"
             meta={receiveToken.note || (quote ? "Best route" : "Awaiting quote")}
@@ -597,6 +595,20 @@ function base64ToBytes(value: string) {
     bytes[index] = binary.charCodeAt(index);
   }
   return bytes;
+}
+
+async function signAndBroadcastTransaction(transaction: VersionedTransaction, wallet: ReturnType<typeof useEmberWallet>) {
+  if (!wallet.signTransaction) {
+    throw new Error("Your wallet does not expose transaction signing in this browser.");
+  }
+
+  const signed = await wallet.signTransaction(transaction);
+  const txid = await wallet.connection.sendRawTransaction(signed.serialize(), {
+    maxRetries: 3,
+    skipPreflight: false,
+  });
+  await wallet.connection.confirmTransaction(txid, "confirmed");
+  return txid;
 }
 
 async function readJsonResponse(response: Response) {

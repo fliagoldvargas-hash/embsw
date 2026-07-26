@@ -5,6 +5,7 @@ import {
   type ConnectedStandardSolanaWallet,
   toSolanaWalletConnectors,
   useCreateWallet,
+  useSignAndSendTransaction,
   useSignTransaction,
   useWallets,
 } from "@privy-io/react-auth/solana";
@@ -30,6 +31,7 @@ type EmberWalletContextValue = {
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
   signTransaction: ((transaction: VersionedTransaction) => Promise<VersionedTransaction>) | null;
+  sendTransaction: ((transaction: VersionedTransaction) => Promise<string>) | null;
 };
 
 const EmberWalletContext = createContext<EmberWalletContextValue | null>(null);
@@ -93,6 +95,7 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
   const { ready: walletsReady, wallets } = useWallets();
   const { createWallet } = useCreateWallet();
   const { signTransaction: privySignTransaction } = useSignTransaction();
+  const { signAndSendTransaction } = useSignAndSendTransaction();
   const [connecting, setConnecting] = useState(false);
 
   const selectedWallet = useMemo(() => {
@@ -142,11 +145,32 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
       const result = await privySignTransaction({
         transaction: transaction.serialize(),
         wallet: selectedWallet,
+        chain: "solana:mainnet",
       });
       const signedTransaction = result instanceof Uint8Array ? result : result.signedTransaction;
       return VersionedTransaction.deserialize(signedTransaction);
     },
     [privySignTransaction, selectedWallet]
+  );
+
+  const sendTransaction = useCallback(
+    async (transaction: VersionedTransaction) => {
+      if (!selectedWallet) {
+        throw new Error("Connect a Privy Solana wallet before sending.");
+      }
+
+      const result = await signAndSendTransaction({
+        transaction: transaction.serialize(),
+        wallet: selectedWallet,
+        chain: "solana:mainnet",
+        options: {
+          skipSimulation: true,
+        },
+      });
+
+      return bytesToBase58(result.signature);
+    },
+    [selectedWallet, signAndSendTransaction]
   );
 
   const value = useMemo<EmberWalletContextValue>(
@@ -159,8 +183,9 @@ function PrivyWalletProvider({ children }: { children: React.ReactNode }) {
       connect,
       disconnect,
       signTransaction: publicKey ? signTransaction : null,
+      sendTransaction: publicKey ? sendTransaction : null,
     }),
-    [authenticated, connect, connecting, connection, disconnect, publicKey, ready, selectedWallet, signTransaction, walletsReady]
+    [authenticated, connect, connecting, connection, disconnect, publicKey, ready, selectedWallet, sendTransaction, signTransaction, walletsReady]
   );
 
   return <EmberWalletContext.Provider value={value}>{children}</EmberWalletContext.Provider>;
@@ -212,6 +237,7 @@ function LegacyInjectedWalletProvider({ children }: { children: React.ReactNode 
       connect,
       disconnect,
       signTransaction: provider?.signTransaction ? provider.signTransaction.bind(provider) : null,
+      sendTransaction: null,
     }),
     [connect, connection, connecting, disconnect, provider, publicKey]
   );
@@ -225,4 +251,30 @@ export function useEmberWallet() {
     throw new Error("useEmberWallet must be used inside AppProviders.");
   }
   return context;
+}
+
+function bytesToBase58(bytes: Uint8Array) {
+  const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+  let digits = [0];
+
+  for (const byte of bytes) {
+    let carry = byte;
+    for (let index = 0; index < digits.length; index += 1) {
+      carry += digits[index] << 8;
+      digits[index] = carry % 58;
+      carry = Math.floor(carry / 58);
+    }
+
+    while (carry > 0) {
+      digits.push(carry % 58);
+      carry = Math.floor(carry / 58);
+    }
+  }
+
+  for (const byte of bytes) {
+    if (byte !== 0) break;
+    digits.push(0);
+  }
+
+  return digits.reverse().map((digit) => alphabet[digit]).join("");
 }

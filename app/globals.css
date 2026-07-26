@@ -559,6 +559,39 @@ footer,
   transition: transform 180ms ease;
 }
 
+.flip span,
+.flip span::before,
+.flip span::after {
+  display: block;
+}
+
+.flip span {
+  width: 14px;
+  height: 18px;
+  position: relative;
+}
+
+.flip span::before,
+.flip span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border: solid #0a0a0b;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.flip span::before {
+  top: 0;
+  border-width: 2px 0 0 2px;
+}
+
+.flip span::after {
+  bottom: 0;
+  border-width: 0 2px 2px 0;
+}
+
 .flip:hover {
   transform: rotate(180deg);
 }
