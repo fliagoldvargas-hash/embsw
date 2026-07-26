@@ -71,8 +71,8 @@ export default async function LeaderboardPage() {
             <h2>Top wallet volume</h2>
             {leaders.length === 0 ? (
               <>
-                <div className="bar-row"><span>SEASON</span><i style={{ "--w": "0%" } as React.CSSProperties} /><b>0</b></div>
-                <div className="bar-row"><span>TODAY</span><i style={{ "--w": "0%" } as React.CSSProperties} /><b>0</b></div>
+                <div className="bar-row"><span>Season</span><i style={{ "--w": "0%" } as React.CSSProperties} /><b>0</b></div>
+                <div className="bar-row"><span>Today</span><i style={{ "--w": "0%" } as React.CSSProperties} /><b>0</b></div>
               </>
             ) : leaders.slice(0, 5).map((wallet) => (
               <div className="bar-row" key={wallet.wallet}>

@@ -1115,19 +1115,31 @@ footer a {
 
 .bar-row {
   display: grid;
-  grid-template-columns: 42px 1fr 20px;
-  gap: 12px;
+  grid-template-columns: minmax(104px, 132px) minmax(120px, 1fr) minmax(34px, auto);
+  gap: 14px;
   align-items: center;
-  margin: 14px 0;
+  min-height: 30px;
+  margin: 12px 0;
   font-family: "DM Mono", monospace;
-  font-size: 10px;
+  font-size: 11px;
+}
+
+.bar-row span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bar-row i {
-  height: 7px;
+  min-width: 0;
+  height: 9px;
   border-radius: 999px;
-  background: #292930;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(183, 255, 54, 0.1);
   position: relative;
+  overflow: hidden;
 }
 
 .bar-row i::before {
@@ -1136,11 +1148,18 @@ footer a {
   inset: 0 auto 0 0;
   width: var(--w);
   border-radius: inherit;
-  background: var(--green);
+  background: linear-gradient(90deg, rgba(183, 255, 54, 0.55), var(--green));
+}
+
+.bar-row b {
+  color: var(--green);
+  font-size: 12px;
+  text-align: right;
 }
 
 .small-copy {
   max-width: 360px;
+  margin-top: 18px;
   line-height: 1.45;
 }
 
