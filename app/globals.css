@@ -132,7 +132,7 @@ a {
 }
 
 .nav-icon-link {
-  width: 26px;
+  width: 24px;
   height: 42px;
   display: grid;
   place-items: center;
@@ -141,7 +141,10 @@ a {
 }
 
 .nav-icon-link img {
+  width: 18px;
+  height: 18px;
   filter: none;
+  object-fit: contain;
 }
 
 .nav-icon-link:hover {
