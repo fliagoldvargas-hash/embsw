@@ -44,23 +44,9 @@ returns trigger
 language plpgsql
 set search_path = public
 as $$
-declare
-  previous_daily_swaps integer;
 begin
   new.swap_day := timezone('utc', coalesce(new.created_at, now()))::date;
-
-  select count(*)
-    into previous_daily_swaps
-  from public.xp_swaps
-  where wallet = new.wallet
-    and swap_day = new.swap_day;
-
-  if previous_daily_swaps < 5 then
-    new.xp_awarded := 10;
-  else
-    new.xp_awarded := 1;
-  end if;
-
+  new.xp_awarded := greatest(coalesce(new.xp_awarded, 0), 0);
   return new;
 end;
 $$;
@@ -109,8 +95,15 @@ The app writes through the server-side service role key, so public insert/update
 
 ## 3. Season Zero XP rules
 
-- Confirmed swap: `+1 XP`.
-- First five confirmed swaps per wallet per UTC day: `+10 XP` each.
+- Confirmed swaps are saved in `xp_swaps` after on-chain signature verification.
+- Ranking totals are stored in `xp_wallets` and refreshed by the app after every saved swap.
+- XP is holder-gated: the API reads the wallet's live `$EMBER` balance before awarding points.
+- No `$EMBER`: the swap is saved, but earns `0 XP`.
+- Tier 3, `1,000,000` to `9,999,999 $EMBER`: x1 XP.
+- Tier 2, `10,000,000` to `19,999,999 $EMBER`: x1.5 XP.
+- Tier 1, `20,000,000+ $EMBER`: x3 XP.
+- First five eligible holder swaps per wallet per UTC day use `10` base XP.
+- Additional eligible holder swaps use `1` base XP.
 - Duplicate transaction signature: ignored.
 - Failed on-chain transaction: ignored.
 - Transaction not signed by the connected wallet: ignored.

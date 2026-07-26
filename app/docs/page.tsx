@@ -15,15 +15,15 @@ const sections = [
 const architecture = [
   ["Wallet", "Users connect with Privy wallet login or an injected Solana wallet. The wallet signs every transaction."],
   ["Routing", "Quotes and swap transactions are requested through Ember API routes, then routed by Jupiter on Solana mainnet."],
-  ["Verification", "After a confirmed swap, Ember verifies the signature on-chain before XP can be written."],
+  ["Verification", "After a confirmed swap, Ember verifies the signature and reads the wallet's $EMBER balance before XP can be written."],
   ["Profile", "Balances come from public Solana RPC reads. XP and leaderboard data come from Supabase once configured."],
 ];
 
 const xpRules = [
-  [`+${DAILY_BONUS_XP} XP`, `For each of the first ${DAILY_BONUS_SWAP_LIMIT} confirmed swaps per wallet per UTC day.`],
-  [`+${BASE_SWAP_XP} XP`, "For additional confirmed swaps after the daily bonus window."],
+  [`+${DAILY_BONUS_XP} base XP`, `For each of the first ${DAILY_BONUS_SWAP_LIMIT} eligible holder swaps per wallet per UTC day.`],
+  [`+${BASE_SWAP_XP} base XP`, "For additional eligible holder swaps after the daily bonus window."],
   ["0 XP", "For duplicate signatures, failed on-chain transactions, or transactions not signed by the connected wallet."],
-  ["Holder gated", "The economy model says only $EMBER holders earn XP after launch; current code is ready for the holder check to be added when the mint is live."],
+  ["Holder gated", "Every confirmed swap checks the wallet's live $EMBER balance. No $EMBER means the swap is saved, but earns 0 XP."],
 ];
 
 const tiers = [
@@ -112,7 +112,7 @@ export default function DocsPage() {
             <p className="eyebrow">SEASON ZERO</p>
             <h2>XP system</h2>
             <p>
-              XP is saved by wallet in Supabase after Ember verifies the transaction signature on Solana.
+              XP is saved by wallet in Supabase after Ember verifies the transaction signature on Solana and reads the wallet's $EMBER balance.
               This makes profile points portable across browsers and gives the leaderboard one shared source of truth.
             </p>
             <div className="docs-rule-list">
@@ -130,8 +130,10 @@ export default function DocsPage() {
             <pre>{`swap confirmed
   -> POST /api/xp/swaps
   -> verify signature on Solana
+  -> read $EMBER balance
+  -> apply holder tier multiplier
   -> insert xp_swaps
-  -> trigger updates xp_wallets
+  -> refresh xp_wallets
   -> profile + leaderboard refresh`}</pre>
           </article>
         </section>

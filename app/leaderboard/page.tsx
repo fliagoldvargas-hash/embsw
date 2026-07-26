@@ -79,7 +79,7 @@ export default async function LeaderboardPage() {
           </article>
         </section>
 
-        <aside className="warning-strip">Season Zero XP starts after launch. The first five confirmed swaps each UTC day earn 10 XP. Additional genuine swaps earn 1 XP.</aside>
+        <aside className="warning-strip">Season Zero XP is holder-gated. Confirmed swaps are saved, but XP is awarded only from the wallet's live $EMBER tier.</aside>
       </main>
     </SiteShell>
   );

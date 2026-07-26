@@ -30,11 +30,43 @@ type XpSwapRow = {
   wallet: string;
   swap_day?: string | null;
   xp_awarded?: number | null;
+  created_at?: string | null;
 };
 
 export const DAILY_BONUS_SWAP_LIMIT = 5;
 export const DAILY_BONUS_XP = 10;
 export const BASE_SWAP_XP = 1;
+
+export type EmberHolderTier = "none" | "tier3" | "tier2" | "tier1";
+
+export type EmberHolderSnapshot = {
+  balance: number;
+  tier: EmberHolderTier;
+  multiplier: number;
+};
+
+export function getEmberHolderSnapshot(balance: number): EmberHolderSnapshot {
+  if (balance >= 20_000_000) {
+    return { balance, tier: "tier1", multiplier: 3 };
+  }
+
+  if (balance >= 10_000_000) {
+    return { balance, tier: "tier2", multiplier: 1.5 };
+  }
+
+  if (balance >= 1_000_000) {
+    return { balance, tier: "tier3", multiplier: 1 };
+  }
+
+  return { balance, tier: "none", multiplier: 0 };
+}
+
+export function calculateSwapXp(holder: EmberHolderSnapshot, earnedSwapsToday: number) {
+  if (holder.tier === "none") return 0;
+
+  const baseXp = earnedSwapsToday < DAILY_BONUS_SWAP_LIMIT ? DAILY_BONUS_XP : BASE_SWAP_XP;
+  return Math.max(0, Math.round(baseXp * holder.multiplier));
+}
 
 export function emptyXpSummary(wallet = ""): XpWalletSummary {
   return {
@@ -50,6 +82,7 @@ export function emptyXpSummary(wallet = ""): XpWalletSummary {
 export async function recordXpSwap(input: {
   signature: string;
   wallet: string;
+  xpAwarded: number;
   inputMint?: string;
   outputMint?: string;
   inAmount?: string;
@@ -82,8 +115,17 @@ export async function recordXpSwap(input: {
       output_mint: input.outputMint || null,
       in_amount: input.inAmount || null,
       out_amount: input.outAmount || null,
+      xp_awarded: input.xpAwarded,
     }),
   });
+
+  await supabaseRest<XpSwapRow[]>(`xp_swaps?signature=eq.${encodeURIComponent(input.signature)}`, {
+    method: "PATCH",
+    headers: { prefer: "return=minimal" },
+    body: JSON.stringify({ xp_awarded: input.xpAwarded }),
+  });
+
+  await refreshWalletXpSummary(input.wallet);
 
   return {
     configured: true,
@@ -91,6 +133,16 @@ export async function recordXpSwap(input: {
     swap: rows[0] || null,
     duplicate: false,
   };
+}
+
+export async function getEarnedSwapsToday(wallet: string) {
+  if (!isSupabaseConfigured()) return 0;
+
+  const rows = await supabaseRest<XpSwapRow[]>(
+    `xp_swaps?wallet=eq.${encodeURIComponent(wallet)}&swap_day=eq.${getUtcDay()}&xp_awarded=gt.0&select=signature`
+  );
+
+  return rows.length;
 }
 
 export async function getWalletXpSummary(wallet: string): Promise<XpWalletSummary> {
@@ -136,4 +188,30 @@ export async function getXpLeaderboard(limit = 10): Promise<XpLeaderboardRow[]> 
 
 function getUtcDay() {
   return new Date().toISOString().slice(0, 10);
+}
+
+async function refreshWalletXpSummary(wallet: string) {
+  const swaps = await supabaseRest<XpSwapRow[]>(
+    `xp_swaps?wallet=eq.${encodeURIComponent(wallet)}&select=signature,swap_day,xp_awarded,created_at`
+  );
+
+  const activeDays = new Set(swaps.map((swap) => swap.swap_day).filter(Boolean));
+  const totalXp = swaps.reduce((sum, swap) => sum + Number(swap.xp_awarded || 0), 0);
+  const lastSwapAt = swaps
+    .map((swap) => swap.created_at)
+    .filter(Boolean)
+    .sort()
+    .at(-1) || null;
+
+  await supabaseRest("xp_wallets", {
+    method: "POST",
+    headers: { prefer: "resolution=merge-duplicates,return=minimal" },
+    body: JSON.stringify({
+      wallet,
+      total_xp: totalXp,
+      total_swaps: swaps.length,
+      active_days: activeDays.size,
+      last_swap_at: lastSwapAt,
+    }),
+  });
 }

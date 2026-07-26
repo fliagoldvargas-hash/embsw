@@ -351,7 +351,7 @@ export function SwapExperience() {
             <div>
               <p className="eyebrow">+ {isPrelaunch ? "PRE-LAUNCH TOKEN" : "LIVE TOKEN"}</p>
               <h2 className="logo-name">{EMBER_TOKEN.name}</h2>
-              <span>{isPrelaunch ? "EMBER launches on pump.fun soon. Mint will be published after launch." : "EMBER is live. Data updates from Solana liquidity markets."}</span>
+              <span>{isPrelaunch ? "$EMBER launches on pump.fun soon. Mint will be published after launch." : "$EMBER is live. Data updates from Solana liquidity markets."}</span>
             </div>
           </div>
           <div className="token-stats">
@@ -365,7 +365,7 @@ export function SwapExperience() {
             <code>{isPrelaunch ? "Mint / CA pending pump.fun launch" : contract}</code>
           </div>
           <div className="token-actions">
-            <button onClick={() => document.querySelector<HTMLInputElement>(".amount-input")?.focus()}>TRADE EMBER</button>
+            <button onClick={() => document.querySelector<HTMLInputElement>(".amount-input")?.focus()}>TRADE $EMBER</button>
             <button className="copy-ca" onClick={copyContract} disabled={!EMBER_MINT}>{copied ? "COPIED" : "COPY CONTRACT"}</button>
             {EMBER_TOKEN.pumpFunUrl ? (
               <Link href={EMBER_TOKEN.pumpFunUrl} target="_blank">Pump.fun -&gt;</Link>
@@ -417,9 +417,9 @@ export function SwapExperience() {
             <div><dt>Slippage protection</dt><dd>{formatBps(DEFAULT_SLIPPAGE_BPS)}</dd></div>
             <div><dt>Price impact</dt><dd>{quote?.priceImpactPct ? `${Number(quote.priceImpactPct).toFixed(3)}%` : "-"}</dd></div>
           </dl>
-          <div className="reward-line">Season Zero rewards <b>+10 XP</b> after confirmation</div>
+          <div className="reward-line">$EMBER holder XP updates after confirmed swaps</div>
           {isPrelaunch && (
-            <p className="swap-error">EMBER is not live yet. Swaps for other listed tokens are already available.</p>
+            <p className="swap-error">$EMBER is not live yet. Swaps for other listed tokens are already available.</p>
           )}
           {quoteError && <p className="swap-error">{quoteError}</p>}
           {signature && (

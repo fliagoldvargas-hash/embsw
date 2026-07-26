@@ -171,7 +171,7 @@ export function ProfileClient() {
               <article className="stat-card highlight">
                 <p>SEASON ZERO POINTS</p>
                 <strong>{xpSummary.totalXp}</strong>
-                <span>EMBER XP</span>
+                <span>$EMBER XP</span>
               </article>
               <article className="stat-card">
                 <p>VERIFIED SWAPS</p>
@@ -186,7 +186,7 @@ export function ProfileClient() {
             </section>
 
             <aside className="xp-strip">
-              <span><b>+10 XP</b> for each of your first five verified daily swaps, then <b>+1 XP</b> per swap.</span>
+              <span>Hold <b>$EMBER</b> to earn XP. Tier 3 earns x1, Tier 2 earns x1.5, and Tier 1 earns x3.</span>
               <Link href="/leaderboard">View leaderboard -&gt;</Link>
             </aside>
 

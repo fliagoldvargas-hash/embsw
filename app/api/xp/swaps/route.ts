@@ -1,6 +1,7 @@
-import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { Connection, PublicKey, clusterApiUrl, type ParsedAccountData } from "@solana/web3.js";
 import { NextRequest, NextResponse } from "next/server";
-import { recordXpSwap } from "../../../lib/xp";
+import { EMBER_MINT } from "../../../lib/config";
+import { calculateSwapXp, getEarnedSwapsToday, getEmberHolderSnapshot, recordXpSwap } from "../../../lib/xp";
 
 export const dynamic = "force-dynamic";
 
@@ -41,19 +42,54 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const holder = await getWalletEmberHolderSnapshot(wallet);
+    const earnedSwapsToday = await getEarnedSwapsToday(wallet).catch(() => 0);
+    const xpAwarded = calculateSwapXp(holder, earnedSwapsToday);
     const result = await recordXpSwap({
       signature,
       wallet,
+      xpAwarded,
       inputMint: body?.inputMint,
       outputMint: body?.outputMint,
       inAmount: body?.inAmount,
       outAmount: body?.outAmount,
     });
 
-    return NextResponse.json(result);
+    return NextResponse.json({
+      ...result,
+      holder,
+      xpAwarded,
+    });
   } catch {
     return NextResponse.json({ error: "Could not save XP right now." }, { status: 502 });
   }
+}
+
+async function getWalletEmberHolderSnapshot(wallet: string) {
+  if (!EMBER_MINT) {
+    return getEmberHolderSnapshot(0);
+  }
+
+  const owner = new PublicKey(wallet);
+  const mint = new PublicKey(EMBER_MINT);
+
+  for (const endpoint of Array.from(new Set(rpcEndpoints))) {
+    try {
+      const connection = new Connection(endpoint, "confirmed");
+      const tokenAccounts = await connection.getParsedTokenAccountsByOwner(owner, { mint }, "confirmed");
+      const balance = tokenAccounts.value.reduce((sum, account) => {
+        const parsed = account.account.data as ParsedAccountData;
+        const amount = Number(parsed.parsed.info.tokenAmount.uiAmount || 0);
+        return sum + amount;
+      }, 0);
+
+      return getEmberHolderSnapshot(balance);
+    } catch {
+      continue;
+    }
+  }
+
+  return getEmberHolderSnapshot(0);
 }
 
 async function verifyConfirmedWalletSignature(signature: string, wallet: string) {
