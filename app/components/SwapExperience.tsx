@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { DEFAULT_SLIPPAGE_BPS, EMBER_MINT, SWAP_FEE_BPS } from "../lib/config";
-import { DEFAULT_SWAP_TOKENS, makeCustomSwapToken, type SwapToken } from "../lib/swap-tokens";
+import { DEFAULT_SWAP_TOKENS, type SwapToken } from "../lib/swap-tokens";
 import { EMBER_IS_LIVE, EMBER_TOKEN } from "../lib/token";
 import { useEmberWallet } from "../providers";
 
@@ -39,6 +39,9 @@ export function SwapExperience() {
   const [tokenSelectorSide, setTokenSelectorSide] = useState<TokenSide | null>(null);
   const [customMint, setCustomMint] = useState("");
   const [customSymbol, setCustomSymbol] = useState("");
+  const [customTokenStatus, setCustomTokenStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [catalogTokens, setCatalogTokens] = useState<SwapToken[]>(DEFAULT_SWAP_TOKENS);
+  const [customTokens, setCustomTokens] = useState<SwapToken[]>([]);
   const [copied, setCopied] = useState(false);
   const [payToken, setPayToken] = useState<SwapToken>(DEFAULT_SWAP_TOKENS[0]);
   const [receiveToken, setReceiveToken] = useState<SwapToken>(EMBER_MINT ? DEFAULT_SWAP_TOKENS[DEFAULT_SWAP_TOKENS.length - 1] : DEFAULT_SWAP_TOKENS[1]);
@@ -50,7 +53,7 @@ export function SwapExperience() {
   const [signature, setSignature] = useState("");
   const [liveData, setLiveData] = useState<TokenLiveData | null>(null);
 
-  const availableTokens = useMemo(() => DEFAULT_SWAP_TOKENS, []);
+  const availableTokens = useMemo(() => dedupeTokens([...catalogTokens, ...customTokens]), [catalogTokens, customTokens]);
   const canQuote = Boolean(payToken.mint && receiveToken.mint && payToken.mint !== receiveToken.mint && amountNumber(amount) > 0);
   const isPrelaunch = !EMBER_IS_LIVE;
   const inputAmount = useMemo(() => toBaseUnits(amount, payToken.decimals), [amount, payToken.decimals]);
@@ -61,6 +64,31 @@ export function SwapExperience() {
 
     setGuideOpen(true);
     window.sessionStorage.setItem(GUIDE_SEEN_KEY, "1");
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function refreshDefaultTokenMetadata() {
+      const refreshed = await Promise.all(
+        DEFAULT_SWAP_TOKENS.map(async (token) => {
+          if (!token.mint || token.disabled) return token;
+          return loadTokenMetadata(token.mint).catch(() => token);
+        })
+      );
+
+      if (cancelled) return;
+
+      setCatalogTokens(refreshed);
+      setPayToken((token) => mergeTokenMetadata(token, refreshed));
+      setReceiveToken((token) => mergeTokenMetadata(token, refreshed));
+    }
+
+    refreshDefaultTokenMetadata();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -253,18 +281,33 @@ export function SwapExperience() {
     resetQuoteState();
   }
 
-  function addCustomToken() {
+  async function addCustomToken() {
     try {
       new PublicKey(customMint.trim());
     } catch {
+      setCustomTokenStatus("error");
       setQuoteError("Custom token mint is not a valid Solana public key.");
       return;
     }
 
-    const token = makeCustomSwapToken(customMint, customSymbol || "CUSTOM");
-    selectToken(token);
-    setCustomMint("");
-    setCustomSymbol("");
+    setCustomTokenStatus("loading");
+    setQuoteError("");
+
+    try {
+      const token = await loadTokenMetadata(customMint.trim());
+      const tokenWithOverride = customSymbol.trim()
+        ? { ...token, symbol: customSymbol.trim().toUpperCase().slice(0, 12) }
+        : token;
+
+      setCustomTokens((tokens) => dedupeTokens([...tokens, tokenWithOverride]));
+      selectToken(tokenWithOverride);
+      setCustomMint("");
+      setCustomSymbol("");
+      setCustomTokenStatus("idle");
+    } catch (error) {
+      setCustomTokenStatus("error");
+      setQuoteError(error instanceof Error ? error.message : "Could not load token metadata.");
+    }
   }
 
   const actionLabel = !wallet.connected
@@ -397,6 +440,7 @@ export function SwapExperience() {
           oppositeMint={tokenSelectorSide === "pay" ? receiveToken.mint : payToken.mint}
           customMint={customMint}
           customSymbol={customSymbol}
+          customTokenStatus={customTokenStatus}
           onCustomMintChange={setCustomMint}
           onCustomSymbolChange={setCustomSymbol}
           onAddCustomToken={addCustomToken}
@@ -459,6 +503,7 @@ function TokenSelector({
   oppositeMint,
   customMint,
   customSymbol,
+  customTokenStatus,
   onCustomMintChange,
   onCustomSymbolChange,
   onAddCustomToken,
@@ -471,6 +516,7 @@ function TokenSelector({
   oppositeMint: string;
   customMint: string;
   customSymbol: string;
+  customTokenStatus: "idle" | "loading" | "error";
   onCustomMintChange: (value: string) => void;
   onCustomSymbolChange: (value: string) => void;
   onAddCustomToken: () => void;
@@ -507,8 +553,17 @@ function TokenSelector({
         </div>
         <div className="custom-token-form">
           <input value={customSymbol} onChange={(event) => onCustomSymbolChange(event.target.value)} placeholder="SYMBOL" />
-          <input value={customMint} onChange={(event) => onCustomMintChange(event.target.value)} placeholder="Paste mint / CA" />
-          <button onClick={onAddCustomToken}>ADD</button>
+          <input
+            value={customMint}
+            onChange={(event) => onCustomMintChange(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") onAddCustomToken();
+            }}
+            placeholder="Paste mint / CA"
+          />
+          <button onClick={onAddCustomToken} disabled={customTokenStatus === "loading"}>
+            {customTokenStatus === "loading" ? "LOAD" : "ADD"}
+          </button>
         </div>
       </section>
     </div>
@@ -516,8 +571,14 @@ function TokenSelector({
 }
 
 function TokenIcon({ token, size }: { token: SwapToken; size: number }) {
-  if (token.image) {
-    return <img className="token-icon" src={token.image} alt={`${token.symbol} logo`} width={size} height={size} />;
+  const [imageFailed, setImageFailed] = useState(false);
+
+  useEffect(() => {
+    setImageFailed(false);
+  }, [token.image]);
+
+  if (token.image && !imageFailed) {
+    return <img className="token-icon" src={token.image} alt={`${token.symbol} logo`} width={size} height={size} onError={() => setImageFailed(true)} />;
   }
 
   return (
@@ -628,6 +689,40 @@ async function readJsonResponse(response: Response) {
   } catch {
     return { raw };
   }
+}
+
+async function loadTokenMetadata(mint: string): Promise<SwapToken> {
+  const response = await fetch(`/api/jupiter/token?query=${encodeURIComponent(mint)}`);
+  const data = await readJsonResponse(response);
+
+  if (!response.ok) {
+    throw new Error(getApiErrorMessage(data, "Could not load token metadata."));
+  }
+
+  return {
+    symbol: String(data.symbol || "CUSTOM").toUpperCase(),
+    name: String(data.name || "Custom token"),
+    mint: String(data.mint || mint),
+    decimals: Number(data.decimals || 6),
+    image: typeof data.image === "string" ? data.image : undefined,
+    tags: Array.isArray(data.tags) ? data.tags.slice(0, 3) : ["custom"],
+    note: typeof data.note === "string" ? data.note : "Custom token",
+  };
+}
+
+function mergeTokenMetadata(token: SwapToken, metadata: SwapToken[]) {
+  const match = metadata.find((item) => item.mint === token.mint);
+  return match ? { ...token, ...match, tags: match.tags?.length ? match.tags : token.tags } : token;
+}
+
+function dedupeTokens(tokens: SwapToken[]) {
+  const seen = new Set<string>();
+  return tokens.filter((token) => {
+    const key = token.mint || token.symbol;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function getApiErrorMessage(data: any, fallback: string) {

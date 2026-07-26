@@ -899,6 +899,13 @@ footer b {
   transform: translateY(-1px);
 }
 
+.custom-token-form button:disabled {
+  cursor: wait;
+  filter: grayscale(0.25);
+  opacity: 0.72;
+  transform: none;
+}
+
 .tx-link {
   display: block;
   margin: -2px 0 14px;
