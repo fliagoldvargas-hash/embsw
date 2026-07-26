@@ -9,9 +9,7 @@ const sections = [
   ["Swap Engine", "#swap-engine"],
   ["XP", "#xp"],
   ["Rewards", "#rewards"],
-  ["Token Launch", "#token-launch"],
   ["Security", "#security"],
-  ["Setup", "#setup"],
 ];
 
 const architecture = [
@@ -25,21 +23,14 @@ const xpRules = [
   [`+${DAILY_BONUS_XP} XP`, `For each of the first ${DAILY_BONUS_SWAP_LIMIT} confirmed swaps per wallet per UTC day.`],
   [`+${BASE_SWAP_XP} XP`, "For additional confirmed swaps after the daily bonus window."],
   ["0 XP", "For duplicate signatures, failed on-chain transactions, or transactions not signed by the connected wallet."],
-  ["Holder gated", "The economy model says only EMBER holders earn XP after launch; current code is ready for the holder check to be added when the mint is live."],
+  ["Holder gated", "The economy model says only $EMBER holders earn XP after launch; current code is ready for the holder check to be added when the mint is live."],
 ];
 
 const tiers = [
-  ["No Holder", "0 EMBER", "Can trade, but does not earn XP or rewards."],
-  ["Tier 3", "1,000,000 to 9,999,999 EMBER", "Earn XP and unlock early feature access."],
-  ["Tier 2", "10,000,000 to 19,999,999 EMBER", "Earn XP, gain voting power, and keep Tier 3 benefits."],
-  ["Tier 1", "20,000,000+ EMBER", "Earn boosted XP and participate in seasonal reward distribution."],
-];
-
-const setupSteps = [
-  ["Token", "When EMBER launches, paste the mint and pump.fun URL in app/lib/token.ts."],
-  ["Supabase", "Run the SQL from SUPABASE_XP_SETUP.md, then add NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel."],
-  ["Privy", "Keep NEXT_PUBLIC_PRIVY_APP_ID and PRIVY_APP_SECRET configured for wallet login."],
-  ["Deploy", "Commit to main. Vercel deploys automatically to emberswap.pro."],
+  ["No Holder", "0 $EMBER", "Can trade, but does not earn XP or rewards."],
+  ["Tier 3", "1,000,000 to 9,999,999 $EMBER", "Earn XP and unlock early feature access."],
+  ["Tier 2", "10,000,000 to 19,999,999 $EMBER", "Earn XP, gain voting power, and keep Tier 3 benefits."],
+  ["Tier 1", "20,000,000+ $EMBER", "Earn boosted XP and participate in seasonal reward distribution."],
 ];
 
 export default function DocsPage() {
@@ -52,7 +43,7 @@ export default function DocsPage() {
             <h1>Swap fast. Earn XP. Stay in control.</h1>
             <p>
               Ember Swap is a Solana swap interface built around transparent routing,
-              wallet-side approvals, public profile data, and a seasonal XP economy for EMBER holders.
+              wallet-side approvals, public profile data, and a seasonal XP economy for $EMBER holders.
             </p>
             <div className="docs-actions">
               <Link className="docs-primary" href="/">Open swap</Link>
@@ -95,7 +86,7 @@ export default function DocsPage() {
           <article>
             <span>Token status</span>
             <strong>{EMBER_TOKEN.mint ? "Live" : "Pre-launch"}</strong>
-            <p>EMBER details auto-fill after the mint is added.</p>
+            <p>$EMBER details auto-fill after the mint is added.</p>
           </article>
         </section>
 
@@ -177,29 +168,6 @@ export default function DocsPage() {
           </aside>
         </section>
 
-        <section className="docs-split" id="token-launch">
-          <article className="docs-panel">
-            <p className="eyebrow">TOKEN LAUNCH</p>
-            <h2>EMBER mint setup</h2>
-            <p>
-              EMBER launches on pump.fun. Once the token is live, update one config file and
-              the app will automatically unlock token-specific routes, links, contract display,
-              DexScreener metrics, and EMBER swap pairs.
-            </p>
-            <div className="docs-file-path">app/lib/token.ts</div>
-          </article>
-          <article className="docs-panel">
-            <p className="eyebrow">LIVE DATA</p>
-            <h2>What updates automatically</h2>
-            <ul className="docs-check-list">
-              <li>Contract address copy state</li>
-              <li>pump.fun and Dex links</li>
-              <li>Price, market cap, volume, and liquidity</li>
-              <li>EMBER availability inside the token selector</li>
-            </ul>
-          </article>
-        </section>
-
         <section className="docs-section" id="security">
           <div className="docs-section-head">
             <p className="eyebrow">SECURITY MODEL</p>
@@ -214,25 +182,6 @@ export default function DocsPage() {
             <article><strong>Server-side secrets</strong><span>Supabase service role and Privy secret are never exposed to browser code.</span></article>
             <article><strong>Duplicate protection</strong><span>Each swap signature is unique in the XP database.</span></article>
             <article><strong>Anti-farming ready</strong><span>Suspicious patterns can be excluded from XP as the season rules mature.</span></article>
-          </div>
-        </section>
-
-        <section className="docs-section" id="setup">
-          <div className="docs-section-head">
-            <p className="eyebrow">OPERATIONS</p>
-            <h2>Setup checklist</h2>
-            <p>These are the project switches that keep Ember Swap functional in production.</p>
-          </div>
-          <div className="docs-setup-list">
-            {setupSteps.map(([title, body], index) => (
-              <article key={title}>
-                <span>{index + 1}</span>
-                <div>
-                  <strong>{title}</strong>
-                  <p>{body}</p>
-                </div>
-              </article>
-            ))}
           </div>
         </section>
 

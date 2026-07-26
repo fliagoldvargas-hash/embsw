@@ -1431,7 +1431,7 @@ footer a {
 .docs-tier,
 .docs-security-grid article,
 .docs-panel,
-.docs-setup-list article {
+.docs-final-note {
   border: 1px solid var(--line);
   border-radius: 10px;
   background: rgba(23, 23, 27, 0.88);
@@ -1449,8 +1449,7 @@ footer a {
 
 .docs-metric-grid span,
 .docs-tier span,
-.docs-reward-band span,
-.docs-setup-list article > span {
+.docs-reward-band span {
   color: var(--green);
   font-family: "DM Mono", monospace;
   font-size: 10px;
@@ -1470,7 +1469,6 @@ footer a {
 .docs-tier p,
 .docs-reward-band p,
 .docs-security-grid span,
-.docs-setup-list p,
 .docs-final-note,
 .docs-section-head p {
   color: #a0a0aa;
@@ -1512,8 +1510,7 @@ footer a {
 
 .docs-flow-card:hover,
 .docs-tier:hover,
-.docs-security-grid article:hover,
-.docs-setup-list article:hover {
+.docs-security-grid article:hover {
   border-color: rgba(183, 255, 54, 0.32);
   background: rgba(27, 31, 24, 0.88);
   transform: translateY(-2px);
@@ -1541,8 +1538,7 @@ footer a {
 
 .docs-flow-card p,
 .docs-tier p,
-.docs-panel p,
-.docs-setup-list p {
+.docs-panel p {
   margin: 0;
 }
 
@@ -1659,45 +1655,6 @@ footer a {
   line-height: 1;
 }
 
-.docs-file-path {
-  margin-top: 24px;
-  padding: 16px;
-  border: 1px solid rgba(183, 255, 54, 0.2);
-  border-radius: 8px;
-  background: #09090b;
-  color: #dfffc0;
-  font-family: "DM Mono", monospace;
-  font-size: 12px;
-  overflow-wrap: anywhere;
-}
-
-.docs-check-list {
-  display: grid;
-  gap: 12px;
-  padding: 0;
-  margin: 20px 0 0;
-  list-style: none;
-}
-
-.docs-check-list li {
-  position: relative;
-  padding-left: 28px;
-  color: #d3d3d8;
-  font-size: 13px;
-}
-
-.docs-check-list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 7px;
-  width: 12px;
-  height: 7px;
-  border-left: 2px solid var(--green);
-  border-bottom: 2px solid var(--green);
-  transform: rotate(-45deg);
-}
-
 .docs-security-grid {
   grid-template-columns: repeat(4, 1fr);
 }
@@ -1716,38 +1673,6 @@ footer a {
 
 .docs-security-grid span {
   display: block;
-}
-
-.docs-setup-list {
-  display: grid;
-  gap: 10px;
-}
-
-.docs-setup-list article {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 16px;
-  align-items: center;
-  min-height: 86px;
-  padding: 18px;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-}
-
-.docs-setup-list article > span {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  background: #064b0b;
-  color: var(--green);
-  font-size: 14px;
-}
-
-.docs-setup-list strong {
-  display: block;
-  margin-bottom: 4px;
-  color: var(--text);
 }
 
 .docs-final-note {
