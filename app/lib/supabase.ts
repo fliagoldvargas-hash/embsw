@@ -1,4 +1,4 @@
-const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/$/, "");
+const supabaseUrl = normalizeSupabaseUrl(process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "");
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 export function isSupabaseConfigured() {
@@ -39,6 +39,10 @@ function parseJson(value: string) {
   } catch {
     return value;
   }
+}
+
+function normalizeSupabaseUrl(value: string) {
+  return value.trim().replace(/\/+$/, "").replace(/\/rest\/v1$/i, "");
 }
 
 function getSupabaseError(data: unknown, status: number) {
