@@ -28,9 +28,9 @@ const xpRules = [
 
 const tiers = [
   ["No Holder", "0 $EMBER", "Can trade, but does not earn XP or rewards."],
-  ["Tier 3", "1,000,000 to 9,999,999 $EMBER", "Earn XP and unlock early feature access."],
-  ["Tier 2", "10,000,000 to 19,999,999 $EMBER", "Earn XP, gain voting power, and keep Tier 3 benefits."],
-  ["Tier 1", "20,000,000+ $EMBER", "Earn boosted XP and participate in seasonal reward distribution."],
+  ["Bronze", "1,000,000 to 9,999,999 $EMBER", "Earn XP and unlock early feature access."],
+  ["Silver", "10,000,000 to 19,999,999 $EMBER", "Earn XP, gain voting power, and keep Bronze benefits."],
+  ["Gold", "20,000,000+ $EMBER", "Earn boosted XP and participate in seasonal reward distribution."],
 ];
 
 export default function DocsPage() {
@@ -131,7 +131,7 @@ export default function DocsPage() {
   -> POST /api/xp/swaps
   -> verify signature on Solana
   -> read $EMBER balance
-  -> apply holder tier multiplier
+  -> apply holder rank multiplier
   -> insert xp_swaps
   -> refresh xp_wallets
   -> profile + leaderboard refresh`}</pre>
@@ -141,7 +141,7 @@ export default function DocsPage() {
         <section className="docs-section" id="rewards">
           <div className="docs-section-head">
             <p className="eyebrow">REWARDS ECONOMY</p>
-            <h2>Holder tiers</h2>
+            <h2>Holder ranks</h2>
             <p>
               Seasons run for 15 days. Seasonal XP decides leaderboard position and eligibility,
               while historical XP can later support badges, reputation, or long-term recognition.
@@ -158,9 +158,9 @@ export default function DocsPage() {
           </div>
           <aside className="docs-reward-band">
             <div>
-              <span>Tier 1 rewards pool</span>
+              <span>Gold rewards pool</span>
               <strong>40%</strong>
-              <p>Shared by eligible Tier 1 wallets based on their share of seasonal Tier 1 XP.</p>
+              <p>Shared by eligible Gold wallets based on their share of seasonal Gold XP.</p>
             </div>
             <div>
               <span>Project growth</span>

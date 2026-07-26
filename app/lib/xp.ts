@@ -37,7 +37,7 @@ export const DAILY_BONUS_SWAP_LIMIT = 5;
 export const DAILY_BONUS_XP = 10;
 export const BASE_SWAP_XP = 1;
 
-export type EmberHolderTier = "none" | "tier3" | "tier2" | "tier1";
+export type EmberHolderTier = "none" | "bronze" | "silver" | "gold";
 
 export type EmberHolderSnapshot = {
   balance: number;
@@ -47,15 +47,15 @@ export type EmberHolderSnapshot = {
 
 export function getEmberHolderSnapshot(balance: number): EmberHolderSnapshot {
   if (balance >= 20_000_000) {
-    return { balance, tier: "tier1", multiplier: 3 };
+    return { balance, tier: "gold", multiplier: 3 };
   }
 
   if (balance >= 10_000_000) {
-    return { balance, tier: "tier2", multiplier: 1.5 };
+    return { balance, tier: "silver", multiplier: 1.5 };
   }
 
   if (balance >= 1_000_000) {
-    return { balance, tier: "tier3", multiplier: 1 };
+    return { balance, tier: "bronze", multiplier: 1 };
   }
 
   return { balance, tier: "none", multiplier: 0 };

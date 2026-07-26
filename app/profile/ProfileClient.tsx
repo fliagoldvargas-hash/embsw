@@ -191,7 +191,7 @@ export function ProfileClient() {
             </section>
 
             <aside className="xp-strip">
-              <span>Hold <b>$EMBER</b> to earn XP. Tier 3 earns x1, Tier 2 earns x1.5, and Tier 1 earns x3.</span>
+              <span>Hold <b>$EMBER</b> to earn XP. Bronze earns x1, Silver earns x1.5, and Gold earns x3.</span>
               <Link href="/leaderboard">View leaderboard -&gt;</Link>
             </aside>
 
