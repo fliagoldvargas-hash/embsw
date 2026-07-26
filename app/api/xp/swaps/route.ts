@@ -1,7 +1,7 @@
 import { Connection, PublicKey, clusterApiUrl, type ParsedAccountData } from "@solana/web3.js";
 import { NextRequest, NextResponse } from "next/server";
 import { EMBER_MINT } from "../../../lib/config";
-import { calculateSwapXp, getEarnedSwapsToday, getEmberHolderSnapshot, recordXpSwap } from "../../../lib/xp";
+import { calculateSwapXp, getEmberHolderSnapshot, recordXpSwap } from "../../../lib/xp";
 
 export const dynamic = "force-dynamic";
 
@@ -43,8 +43,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const holder = await getWalletEmberHolderSnapshot(wallet);
-    const earnedSwapsToday = await getEarnedSwapsToday(wallet).catch(() => 0);
-    const xpAwarded = calculateSwapXp(holder, earnedSwapsToday);
+    const xpAwarded = calculateSwapXp(holder);
     const result = await recordXpSwap({
       signature,
       wallet,

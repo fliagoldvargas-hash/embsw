@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "../components/SiteShell";
-import { DAILY_BONUS_SWAP_LIMIT, DAILY_BONUS_XP, BASE_SWAP_XP } from "../lib/xp";
+import { BASE_SWAP_XP } from "../lib/xp";
 import { EMBER_TOKEN } from "../lib/token";
 import { SWAP_FEE_BPS, DEFAULT_SLIPPAGE_BPS } from "../lib/config";
 
@@ -20,8 +20,7 @@ const architecture = [
 ];
 
 const xpRules = [
-  [`+${DAILY_BONUS_XP} base XP`, `For each of the first ${DAILY_BONUS_SWAP_LIMIT} eligible holder swaps per wallet per UTC day.`],
-  [`+${BASE_SWAP_XP} base XP`, "For additional eligible holder swaps after the daily bonus window."],
+  [`+${BASE_SWAP_XP} base XP`, "For every eligible holder swap after on-chain confirmation."],
   ["0 XP", "For duplicate signatures, failed on-chain transactions, or transactions not signed by the connected wallet."],
   ["Holder gated", "Every confirmed swap checks the wallet's live $EMBER balance. No $EMBER means the swap is saved, but earns 0 XP."],
 ];

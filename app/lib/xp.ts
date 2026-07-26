@@ -33,8 +33,6 @@ type XpSwapRow = {
   created_at?: string | null;
 };
 
-export const DAILY_BONUS_SWAP_LIMIT = 5;
-export const DAILY_BONUS_XP = 10;
 export const BASE_SWAP_XP = 1;
 
 export type EmberHolderTier = "none" | "bronze" | "silver" | "gold";
@@ -61,11 +59,10 @@ export function getEmberHolderSnapshot(balance: number): EmberHolderSnapshot {
   return { balance, tier: "none", multiplier: 0 };
 }
 
-export function calculateSwapXp(holder: EmberHolderSnapshot, earnedSwapsToday: number) {
+export function calculateSwapXp(holder: EmberHolderSnapshot) {
   if (holder.tier === "none") return 0;
 
-  const baseXp = earnedSwapsToday < DAILY_BONUS_SWAP_LIMIT ? DAILY_BONUS_XP : BASE_SWAP_XP;
-  return Math.max(0, Math.round(baseXp * holder.multiplier));
+  return Math.max(0, Math.round(BASE_SWAP_XP * holder.multiplier));
 }
 
 export function emptyXpSummary(wallet = ""): XpWalletSummary {
