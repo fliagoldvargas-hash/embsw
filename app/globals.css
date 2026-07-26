@@ -141,7 +141,7 @@ a {
 }
 
 .nav-icon-link img {
-  filter: invert(1);
+  filter: none;
 }
 
 .nav-icon-link:hover {
