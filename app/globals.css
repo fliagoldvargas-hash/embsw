@@ -543,75 +543,56 @@ footer,
 }
 
 .flip {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
   margin: -10px auto;
   position: relative;
   z-index: 2;
-  border: 1px solid rgba(183, 255, 54, 0.86);
+  border: 1px solid rgba(183, 255, 54, 0.92);
   border-radius: 50%;
-  background: #111315;
-  color: var(--green);
-  font-weight: 900;
+  background:
+    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.16), transparent 34%),
+    linear-gradient(145deg, #9fff1a 0%, #68b91e 100%);
+  color: #f7ffe9;
   box-shadow:
     0 0 0 5px #090a0c,
-    0 8px 22px rgba(0, 0, 0, 0.34),
-    inset 0 0 14px rgba(183, 255, 54, 0.08);
+    0 7px 0 #315f13,
+    0 14px 24px rgba(0, 0, 0, 0.36),
+    inset 0 2px 8px rgba(255, 255, 255, 0.22),
+    inset 0 -7px 12px rgba(40, 79, 14, 0.38);
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.flip span,
-.flip span::before,
-.flip span::after {
-  display: block;
-}
-
-.flip span {
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-  position: relative;
-  color: var(--green);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.flip span::before,
-.flip span::after {
-  position: static;
-  width: auto;
-  height: auto;
-  border: 0;
-}
-
-.flip span::before {
-  content: "\2191";
-}
-
-.flip span::after {
-  content: "\2193";
+    transform 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .flip:hover {
-  border-color: var(--green);
+  transform: translateY(-1px);
   box-shadow:
     0 0 0 5px #090a0c,
-    0 8px 22px rgba(0, 0, 0, 0.36),
-    0 0 16px rgba(183, 255, 54, 0.28),
-    inset 0 0 14px rgba(183, 255, 54, 0.12);
+    0 8px 0 #315f13,
+    0 16px 28px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(183, 255, 54, 0.24),
+    inset 0 2px 8px rgba(255, 255, 255, 0.24),
+    inset 0 -7px 12px rgba(40, 79, 14, 0.38);
 }
 
 .flip:active {
-  transform: scale(0.94);
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 5px #090a0c,
+    0 3px 0 #315f13,
+    0 8px 16px rgba(0, 0, 0, 0.34),
+    inset 0 2px 8px rgba(255, 255, 255, 0.18),
+    inset 0 -5px 10px rgba(40, 79, 14, 0.34);
+}
+
+.flip-icon {
+  width: 31px;
+  height: 31px;
+  display: block;
+  filter: drop-shadow(0 2px 1px rgba(40, 79, 14, 0.45));
 }
 
 .swap-route-line,

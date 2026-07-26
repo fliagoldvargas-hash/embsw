@@ -429,7 +429,24 @@ export function SwapExperience() {
             editable
           />
           <button className="flip" aria-label="Flip tokens" onClick={flipTokens}>
-            <span aria-hidden="true" />
+            <svg className="flip-icon" viewBox="0 0 48 48" aria-hidden="true">
+              <path
+                d="M33.7 11.7c5.9 3.7 9 10.9 7.2 17.9"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="6"
+              />
+              <path d="M28.2 12.5 36.8 7l1.5 10.1Z" fill="currentColor" />
+              <path
+                d="M14.3 36.3c-5.9-3.7-9-10.9-7.2-17.9"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="6"
+              />
+              <path d="M19.8 35.5 11.2 41l-1.5-10.1Z" fill="currentColor" />
+            </svg>
           </button>
           <SwapBox
             label="YOU RECEIVE"
