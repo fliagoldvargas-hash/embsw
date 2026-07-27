@@ -125,10 +125,32 @@ a {
   height: 42px;
   display: flex;
   align-items: center;
+  gap: 6px;
   padding: 0 12px;
   color: #85858e;
   font-size: 11px;
+  border: 0;
+  background: transparent;
   transition: color 180ms ease, transform 180ms ease;
+}
+
+.nav-soon {
+  cursor: default;
+  opacity: 0.74;
+}
+
+.nav-soon span {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  border: 1px solid rgba(183, 255, 54, 0.28);
+  border-radius: 999px;
+  padding: 0 5px;
+  color: var(--green);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
 }
 
 .nav-icon-link {
@@ -155,6 +177,11 @@ a {
 .nav-link:hover,
 .nav-link.active {
   color: var(--text);
+}
+
+.nav-soon:hover {
+  color: #85858e;
+  transform: none;
 }
 
 .profile-button,

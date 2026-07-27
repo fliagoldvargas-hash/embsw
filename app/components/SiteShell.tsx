@@ -24,6 +24,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </a>
           <Link className={pathname === "/transparency" ? "nav-link active" : "nav-link"} href="/transparency">Transparency</Link>
           <Link className={pathname === "/leaderboard" ? "nav-link active" : "nav-link"} href="/leaderboard">Leaderboard</Link>
+          <button className="nav-link nav-soon" type="button" disabled aria-disabled="true">
+            XP Market <span>Soon</span>
+          </button>
           <Link className={pathname === "/profile" ? "profile-button active" : "profile-button"} href="/profile">Profile</Link>
           <button className="wallet-button wallet-connect-button" onClick={wallet.connected ? wallet.disconnect : wallet.connect}>
             {wallet.connected && wallet.publicKey
