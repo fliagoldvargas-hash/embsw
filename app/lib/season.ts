@@ -4,18 +4,18 @@ export const TREASURY_WALLET = "FZuJFAK4a7EqCrPZ6ZWnvLUvngoYyV7vN4mxWBcLYiFt";
 
 const SEASON_LENGTH_DAYS = 15;
 const SEASON_LENGTH_MS = SEASON_LENGTH_DAYS * 24 * 60 * 60 * 1000;
-const FALLBACK_LAUNCH_AT = "2026-07-26T00:00:00.000Z";
 
 export function getCurrentSeason(now = new Date()) {
-  const launchAt = getLaunchDate();
+  const launchAt = getLaunchDate(now);
 
   if (!launchAt) {
     return {
       label: "Pre-launch",
       start: now,
-      end: new Date(now.getTime() + SEASON_LENGTH_MS),
+      end: null,
       seasonIndex: 0,
       lengthDays: SEASON_LENGTH_DAYS,
+      isLive: false,
     };
   }
 
@@ -30,16 +30,19 @@ export function getCurrentSeason(now = new Date()) {
     end,
     seasonIndex,
     lengthDays: SEASON_LENGTH_DAYS,
+    isLive: true,
   };
 }
 
-function getLaunchDate() {
+function getLaunchDate(now: Date) {
   if (!EMBER_IS_LIVE) return null;
 
-  const configuredLaunchAt = EMBER_TOKEN.launchAt.trim() || FALLBACK_LAUNCH_AT;
+  const configuredLaunchAt = EMBER_TOKEN.launchAt.trim();
+  if (!configuredLaunchAt) return now;
+
   const launchAt = new Date(configuredLaunchAt);
 
-  return Number.isNaN(launchAt.getTime()) ? new Date(FALLBACK_LAUNCH_AT) : launchAt;
+  return Number.isNaN(launchAt.getTime()) ? now : launchAt;
 }
 
 export function formatSeasonDate(date: Date) {

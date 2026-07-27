@@ -205,7 +205,7 @@ export function ProfileClient() {
 
             <section className="holdings-panel panel">
               {loading && <p className="muted-center">Loading public balances...</p>}
-              {!loading && !EMBER_MINT && <p className="muted-center">$EMBER mint is not configured yet.</p>}
+              {!loading && !EMBER_MINT && <p className="muted-center">$EMBER holdings will appear after launch.</p>}
               {!loading && EMBER_MINT && !emberHolding && <p className="muted-center">No $EMBER balance found in this wallet.</p>}
               {!loading && emberHolding && (
                 <article className="holding-row">

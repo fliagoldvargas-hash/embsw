@@ -25,12 +25,23 @@ export default async function LeaderboardPage() {
       <main className="dashboard-page">
         <section className="page-hero">
           <div>
-            <p className="eyebrow">LIVE ON-CHAIN ACTIVITY</p>
-            <h1>Season Zero</h1>
-            <p>Season Zero tracks confirmed Ember Swap transactions and wallet XP. Current season closes {formatSeasonDate(season.end)} UTC.</p>
+            <p className="eyebrow">{season.isLive ? "LIVE ON-CHAIN ACTIVITY" : "PRE-LAUNCH ACTIVITY"}</p>
+            <h1>{season.isLive ? season.label : "Season Zero warms up"}</h1>
+            <p>
+              {season.isLive && season.end
+                ? `${season.label} tracks confirmed Ember Swap transactions and wallet XP. Current season closes ${formatSeasonDate(season.end)} UTC.`
+                : "Confirmed Ember Swap trades are already tracked. Season Zero XP starts automatically when the $EMBER mint and pump.fun link go live."}
+            </p>
           </div>
           <div className="page-hero-actions">
-            <SeasonCountdown endsAt={season.end.toISOString()} />
+            {season.isLive && season.end ? (
+              <SeasonCountdown endsAt={season.end.toISOString()} />
+            ) : (
+              <div className="season-countdown" aria-label="Season status">
+                <span>Season status</span>
+                <strong>Pending launch</strong>
+              </div>
+            )}
             <Link className="ghost-link" href="/">Back to swap</Link>
           </div>
         </section>
@@ -85,7 +96,11 @@ export default async function LeaderboardPage() {
           </article>
         </section>
 
-        <aside className="warning-strip">Season Zero XP is holder-gated. Confirmed swaps are saved only after on-chain success, and suspicious activity is automatically detected and excluded from XP.</aside>
+        <aside className="warning-strip">
+          {season.isLive
+            ? "Season Zero XP is holder-gated. Confirmed swaps are saved only after on-chain success, and suspicious activity is automatically detected and excluded from XP."
+            : "Pre-launch swaps are saved as verified activity. Holder-gated XP begins when $EMBER goes live."}
+        </aside>
       </main>
     </SiteShell>
   );

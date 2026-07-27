@@ -33,8 +33,8 @@ export default async function TransparencyPage() {
             <p className="eyebrow">TREASURY TRANSPARENCY</p>
             <h1>Every SOL is visible.</h1>
             <p>
-              Creator rewards flow into the public Ember treasury. During each season, the site estimates
-              the Gold rewards pool from incoming SOL. Each season runs for 15 days from the $EMBER launch.
+              Ember's public treasury is designed for transparent season tracking. Reward seasons begin
+              automatically after the $EMBER mint and pump.fun link are live.
             </p>
             <div className="transparency-wallet-row">
               <span>Treasury wallet</span>
@@ -51,32 +51,44 @@ export default async function TransparencyPage() {
             <p>Total SOL currently held by the public treasury wallet.</p>
           </article>
           <article className="transparency-stat">
-            <span>Current season rewards</span>
+            <span>{season.isLive ? "Current season rewards" : "Season rewards"}</span>
             <strong>{formatSol(treasury.seasonInflowSol)}</strong>
-            <p>Estimated incoming SOL since {formatSeasonDate(season.start)} UTC.</p>
+            <p>
+              {season.isLive
+                ? `Estimated incoming SOL since ${formatSeasonDate(season.start)} UTC.`
+                : "Season accounting starts after the public $EMBER launch."}
+            </p>
           </article>
           <article className="transparency-stat">
             <span>Gold pool</span>
             <strong>{formatSol(goldPool)}</strong>
-            <p>40% of this season's estimated creator rewards.</p>
+            <p>{season.isLive ? "40% of this season's estimated creator rewards." : "40% of live season creator rewards."}</p>
           </article>
           <article className="transparency-stat">
             <span>Project growth</span>
             <strong>{formatSol(projectGrowth)}</strong>
-            <p>60% funds operations, product, infrastructure, and growth.</p>
+            <p>{season.isLive ? "60% funds operations, product, infrastructure, and growth." : "60% supports operations, product, infrastructure, and growth."}</p>
           </article>
         </section>
 
         <section className="transparency-season panel">
           <div>
             <p className="eyebrow">{season.label.toUpperCase()}</p>
-            <h2>Season closes {formatSeasonDate(season.end)} UTC</h2>
+            <h2>{season.isLive && season.end ? `Season closes ${formatSeasonDate(season.end)} UTC` : "Season Zero starts at launch"}</h2>
             <p>
-              Seasons close every 15 days after the $EMBER CA and pump.fun link go live. Gold holders share
-              the finalized Gold pool by their seasonal XP share after anti-spam review.
+              {season.isLive
+                ? "Seasons close every 15 days after the $EMBER CA and pump.fun link go live. Gold holders share the finalized Gold pool by their seasonal XP share after anti-spam review."
+                : "The transparency engine is ready. Once the $EMBER CA and pump.fun link are added, countdowns, season accounting, and reward estimates switch on automatically."}
             </p>
           </div>
-          <SeasonCountdown endsAt={season.end.toISOString()} />
+          {season.isLive && season.end ? (
+            <SeasonCountdown endsAt={season.end.toISOString()} />
+          ) : (
+            <div className="season-countdown" aria-label="Season status">
+              <span>Season status</span>
+              <strong>Pending launch</strong>
+            </div>
+          )}
         </section>
 
         <section className="transparency-split">
@@ -112,9 +124,9 @@ export default async function TransparencyPage() {
           <p className="eyebrow">HOW IT IS CALCULATED</p>
           <div className="transparency-note-grid">
             <article><strong>Public treasury</strong><span>The wallet address is public and can be checked on Solscan at any time.</span></article>
-            <article><strong>Season income</strong><span>Incoming SOL transfers during the current season are summed as estimated creator rewards.</span></article>
-            <article><strong>Estimated live</strong><span>Numbers move during the season and are finalized at close after anti-spam review.</span></article>
-            <article><strong>Gold rewards</strong><span>Your estimated reward equals Gold pool x your Gold XP share for the season.</span></article>
+            <article><strong>Season income</strong><span>Incoming SOL transfers during each live season are summed as estimated creator rewards.</span></article>
+            <article><strong>Estimated live</strong><span>Numbers update during live seasons and finalize at close after anti-spam review.</span></article>
+            <article><strong>Gold rewards</strong><span>Estimated reward share is based on Gold pool and seasonal Gold XP.</span></article>
           </div>
         </section>
 
@@ -128,10 +140,10 @@ export default async function TransparencyPage() {
   );
 }
 
-async function loadTreasuryData(seasonStart: Date, seasonEnd: Date) {
+async function loadTreasuryData(seasonStart: Date, seasonEnd: Date | null) {
   const treasury = new PublicKey(TREASURY_WALLET);
   const startSeconds = Math.floor(seasonStart.getTime() / 1000);
-  const endSeconds = Math.floor(seasonEnd.getTime() / 1000);
+  const endSeconds = seasonEnd ? Math.floor(seasonEnd.getTime() / 1000) : 0;
   const errors: string[] = [];
 
   for (const endpoint of Array.from(new Set(rpcEndpoints))) {
@@ -139,12 +151,12 @@ async function loadTreasuryData(seasonStart: Date, seasonEnd: Date) {
       const connection = new Connection(endpoint, "confirmed");
       const balanceLamports = await connection.getBalance(treasury, "confirmed");
       const signatures = await connection.getSignaturesForAddress(treasury, { limit: 100 });
-      const seasonSignatures = signatures
+      const seasonSignatures = seasonEnd ? signatures
         .filter((signature) => {
           const blockTime = signature.blockTime || 0;
           return blockTime >= startSeconds && blockTime < endSeconds;
         })
-        .map((signature) => signature.signature);
+        .map((signature) => signature.signature) : [];
 
       const transactions = seasonSignatures.length > 0
         ? await connection.getParsedTransactions(seasonSignatures, {

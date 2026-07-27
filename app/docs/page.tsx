@@ -16,7 +16,7 @@ const architecture = [
   ["Wallet", "Users connect with Privy wallet login or an injected Solana wallet. The wallet signs every transaction."],
   ["Routing", "Quotes and swap transactions are requested through Ember API routes, then routed by Jupiter on Solana mainnet."],
   ["Verification", "After a confirmed swap, Ember verifies the signature and reads the wallet's $EMBER balance before XP can be written."],
-  ["Profile", "Balances come from public Solana RPC reads. XP and leaderboard data come from Supabase once configured."],
+  ["Profile", "Balances come from public Solana reads. XP and leaderboard data stay synced across browsers."],
 ];
 
 const xpRules = [
@@ -111,8 +111,8 @@ export default function DocsPage() {
             <p className="eyebrow">SEASON ZERO</p>
             <h2>XP system</h2>
             <p>
-              XP is saved by wallet in Supabase after Ember verifies the transaction signature on Solana and reads the wallet's $EMBER balance.
-              This makes profile points portable across browsers and gives the leaderboard one shared source of truth.
+              XP is saved by wallet after Ember verifies the transaction signature on Solana and reads the wallet's $EMBER balance.
+              This keeps profile points portable across browsers and gives the leaderboard one shared source of truth.
             </p>
             <div className="docs-rule-list">
               {xpRules.map(([value, label]) => (
@@ -127,13 +127,11 @@ export default function DocsPage() {
             <p className="eyebrow">DATA PIPELINE</p>
             <h3>Verified before write</h3>
             <pre>{`swap confirmed
-  -> POST /api/xp/swaps
   -> verify signature on Solana
   -> read $EMBER balance
   -> apply holder rank multiplier
-  -> insert xp_swaps
-  -> refresh xp_wallets
-  -> profile + leaderboard refresh`}</pre>
+  -> save verified activity
+  -> refresh profile + leaderboard`}</pre>
           </article>
         </section>
 
@@ -180,7 +178,7 @@ export default function DocsPage() {
           </div>
           <div className="docs-security-grid">
             <article><strong>Wallet controlled</strong><span>Phantom or Privy-compatible wallet approval remains mandatory.</span></article>
-            <article><strong>Server-side secrets</strong><span>Supabase service role and Privy secret are never exposed to browser code.</span></article>
+            <article><strong>Server-side secrets</strong><span>Private backend keys are never exposed to browser code.</span></article>
             <article><strong>Duplicate protection</strong><span>Each swap signature is unique in the XP database.</span></article>
             <article><strong>Anti-farming ready</strong><span>Suspicious patterns can be excluded from XP as the season rules mature.</span></article>
           </div>
