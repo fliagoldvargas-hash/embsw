@@ -73,7 +73,12 @@ export function SwapExperience() {
       const refreshed = await Promise.all(
         DEFAULT_SWAP_TOKENS.map(async (token) => {
           if (!token.mint || token.disabled) return token;
-          return loadTokenMetadata(token.mint).catch(() => token);
+          const metadata = await loadTokenMetadata(token.mint).catch(() => null);
+          if (!metadata) return token;
+          if (token.mint === EMBER_TOKEN.mint) {
+            return { ...metadata, ...token, decimals: metadata.decimals || token.decimals };
+          }
+          return metadata;
         })
       );
 
@@ -805,6 +810,9 @@ async function loadTokenMetadata(mint: string): Promise<SwapToken> {
 
 function mergeTokenMetadata(token: SwapToken, metadata: SwapToken[]) {
   const match = metadata.find((item) => item.mint === token.mint);
+  if (match && token.mint === EMBER_TOKEN.mint) {
+    return { ...match, ...token, decimals: match.decimals || token.decimals };
+  }
   return match ? { ...token, ...match, tags: match.tags?.length ? match.tags : token.tags } : token;
 }
 
