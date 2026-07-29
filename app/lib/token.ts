@@ -1,5 +1,5 @@
-const GM_TOKEN_MINT = "";
-const GM_PUMPFUN_URL = "";
+const GM_TOKEN_MINT = "CBNjVBxK2neCEwrbjHYYJ1Fq6kKwoMrKYVsu9PFZpump";
+const GM_PUMPFUN_URL = "https://pump.fun/coin/CBNjVBxK2neCEwrbjHYYJ1Fq6kKwoMrKYVsu9PFZpump";
 const GM_LAUNCH_AT = "";
 const GM_X_URL = "https://x.com/Gmswap_";
 const GM_TELEGRAM_URL = "";
