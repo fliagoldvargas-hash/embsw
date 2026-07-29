@@ -14,7 +14,7 @@ export default async function LeaderboardPage() {
   const season = getCurrentSeason();
 
   const stats = [
-    ["VERIFIED SWAPS", String(totalSwaps), leaders.length > 0 ? "Confirmed Ember Swap trades" : "No verified swaps yet"],
+    ["VERIFIED SWAPS", String(totalSwaps), leaders.length > 0 ? "Confirmed Orbit Swap trades" : "No verified swaps yet"],
     ["UNIQUE WALLETS", String(leaders.length), leaders.length > 0 ? "Distinct active traders" : "No ranked wallets yet"],
     ["REPEAT WALLETS", String(repeatWallets), leaders.length > 0 ? "Active on 2+ days" : "No repeat activity yet"],
     ["FARMING FLAGS", "AUTO", "Spam activity is excluded"],
@@ -29,8 +29,8 @@ export default async function LeaderboardPage() {
             <h1>{season.isLive ? season.label : "Season Zero warms up"}</h1>
             <p>
               {season.isLive && season.end
-                ? `${season.label} tracks confirmed Ember Swap transactions and wallet XP. Current season closes ${formatSeasonDate(season.end)} UTC.`
-                : "Confirmed Ember Swap trades are already tracked. Season Zero XP starts automatically when the $EMBER mint and pump.fun link go live."}
+                ? `${season.label} tracks confirmed Orbit Swap transactions and wallet XP. Current season closes ${formatSeasonDate(season.end)} UTC.`
+                : "Confirmed Orbit Swap trades are already tracked. Season Zero XP starts automatically when the $ORBIT mint and pump.fun link go live."}
             </p>
           </div>
           <div className="page-hero-actions">
@@ -99,7 +99,7 @@ export default async function LeaderboardPage() {
         <aside className="warning-strip">
           {season.isLive
             ? "Season Zero XP is holder-gated. Confirmed swaps are saved only after on-chain success, and suspicious activity is automatically detected and excluded from XP."
-            : "Pre-launch swaps are saved as verified activity. Holder-gated XP begins when $EMBER goes live."}
+            : "Pre-launch swaps are saved as verified activity. Holder-gated XP begins when $ORBIT goes live."}
         </aside>
       </main>
     </SiteShell>

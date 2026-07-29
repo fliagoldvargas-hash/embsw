@@ -78,8 +78,7 @@ a {
 }
 
 .brand img {
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px #3d4930, 0 0 25px rgba(183, 255, 54, 0.35);
+  object-fit: contain;
 }
 
 .brand span span {
@@ -308,18 +307,16 @@ a {
 }
 
 .token-emblem {
-  width: 82px;
-  height: 82px;
+  width: 92px;
+  height: 74px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(166, 255, 26, 0.36);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(166, 255, 26, 0.14), rgba(16, 16, 18, 0.86) 62%);
-  box-shadow: 0 0 32px rgba(166, 255, 26, 0.14);
 }
 
 .token-emblem img {
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .official-identity {
@@ -1414,21 +1411,18 @@ footer a {
 .orbit-core {
   position: absolute;
   inset: 50%;
-  width: 92px;
+  width: 116px;
   height: 92px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background: rgba(8, 8, 10, 0.92);
-  box-shadow: 0 0 0 1px rgba(183, 255, 54, 0.24), 0 0 55px rgba(183, 255, 54, 0.18);
   transform: translate(-50%, -50%);
   z-index: 2;
 }
 
 .orbit-core img {
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .orbit-pill {
@@ -2265,19 +2259,17 @@ footer a {
 }
 
 .token-mark {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 34px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background: #242429;
   overflow: hidden;
 }
 
 .token-mark img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .token-mark span {
@@ -2398,8 +2390,8 @@ footer a {
   }
 
   .token-emblem {
-    width: 68px;
-    height: 68px;
+    width: 76px;
+    height: 60px;
   }
 
   .token-stats {
@@ -2569,13 +2561,13 @@ footer a {
   }
 
   .orbit-core {
-    width: 78px;
-    height: 78px;
+    width: 96px;
+    height: 76px;
   }
 
   .orbit-core img {
-    width: 54px;
-    height: 54px;
+    width: 100%;
+    height: 100%;
   }
 
   .orbit-pill {

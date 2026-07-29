@@ -12,14 +12,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="site-shell">
       <nav className="top-nav">
-        <Link href="/" className="brand" aria-label="Ember Swap home">
-          <Image src="/assets/ember-swap-logo.png" alt="Ember Swap logo" width={43} height={43} priority />
-          <span>EMBER<span>SWAP</span></span>
+        <Link href="/" className="brand" aria-label="Orbit Swap home">
+          <Image src="/assets/orbit-swap-logo.png" alt="Orbit Swap logo" width={43} height={43} priority />
+          <span>ORBIT<span>SWAP</span></span>
         </Link>
         <div className="live-badge"><i /> MAINNET LIVE</div>
         <div className="nav-actions">
           <Link className={pathname === "/docs" ? "nav-link active" : "nav-link"} href="/docs">Docs</Link>
-          <a className="nav-icon-link" href="https://x.com/EmberSwap_" target="_blank" rel="noreferrer" aria-label="Ember Swap on X">
+          <a className="nav-icon-link" href="https://x.com/Orbitswap_" target="_blank" rel="noreferrer" aria-label="Orbit Swap on X">
             <Image src="/assets/x-logo.png" alt="" width={15} height={15} />
           </a>
           <Link className={pathname === "/transparency" ? "nav-link active" : "nav-link"} href="/transparency">Transparency</Link>

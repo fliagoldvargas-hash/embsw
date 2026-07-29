@@ -14,22 +14,22 @@ const sections = [
 
 const architecture = [
   ["Wallet", "Users connect with Privy wallet login or an injected Solana wallet. The wallet signs every transaction."],
-  ["Routing", "Quotes and swap transactions are requested through Ember API routes, then routed by Jupiter on Solana mainnet."],
-  ["Verification", "After a confirmed swap, Ember verifies the signature and reads the wallet's $EMBER balance before XP can be written."],
+  ["Routing", "Quotes and swap transactions are requested through Orbit API routes, then routed by Jupiter on Solana mainnet."],
+  ["Verification", "After a confirmed swap, Orbit verifies the signature and reads the wallet's $ORBIT balance before XP can be written."],
   ["Profile", "Balances come from public Solana reads. XP and leaderboard data stay synced across browsers."],
 ];
 
 const xpRules = [
   [`+${BASE_SWAP_XP} base XP`, "For every eligible holder swap after on-chain confirmation."],
   ["0 XP", "For duplicate signatures, failed on-chain transactions, or transactions not signed by the connected wallet."],
-  ["Holder gated", "Every confirmed swap checks the wallet's live $EMBER balance. No $EMBER means the swap is saved, but earns 0 XP."],
+  ["Holder gated", "Every confirmed swap checks the wallet's live $ORBIT balance. No $ORBIT means the swap is saved, but earns 0 XP."],
 ];
 
 const tiers = [
-  ["No Holder", "0 $EMBER", "Can trade, but does not earn XP or rewards."],
-  ["Bronze", "1,000,000 to 9,999,999 $EMBER", "Earn XP and unlock early feature access."],
-  ["Silver", "10,000,000 to 19,999,999 $EMBER", "Earn XP, gain voting power, and keep Bronze benefits."],
-  ["Gold", "20,000,000+ $EMBER", "Earn boosted XP and participate in seasonal reward distribution."],
+  ["No Holder", "0 $ORBIT", "Can trade, but does not earn XP or rewards."],
+  ["Bronze", "1,000,000 to 9,999,999 $ORBIT", "Earn XP and unlock early feature access."],
+  ["Silver", "10,000,000 to 19,999,999 $ORBIT", "Earn XP, gain voting power, and keep Bronze benefits."],
+  ["Gold", "20,000,000+ $ORBIT", "Earn boosted XP and participate in seasonal reward distribution."],
 ];
 
 export default function DocsPage() {
@@ -38,21 +38,21 @@ export default function DocsPage() {
       <main className="docs-page">
         <section className="docs-hero" id="overview">
           <div className="docs-hero-copy">
-            <p className="eyebrow">EMBER SWAP DOCS</p>
+            <p className="eyebrow">ORBIT SWAP DOCS</p>
             <h1>Swap fast. Earn XP. Stay in control.</h1>
             <p>
-              Ember Swap is a Solana swap interface built around transparent routing,
-              wallet-side approvals, public profile data, and a seasonal XP economy for $EMBER holders.
+              Orbit Swap is a Solana swap interface built around transparent routing,
+              wallet-side approvals, public profile data, and a seasonal XP economy for $ORBIT holders.
             </p>
             <div className="docs-actions">
               <Link className="docs-primary" href="/">Open swap</Link>
               <Link className="docs-secondary" href="/leaderboard">View leaderboard</Link>
             </div>
           </div>
-          <div className="docs-orbit-card" aria-label="Ember Swap system summary">
+          <div className="docs-orbit-card" aria-label="Orbit Swap system summary">
             <span className="orbit-ring" />
             <div className="orbit-core">
-              <img src="/assets/ember-swap-logo.png" alt="Ember Swap logo" />
+              <img src="/assets/orbit-swap-logo.png" alt="Orbit Swap logo" />
             </div>
             <div className="orbit-pill orbit-pill-a">Jupiter routing</div>
             <div className="orbit-pill orbit-pill-b">XP</div>
@@ -85,7 +85,7 @@ export default function DocsPage() {
           <article>
             <span>Token status</span>
             <strong>{EMBER_TOKEN.mint ? "Live" : "Pre-launch"}</strong>
-            <p>$EMBER details auto-fill after the mint is added.</p>
+            <p>$ORBIT details auto-fill after the mint is added.</p>
           </article>
         </section>
 
@@ -93,7 +93,7 @@ export default function DocsPage() {
           <div className="docs-section-head">
             <p className="eyebrow">HOW IT WORKS</p>
             <h2>Swap engine</h2>
-            <p>Ember keeps user control at the center: the app builds routes, but wallets approve and sign every transaction.</p>
+            <p>Orbit keeps user control at the center: the app builds routes, but wallets approve and sign every transaction.</p>
           </div>
           <div className="docs-flow">
             {architecture.map(([title, body], index) => (
@@ -111,7 +111,7 @@ export default function DocsPage() {
             <p className="eyebrow">SEASON ZERO</p>
             <h2>XP system</h2>
             <p>
-              XP is saved by wallet after Ember verifies the transaction signature on Solana and reads the wallet's $EMBER balance.
+              XP is saved by wallet after Orbit verifies the transaction signature on Solana and reads the wallet's $ORBIT balance.
               This keeps profile points portable across browsers and gives the leaderboard one shared source of truth.
             </p>
             <div className="docs-rule-list">
@@ -128,7 +128,7 @@ export default function DocsPage() {
             <h3>Verified before write</h3>
             <pre>{`swap confirmed
   -> verify signature on Solana
-  -> read $EMBER balance
+  -> read $ORBIT balance
   -> apply holder rank multiplier
   -> save verified activity
   -> refresh profile + leaderboard`}</pre>
@@ -140,7 +140,7 @@ export default function DocsPage() {
             <p className="eyebrow">REWARDS ECONOMY</p>
             <h2>Holder ranks</h2>
             <p>
-              Seasons run in 15-day cycles from the $EMBER launch. Seasonal XP decides leaderboard position and eligibility,
+              Seasons run in 15-day cycles from the $ORBIT launch. Seasonal XP decides leaderboard position and eligibility,
               while historical XP can later support badges, reputation, or long-term recognition.
             </p>
           </div>
@@ -170,9 +170,9 @@ export default function DocsPage() {
         <section className="docs-section" id="security">
           <div className="docs-section-head">
             <p className="eyebrow">SECURITY MODEL</p>
-            <h2>What Ember does not touch</h2>
+            <h2>What Orbit does not touch</h2>
             <p>
-              Ember never asks for recovery phrases, never stores wallet secrets, and never executes
+              Orbit never asks for recovery phrases, never stores wallet secrets, and never executes
               a swap without wallet approval. Backend keys stay server-side.
             </p>
           </div>

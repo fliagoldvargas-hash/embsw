@@ -33,8 +33,8 @@ export default async function TransparencyPage() {
             <p className="eyebrow">TREASURY TRANSPARENCY</p>
             <h1>Every SOL is visible.</h1>
             <p>
-              Ember's public treasury is designed for transparent season tracking. Reward seasons begin
-              automatically after the $EMBER mint and pump.fun link are live.
+              Orbit's public treasury is designed for transparent season tracking. Reward seasons begin
+              automatically after the $ORBIT mint and pump.fun link are live.
             </p>
             <div className="transparency-wallet-row">
               <span>Treasury wallet</span>
@@ -56,7 +56,7 @@ export default async function TransparencyPage() {
             <p>
               {season.isLive
                 ? `Estimated incoming SOL since ${formatSeasonDate(season.start)} UTC.`
-                : "Season accounting starts after the public $EMBER launch."}
+                : "Season accounting starts after the public $ORBIT launch."}
             </p>
           </article>
           <article className="transparency-stat">
@@ -77,8 +77,8 @@ export default async function TransparencyPage() {
             <h2>{season.isLive && season.end ? `Season closes ${formatSeasonDate(season.end)} UTC` : "Season Zero starts at launch"}</h2>
             <p>
               {season.isLive
-                ? "Seasons close every 15 days after the $EMBER CA and pump.fun link go live. Gold holders share the finalized Gold pool by their seasonal XP share after anti-spam review."
-                : "The transparency engine is ready. Once the $EMBER CA and pump.fun link are added, countdowns, season accounting, and reward estimates switch on automatically."}
+                ? "Seasons close every 15 days after the $ORBIT CA and pump.fun link go live. Gold holders share the finalized Gold pool by their seasonal XP share after anti-spam review."
+                : "The transparency engine is ready. Once the $ORBIT CA and pump.fun link are added, countdowns, season accounting, and reward estimates switch on automatically."}
             </p>
           </div>
           {season.isLive && season.end ? (
@@ -107,10 +107,10 @@ export default async function TransparencyPage() {
         <section className="transparency-token-plan panel">
           <div className="transparency-section-head">
             <p className="eyebrow">PROJECT TOKEN POSITION</p>
-            <h2>3% of $EMBER is reserved for long-term alignment.</h2>
+            <h2>3% of $ORBIT is reserved for long-term alignment.</h2>
             <p>
               The project plans to buy and hold 3% of the token supply, split into clear buckets so the
-              community can understand how those tokens support Ember Swap over time.
+              community can understand how those tokens support Orbit Swap over time.
             </p>
           </div>
           <div className="transparency-token-grid">

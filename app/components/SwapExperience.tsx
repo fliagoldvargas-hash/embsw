@@ -10,7 +10,7 @@ import { EMBER_IS_LIVE, EMBER_TOKEN } from "../lib/token";
 import { useEmberWallet } from "../providers";
 
 const contract = EMBER_MINT || "Paste mint in app/lib/token.ts";
-const GUIDE_SEEN_KEY = "ember.swap.guideSeen";
+const GUIDE_SEEN_KEY = "orbit.swap.guideSeen";
 
 type TokenSide = "pay" | "receive";
 
@@ -264,14 +264,14 @@ export function SwapExperience() {
   function tradeEmber() {
     if (!EMBER_MINT) {
       setQuoteStatus("error");
-      setQuoteError("$EMBER is not live yet. Add the mint after launch to enable direct Ember trading.");
+      setQuoteError("$ORBIT is not live yet. Add the mint after launch to enable direct Orbit trading.");
       return;
     }
 
     const emberToken = availableTokens.find((token) => token.mint === EMBER_MINT);
     if (!emberToken || emberToken.disabled) {
       setQuoteStatus("error");
-      setQuoteError("$EMBER is not available in the token list yet.");
+      setQuoteError("$ORBIT is not available in the token list yet.");
       return;
     }
 
@@ -372,18 +372,18 @@ export function SwapExperience() {
             <span>Swap fast.</span>
             <span>Stay unhinged.</span>
           </h1>
-          <p>{isPrelaunch ? "Best-route Solana swaps powered by Jupiter. Ember trading opens after the pump.fun launch." : "Best-route Solana swaps powered by Jupiter across live Solana DEX liquidity."}</p>
+          <p>{isPrelaunch ? "Best-route Solana swaps powered by Jupiter. Orbit trading opens after the pump.fun launch." : "Best-route Solana swaps powered by Jupiter across live Solana DEX liquidity."}</p>
         </section>
 
         <section className="official-token">
           <div className="token-emblem">
-            <Image src={EMBER_TOKEN.image} alt="Ember Swap logo" width={74} height={74} />
+            <Image src={EMBER_TOKEN.image} alt="Orbit Swap logo" width={74} height={74} />
           </div>
           <div className="official-identity">
             <div>
               <p className="eyebrow">+ {isPrelaunch ? "PRE-LAUNCH TOKEN" : "LIVE TOKEN"}</p>
               <h2 className="logo-name">{EMBER_TOKEN.name}</h2>
-              <span>{isPrelaunch ? "$EMBER launches on pump.fun soon. Mint will be published after launch." : "$EMBER is live. Data updates from Solana liquidity markets."}</span>
+              <span>{isPrelaunch ? "$ORBIT launches on pump.fun soon. Mint will be published after launch." : "$ORBIT is live. Data updates from Solana liquidity markets."}</span>
             </div>
           </div>
           <div className="token-stats">
@@ -397,7 +397,7 @@ export function SwapExperience() {
             <code>{isPrelaunch ? "Mint / CA pending pump.fun launch" : contract}</code>
           </div>
           <div className="token-actions">
-            <button onClick={tradeEmber} disabled={!EMBER_MINT}>{EMBER_MINT ? "TRADE $EMBER" : "$EMBER PENDING"}</button>
+            <button onClick={tradeEmber} disabled={!EMBER_MINT}>{EMBER_MINT ? "TRADE $ORBIT" : "$ORBIT PENDING"}</button>
             <button className="copy-ca" onClick={copyContract} disabled={!EMBER_MINT}>{copied ? "COPIED" : "COPY CONTRACT"}</button>
             {EMBER_TOKEN.pumpFunUrl ? (
               <Link href={EMBER_TOKEN.pumpFunUrl} target="_blank">Pump.fun -&gt;</Link>
@@ -460,13 +460,13 @@ export function SwapExperience() {
             <b>{quote ? `${quote.routePlan?.length || 1} hop${quote.routePlan?.length === 1 ? "" : "s"}` : "Ready"}</b>
           </div>
           <dl className="fee-list">
-            <div><dt>Ember fee</dt><dd>{formatBps(SWAP_FEE_BPS)}</dd></div>
+            <div><dt>Orbit fee</dt><dd>{formatBps(SWAP_FEE_BPS)}</dd></div>
             <div><dt>Slippage protection</dt><dd>{formatBps(DEFAULT_SLIPPAGE_BPS)}</dd></div>
             <div><dt>Price impact</dt><dd>{quote?.priceImpactPct ? `${Number(quote.priceImpactPct).toFixed(3)}%` : "-"}</dd></div>
           </dl>
-          <div className="reward-line">$EMBER holder XP updates after confirmed swaps</div>
+          <div className="reward-line">$ORBIT holder XP updates after confirmed swaps</div>
           {isPrelaunch && (
-            <p className="swap-error">$EMBER is not live yet. Swaps for other listed tokens are already available.</p>
+            <p className="swap-error">$ORBIT is not live yet. Swaps for other listed tokens are already available.</p>
           )}
           {quoteError && <p className="swap-error">{quoteError}</p>}
           {signature && (
@@ -482,7 +482,7 @@ export function SwapExperience() {
       </main>
       <footer>
         <span>Trade responsibly. Memecoins are highly volatile.</span>
-        <span><a href="/" target="_blank">Ember Swap</a> - Built on <b>Solana</b></span>
+        <span><a href="/" target="_blank">Orbit Swap</a> - Built on <b>Solana</b></span>
       </footer>
       {guideOpen && <GuideModal onClose={() => setGuideOpen(false)} />}
       {tokenSelectorSide && (
@@ -649,8 +649,8 @@ function GuideModal({ onClose }: { onClose: () => void }) {
         <p className="eyebrow">60-SECOND GUIDE</p>
         <h2 id="guide-title">Know before you swap</h2>
         {[
-          ["You stay in control", "Ember Swap never sees your recovery phrase. Your wallet previews and signs every transaction."],
-          ["Network costs only", "Ember Swap currently charges no platform fee. Solana may reserve about 0.002 SOL when your wallet needs a new token account."],
+          ["You stay in control", "Orbit Swap never sees your recovery phrase. Your wallet previews and signs every transaction."],
+          ["Network costs only", "Orbit Swap currently charges no platform fee. Solana may reserve about 0.002 SOL when your wallet needs a new token account."],
           ["Account rent is recoverable", "After selling or transferring every token out, close the empty token account using a trusted wallet's account-management feature. The reserved SOL returns to your wallet."],
         ].map(([title, body], index) => (
           <article className="guide-step" key={title}>

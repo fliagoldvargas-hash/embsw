@@ -1,10 +1,14 @@
-import { EMBER_TOKEN } from "./token";
+import { ORBIT_TOKEN } from "./token";
 
 export const SOL_MINT = "So11111111111111111111111111111111111111112";
 
-export const EMBER_MINT = EMBER_TOKEN.mint || process.env.NEXT_PUBLIC_EMBER_TOKEN_MINT || "";
+export const ORBIT_MINT = ORBIT_TOKEN.mint || process.env.NEXT_PUBLIC_ORBIT_TOKEN_MINT || process.env.NEXT_PUBLIC_EMBER_TOKEN_MINT || "";
 
-export const EMBER_DECIMALS = EMBER_TOKEN.decimals || Number(process.env.NEXT_PUBLIC_EMBER_TOKEN_DECIMALS || 6);
+export const ORBIT_DECIMALS = ORBIT_TOKEN.decimals || Number(process.env.NEXT_PUBLIC_ORBIT_TOKEN_DECIMALS || process.env.NEXT_PUBLIC_EMBER_TOKEN_DECIMALS || 6);
+
+export const EMBER_MINT = ORBIT_MINT;
+
+export const EMBER_DECIMALS = ORBIT_DECIMALS;
 
 export const SWAP_FEE_BPS = 0;
 
@@ -23,9 +27,9 @@ function resolveJupiterApiBase() {
 export const JUPITER_API_BASE = resolveJupiterApiBase();
 
 export function requireConfiguredToken() {
-  if (!EMBER_MINT) {
-    throw new Error("NEXT_PUBLIC_EMBER_TOKEN_MINT is required before real swaps can be enabled.");
+  if (!ORBIT_MINT) {
+    throw new Error("NEXT_PUBLIC_ORBIT_TOKEN_MINT is required before official Orbit token swaps can be enabled.");
   }
 
-  return EMBER_MINT;
+  return ORBIT_MINT;
 }

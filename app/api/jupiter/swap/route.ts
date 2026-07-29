@@ -7,7 +7,7 @@ type SwapRequestBody = {
 };
 
 export async function POST(request: NextRequest) {
-  const feeAccount = SWAP_FEE_BPS > 0 ? process.env.EMBER_FEE_ACCOUNT : "";
+  const feeAccount = SWAP_FEE_BPS > 0 ? process.env.ORBIT_FEE_ACCOUNT || process.env.EMBER_FEE_ACCOUNT : "";
 
   const body = (await request.json().catch(() => null)) as SwapRequestBody | null;
 
