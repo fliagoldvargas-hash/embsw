@@ -1,5 +1,5 @@
-const ORBIT_TOKEN_MINT = "";
-const ORBIT_PUMPFUN_URL = "";
+const ORBIT_TOKEN_MINT = "3CUskmyBA7Mw21BhnUwJ3PEKLA26boCm7feMR7Hwpump";
+const ORBIT_PUMPFUN_URL = "https://pump.fun/coin/3CUskmyBA7Mw21BhnUwJ3PEKLA26boCm7feMR7Hwpump";
 const ORBIT_LAUNCH_AT = "";
 const ORBIT_X_URL = "https://x.com/Orbitswap_";
 const ORBIT_TELEGRAM_URL = "";
