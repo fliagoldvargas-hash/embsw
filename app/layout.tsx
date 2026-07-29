@@ -3,32 +3,32 @@ import { AppProviders } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://orbitswap.fun"),
-  title: "Orbit Swap",
-  description: "Best-route Solana swaps for memecoin traders. Swap fast, stay in control, and track verified XP after $ORBIT launch.",
+  metadataBase: new URL("https://gmswap.fun"),
+  title: "GM SWAP",
+  description: "Best-route Solana swaps for memecoin traders. Swap fast, stay in control, and track verified XP after $GM launch.",
   openGraph: {
-    title: "Orbit Swap",
-    description: "Best-route Solana swaps for memecoin traders. Swap fast, stay in control, and track verified XP after $ORBIT launch.",
-    url: "https://orbitswap.fun",
-    siteName: "Orbit Swap",
+    title: "GM SWAP",
+    description: "Best-route Solana swaps for memecoin traders. Swap fast, stay in control, and track verified XP after $GM launch.",
+    url: "https://gmswap.fun",
+    siteName: "GM SWAP",
     images: [
       {
-        url: "/assets/orbit-swap-logo.png",
+        url: "/assets/gm-swap-logo.png",
         width: 1024,
         height: 1024,
-        alt: "Orbit Swap logo",
+        alt: "GM SWAP logo",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Orbit Swap",
+    title: "GM SWAP",
     description: "Best-route Solana swaps for memecoin traders.",
-    images: ["/assets/orbit-swap-logo.png"],
+    images: ["/assets/gm-swap-logo.png"],
   },
   icons: {
-    icon: "/assets/orbit-swap-logo.png"
+    icon: "/assets/gm-swap-logo.png"
   }
 };
 

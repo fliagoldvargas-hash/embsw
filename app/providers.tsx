@@ -65,7 +65,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
         },
         appearance: {
           accentColor: "#a6ff1a",
-          logo: "/assets/orbit-swap-logo.png",
+          logo: "/assets/gm-swap-logo.png",
           showWalletLoginFirst: true,
           walletChainType: "solana-only",
         },

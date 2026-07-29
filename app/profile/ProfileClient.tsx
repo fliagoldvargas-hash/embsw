@@ -145,7 +145,7 @@ export function ProfileClient() {
           <div>
             <p className="eyebrow">YOUR WALLET</p>
             <h1>Profile & holdings</h1>
-            <p>Your assets stay in your wallet. Orbit Swap only reads public on-chain balances.</p>
+            <p>Your assets stay in your wallet. GM SWAP only reads public on-chain balances.</p>
           </div>
           <Link className="ghost-link" href="/">Back to swap</Link>
         </section>
@@ -176,7 +176,7 @@ export function ProfileClient() {
               <article className="stat-card highlight">
                 <p>SEASON ZERO POINTS</p>
                 <strong>{xpSummary.totalXp}</strong>
-                <span>$ORBIT XP</span>
+                <span>$GM XP</span>
               </article>
               <article className="stat-card">
                 <p>VERIFIED SWAPS</p>
@@ -191,29 +191,29 @@ export function ProfileClient() {
             </section>
 
             <aside className="xp-strip">
-              <span>Hold <b>$ORBIT</b> to earn XP. Bronze earns x1, Silver earns x1.5, and Gold earns x3.</span>
+              <span>Hold <b>$GM</b> to earn XP. Bronze earns x1, Silver earns x1.5, and Gold earns x3.</span>
               <Link href="/leaderboard">View leaderboard -&gt;</Link>
             </aside>
 
             <section className="holdings-head">
               <div>
                 <p className="eyebrow">YOUR ASSETS</p>
-                <h2>$ORBIT holdings</h2>
+                <h2>$GM holdings</h2>
               </div>
-              <span>Public $ORBIT balance from Solana</span>
+              <span>Public $GM balance from Solana</span>
             </section>
 
             <section className="holdings-panel panel">
               {loading && <p className="muted-center">Loading public balances...</p>}
-              {!loading && !EMBER_MINT && <p className="muted-center">$ORBIT holdings will appear after launch.</p>}
-              {!loading && EMBER_MINT && !emberHolding && <p className="muted-center">No $ORBIT balance found in this wallet.</p>}
+              {!loading && !EMBER_MINT && <p className="muted-center">$GM holdings will appear after launch.</p>}
+              {!loading && EMBER_MINT && !emberHolding && <p className="muted-center">No $GM balance found in this wallet.</p>}
               {!loading && emberHolding && (
                 <article className="holding-row">
                   <div className="token-mark">
-                    {emberHolding.image ? <img src={emberHolding.image} alt="$ORBIT logo" width={34} height={34} /> : <span>OR</span>}
+                    {emberHolding.image ? <img src={emberHolding.image} alt="$GM logo" width={34} height={34} /> : <span>OR</span>}
                   </div>
                   <div>
-                    <strong>$ORBIT</strong>
+                    <strong>$GM</strong>
                     <span>{emberHolding.name}</span>
                   </div>
                   <code>{shortAddress(emberHolding.mint)}</code>
@@ -225,7 +225,7 @@ export function ProfileClient() {
             {error && <p className="profile-error">{error}</p>}
 
             <aside className="warning-strip">
-              Profile data is calculated from public Solana activity. Orbit Swap does not store wallet secrets or personal information. XP has no cash value or guaranteed token conversion.
+              Profile data is calculated from public Solana activity. GM SWAP does not store wallet secrets or personal information. XP has no cash value or guaranteed token conversion.
             </aside>
           </>
         )}
